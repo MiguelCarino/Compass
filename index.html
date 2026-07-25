@@ -8,16 +8,15 @@
   <link rel="stylesheet" href="fonts/carino-fonts.css">
   <style>
     :root {
-      --bg:     #0a0a0c;
-      --bezel:  #141417;
-      --lcd:    #141417;
+      --bg:     #050505;
+      --lcd:    #0d0d0d;
       --dim:    #4b4b52;
       --mid:    #52525b;
-      --border: #29292f;
+      --border: #262626;
       --gold:   #eab308;
       --active: #eab308;
       --bright: #fbbf24;
-      --mind:    #3b82f6;
+      --mind:    #22c55e;
       --suggest: #eab308;
       --enforce: #ef4444;
     }
@@ -45,26 +44,7 @@
       padding: 0 24px; gap: 12px; z-index: 100;
       font-family: 'IBM Plex Sans', sans-serif;
     }
-    .cs-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
     .cs-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .cs-page-name {
-      font-family: 'Red Hat Display', sans-serif;
-      font-size: 1.4rem; font-weight: 900; line-height: 1;
-      background: linear-gradient(130deg, #fef08a 0%, #eab308 50%, #b45309 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      white-space: nowrap;
-    }
-    .cs-info { display: flex; align-items: baseline; gap: 10px; border-left: 1px solid #262626; padding-left: 14px; }
-    .cs-info-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-    .cs-info-desc { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #666; white-space: nowrap; }
-    .cs-icon-btn {
-      width: 32px; height: 32px; border: 1px solid #262626; border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
-      color: #666; transition: 0.2s; text-decoration: none; background: transparent; cursor: pointer;
-      font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 700;
-    }
-    .cs-icon-btn:hover { border-color: #eab308; color: #050505; background: #eab308; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(234,179,8,0.15); }
-    .cs-icon-btn svg { width: 15px; height: 15px; }
     .cs-vdiv { width: 1px; height: 22px; background: #262626; flex-shrink: 0; }
     .cs-btn {
       display: flex; align-items: center; gap: 5px;
@@ -129,23 +109,10 @@
     .hdr-tag {
       font-family: 'IBM Plex Mono', monospace;
       font-size: clamp(0.6rem, 1.2vw, 0.72rem);
-      color: #71717a;
+      color: #666;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
-    .prof-btn {
-      background: none;
-      border: 1px solid var(--mid);
-      color: var(--mid);
-      font-family: inherit;
-      font-size: clamp(0.72rem, 1.2vw, 0.85rem);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      cursor: pointer;
-      padding: 1px 6px;
-      transition: all 0.1s;
-    }
-    .prof-btn:hover { border-color: var(--active); color: var(--active); }
 
     /* ── Main content ── */
     .body {
@@ -294,7 +261,7 @@
     /* ── Axis info bar (now lives in header center) ── */
     .axis-info {
       font-size: clamp(0.6rem, 0.9vw, 0.72rem);
-      color: #a1a1aa;
+      color: #a3a3a3;
       letter-spacing: 0.03em;
       text-transform: uppercase;
       text-align: center;
@@ -382,7 +349,7 @@
     .prof-close {
       background: none;
       border: 1px solid var(--border);
-      color: var(--text-dim, #a1a1aa);
+      color: #a3a3a3;
       font-family: inherit;
       font-size: 0.8rem;
       cursor: pointer;
@@ -411,7 +378,7 @@
     .prof-card {
       background: rgba(255,255,255,0.02);
       border: 1px solid var(--border);
-      color: #e4e4e7;
+      color: #fff;
       font-family: inherit;
       font-size: clamp(0.74rem, 1.2vw, 0.84rem);
       letter-spacing: 0.005em;
@@ -424,7 +391,7 @@
     .prof-card small {
       display: block;
       font-size: 0.76em;
-      color: #71717a;
+      color: #666;
       letter-spacing: 0.01em;
       text-transform: none;
       margin-top: 1px;
@@ -936,17 +903,7 @@ const els = [];   // { slider, lp, rp }
 let ftrTimer = null;
 
 // ── Canvas palette ──
-const C = { dim:'#26262b', mid:'#3f3f46', active:'#eab308', bright:'#fde68a', mind:'#3b82f6', suggest:'#eab308', enforce:'#ef4444' };
-let dither = null;
-
-function mkDither(ctx) {
-  const p = document.createElement('canvas');
-  p.width = 2; p.height = 2;
-  const pc = p.getContext('2d');
-  pc.fillStyle = C.active;
-  pc.fillRect(0,0,1,1); pc.fillRect(1,1,1,1);
-  return ctx.createPattern(p, 'repeat');
-}
+const C = { dim:'#262626', mid:'#3f3f46', active:'#eab308', bright:'#fbbf24', mind:'#22c55e', suggest:'#eab308', enforce:'#ef4444' };
 
 function pt(i, v, cx, cy, r0, r1) {
   const r = r0 + (v + 3) / 6 * (r1 - r0);
@@ -1001,7 +958,7 @@ function draw(exportCv) {
   ctx.moveTo(cx, cy-ch); ctx.lineTo(cx, cy+ch);
   ctx.stroke();
 
-  // Dithered fill
+  // Profile fill
   ctx.beginPath();
   for (let i = 0; i < N; i++) { const [x,y] = pt(i,vals[i],cx,cy,r0,r1); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
   ctx.closePath();
@@ -1048,7 +1005,6 @@ function sizeCanvas() {
   cv.style.height = sz + 'px';
   cv.width  = Math.round(sz * dpr);
   cv.height = Math.round(sz * dpr);
-  dither = null;
 }
 
 // ── Hash ──
@@ -1243,7 +1199,7 @@ function downloadCompass() {
   const off = document.createElement('canvas');
   off.width = off.height = sz;
   const ctx = off.getContext('2d');
-  ctx.fillStyle = '#0a0906';
+  ctx.fillStyle = '#050505';
   ctx.fillRect(0, 0, sz, sz);
   draw(off);
   const link = document.createElement('a');
