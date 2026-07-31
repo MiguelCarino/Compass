@@ -4,6 +4,13 @@
     <link rel="icon" type="image/webp" href="logo.webp">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A 12-axis political compass measured by intention — Mind, Suggest, Enforce — not number grading. Compare against leaders, thinkers and fictional characters, in 2D or 3D.">
+  <meta name="theme-color" content="#050505">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://compass.carino.systems/">
+  <meta property="og:title" content="Compass — 12-Axis Political Compass">
+  <meta property="og:description" content="A 12-axis political compass measured by intention, not number grading. Build yours and share it by link.">
+  <meta property="og:image" content="https://compass.carino.systems/logo.webp">
   <title>Compass — 12-Axis Political Compass</title>
   <link rel="stylesheet" href="fonts/carino-fonts.css">
   <style>
@@ -54,27 +61,19 @@
     }
     .cs-btn:hover { border-color: #eab308; color: #eab308; background: rgba(234,179,8,0.05); }
 
-    /* ── Casio octagonal bezel ── */
+    /* ── Full-page layout ── */
     .watch {
-      background: linear-gradient(180deg, #17140d 0%, #0c0a06 100%);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(234,179,8,0.05);
-      padding: 12px 14px;
-      width:  min(98vw, calc((100vh - 70px) * 1.88));
-      height: min(calc(100vh - 70px), 98vw / 1.88);
+      width: 100%;
+      height: calc(100vh - 70px);
+      height: calc(100dvh - 70px);
+      padding: 10px 18px 14px;
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    /* ── LCD screen ── */
     .screen {
       flex: 1;
-      background: var(--lcd);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 8px 10px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -91,15 +90,20 @@
       flex-shrink: 0;
       gap: 8px;
     }
-    .hdr-title {
-      font-family: 'Red Hat Display', 'IBM Plex Sans', sans-serif;
-      font-size: clamp(1rem, 2.2vw, 1.4rem);
-      font-weight: 900;
-      background: linear-gradient(130deg, #fef08a 0%, #eab308 50%, #b45309 100%);
-      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-      letter-spacing: 0.04em;
+    .home-hint {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(0.62rem, 1.1vw, 0.76rem);
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 40vw;
       flex-shrink: 0;
+      transition: color 0.2s;
     }
+    .home-hint.flash { color: var(--bright); }
     .hdr-right {
       display: flex;
       align-items: center;
@@ -130,7 +134,8 @@
       justify-content: center;
     }
 
-    canvas { display: block; }
+    canvas { display: block; touch-action: none; }
+    canvas:focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
 
     /* ── Sliders panel ── */
     .sliders {
@@ -272,21 +277,6 @@
     }
     .axis-info.active { color: var(--bright); }
 
-    /* Footer */
-    .ftr {
-      border-top: 1px solid var(--dim);
-      padding-top: 3px;
-      flex-shrink: 0;
-      display: flex;
-      justify-content: center;
-      font-size: clamp(0.62rem, 1.05vw, 0.72rem);
-      color: var(--dim);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-    .ftr.flash { color: var(--active); }
-
     /* ── "for reference only" warning chip ── */
     .warn-chip {
       font-size: clamp(0.5rem, 0.95vw, 0.62rem);
@@ -322,7 +312,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-      width: min(92vw, 660px);
+      width: min(94vw, 860px);
       max-height: 82vh;
       display: flex;
       flex-direction: column;
@@ -359,21 +349,61 @@
     }
     .prof-close:hover { border-color: var(--enforce); color: var(--enforce); }
 
+    .prof-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 8px 12px 0;
+      flex-shrink: 0;
+    }
+    .prof-tab {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: #a3a3a3;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(0.58rem, 1vw, 0.68rem);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .prof-tab small { color: var(--dim); margin-left: 5px; }
+    .prof-tab:hover { border-color: var(--gold); color: var(--gold); }
+    .prof-tab.active { border-color: var(--gold); color: var(--gold); background: rgba(234,179,8,0.08); }
+    .prof-search-wrap { padding: 8px 12px 0; flex-shrink: 0; }
+    .prof-search-wrap input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      padding: 7px 10px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .prof-search-wrap input:focus { border-color: var(--gold); }
+    .prof-search-wrap input::placeholder { color: var(--dim); }
+    .prof-empty {
+      color: var(--dim);
+      font-size: 0.78rem;
+      padding: 8px 2px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
     .prof-body {
       overflow-y: auto;
       padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
-    .prof-section { display: flex; flex-direction: column; gap: 6px; }
-    .prof-cat {
-      font-size: clamp(0.62rem, 1.1vw, 0.72rem);
-      color: var(--gold);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+    .prof-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 6px;
     }
-    .prof-grid { display: flex; flex-wrap: wrap; gap: 5px; }
 
     .prof-card {
       background: rgba(255,255,255,0.02);
@@ -405,11 +435,11 @@
 
     /* ── Portrait / Mobile ── */
     @media (orientation: portrait) {
-      .watch { width: 100vw; height: calc(100dvh - 70px); height: calc(100vh - 70px); clip-path: none; padding: 6px 8px; }
+      .watch { height: calc(100dvh - 70px); height: calc(100vh - 70px); padding: 6px 8px; }
       .body  { flex-direction: column; }
       .chart-panel { width: 100%; height: 38%; flex-shrink: 0; }
       .tw    { height: 20px; }
-      .hdr-title { font-size: clamp(1rem, 4.5vw, 1.35rem); }
+      .home-hint { max-width: 34vw; }
       .hdr-tag   { font-size: clamp(0.82rem, 3vw, 0.98rem); }
       .pole      { font-size: clamp(0.72rem, 2.6vw, 0.9rem); }
       .ax-name   { font-size: clamp(0.55rem, 1.8vw, 0.66rem); }
@@ -418,7 +448,7 @@
     }
 
     @media (orientation: landscape) and (max-height: 460px) {
-      .watch { width: 100vw; height: calc(100vh - 70px); clip-path: none; padding: 4px 6px; }
+      .watch { height: calc(100vh - 70px); height: calc(100dvh - 70px); padding: 4px 6px; }
       .tw    { height: 16px; }
       .ax-name { display: none; }
       .ax-pos  { font-size: clamp(0.6rem, 1.3vh, 0.74rem); }
@@ -431,6 +461,8 @@
 
 <header class="cs-header">
   <div class="cs-right">
+    <button class="cs-btn" id="btn-3d" onclick="toggle3D()">3D VIEW</button>
+    <button class="cs-btn" id="btn-copy" onclick="copyLink()">Copy Link</button>
     <button class="cs-btn" onclick="openProfiles()">Profiles</button>
     <button class="cs-btn" onclick="downloadCompass()">↓ PNG</button>
     <div class="cs-vdiv"></div>
@@ -441,7 +473,7 @@
 <div class="watch">
   <div class="screen">
     <div class="hdr">
-      <span class="hdr-title">POLITICAL COMPASS</span>
+      <span class="home-hint" id="home-hint"></span>
       <div class="axis-info" id="axis-info"></div>
       <div class="hdr-right">
         <span class="warn-chip" title="A playful reference tool — not a scientific, professional, or serious political assessment. All placements are impressionistic broad strokes.">⚠ REFERENCE ONLY</span>
@@ -449,12 +481,11 @@
       </div>
     </div>
     <div class="body">
-      <div class="chart-panel"><canvas id="rc"></canvas></div>
+      <div class="chart-panel"><canvas id="rc" role="img" tabindex="0" aria-label="12-axis political compass chart"></canvas></div>
       <div class="sliders">
         <div class="slider-rows" id="slider-rows"></div>
       </div>
     </div>
-    <div class="ftr" id="ftr">adjust · url updates on change · share to save</div>
   </div>
 </div>
 </div>
@@ -469,35 +500,10 @@
       </div>
       <button class="prof-close" onclick="closeProfiles()">✕ CLOSE</button>
     </div>
+    <div class="prof-search-wrap"><input id="prof-search" type="search" autocomplete="off" spellcheck="false" aria-label="Search profiles"></div>
+    <div class="prof-tabs" id="prof-tabs"></div>
     <div class="prof-body">
-      <div class="prof-section">
-        <div class="prof-cat">Presidents &amp; Leaders</div>
-        <div class="prof-grid" id="grid-pres"></div>
-      </div>
-      <div class="prof-section">
-        <div class="prof-cat">Historical</div>
-        <div class="prof-grid" id="grid-hist"></div>
-      </div>
-      <div class="prof-section">
-        <div class="prof-cat">Thinkers</div>
-        <div class="prof-grid" id="grid-thinkers"></div>
-      </div>
-      <div class="prof-section">
-        <div class="prof-cat">Tech &amp; Business</div>
-        <div class="prof-grid" id="grid-tech"></div>
-      </div>
-      <div class="prof-section">
-        <div class="prof-cat">Anime</div>
-        <div class="prof-grid" id="grid-anime"></div>
-      </div>
-      <div class="prof-section">
-        <div class="prof-cat">Games</div>
-        <div class="prof-grid" id="grid-games"></div>
-      </div>
-      <div class="prof-section">
-        <div class="prof-cat">Film / TV</div>
-        <div class="prof-grid" id="grid-film"></div>
-      </div>
+      <div class="prof-grid" id="prof-grid"></div>
     </div>
   </div>
 </div>
@@ -715,6 +721,951 @@ const PROFILES = [
   { cat:'film',  name:'Col. Kurtz',         tag:'Apocalypse Now',        vals:[  0, +3, +2,  0, -2,  0, +1, +3, -1, +3,   0, +3] },
   { cat:'film',  name:'Immortan Joe',       tag:'Mad Max: Fury Road',    vals:[ +1, +3, +3, +2, +3, +3, +3, +3, -1, +3,  +2, +3] },
   { cat:'film',  name:'Rick Deckard',       tag:'Blade Runner',          vals:[  0,  0,  0,  0,  0,  0, -1,  0, +1, +1,   0, -1] },
+
+  // ── more Presidents & world leaders ──
+  { cat:'pres',  name:'Jacinda Ardern',     tag:'🇳🇿 New Zealand',       vals:[ -2, -1, -2, -2,  0, -2, -1, -2,  0, -2,  -2, -1] },
+  { cat:'pres',  name:'Pedro Sánchez',      tag:'🇪🇸 Spain',             vals:[ -1,  0, -2, -1, +1, -1, -2, -1,  0, -1,  -1, -1] },
+  { cat:'pres',  name:'Keir Starmer',       tag:'🇬🇧 United Kingdom',    vals:[  0, +1, -1,  0, +1, -1, -1, +1,  0, +1,  -1,  0] },
+  { cat:'pres',  name:'Shinzo Abe',         tag:'🇯🇵 Japan',             vals:[ +2, +1, +2, +3, +1, +1, +1, +2, +2, +2,  +3, +2] },
+  { cat:'pres',  name:'Nayib Bukele',       tag:'🇸🇻 El Salvador',       vals:[ +1, +3, +1, +2, +3, +1, +1, +1, +2, +3,  +1, +2] },
+  { cat:'pres',  name:'Gustavo Petro',      tag:'🇨🇴 Colombia',          vals:[ -2,  0, -1, -1, +1, -2,  0, -1, -1, -1,  -1, -1] },
+  { cat:'pres',  name:'Claudia Sheinbaum',  tag:'🇲🇽 Mexico',            vals:[ -2, +1, -1, +1, +1, -1, -1, -2,  0,  0,   0, -1] },
+  { cat:'pres',  name:'Kamala Harris',      tag:'🇺🇸 US Vice President', vals:[ -1,  0, -2, -1, +1, -1, -1, +1, +1, -1,  -2, -1] },
+  { cat:'pres',  name:'Theodore Roosevelt', tag:'🇺🇸 US President',      vals:[  0, +2, +1, +3, +2, -2,  0, +3, +1, +2,  +2, +1] },
+  { cat:'pres',  name:'Dwight Eisenhower',  tag:'🇺🇸 US President',      vals:[ +1, +1, +1, +1, +1,  0, +1, +1, +1, +1,  +1, +1] },
+  { cat:'pres',  name:'Nikita Khrushchev',  tag:'🇷🇺 USSR, 1953–64',     vals:[ -3, +2, -1, +2, +3,  0, -3, +2, +2, +2,  +1, -1] },
+  { cat:'pres',  name:'Mikhail Gorbachev',  tag:'🇷🇺 USSR, 1985–91',     vals:[ -1, -1, -1, -1,  0, -1, -1, -2, +1, -1,  -1, -1] },
+
+  // ── more Historical ──
+  { cat:'hist',  name:'Cleopatra',          tag:'Pharaoh, 69 BC',        vals:[  0, +2, +1, +2, +2,  0, +2, +1,  0, +1,   0, +1] },
+  { cat:'hist',  name:'Queen Victoria',     tag:'UK Monarch, 1837–1901', vals:[ +2, +2, +3, +3, +2, +1, +2, +2, +1, +2,  +2, +2] },
+  { cat:'hist',  name:'Catherine the Great',tag:'Empress, 1762–96',      vals:[ +1, +2, +1, +2, +3,  0,  0, +2, +1, +1,  +1, +2] },
+  { cat:'hist',  name:'Saladin',            tag:'Sultan, 1137–93',       vals:[  0, +2, +2, +2, +2,  0, +3, +2,  0, +1,  +1, +2] },
+  { cat:'hist',  name:'Joan of Arc',        tag:'Saint, 1412–31',        vals:[  0, +1, +2, +3, +1,  0, +3, +2, -1, +1,  +2, +3] },
+  { cat:'hist',  name:'Marcus Aurelius',    tag:'Emperor, 161–180',      vals:[  0, +1, +1, +1, +1,  0, +1, +1,  0, +1,  +1, +2] },
+  { cat:'hist',  name:'Emiliano Zapata',    tag:'Revolutionary, 1879',   vals:[ -3, -2, -1, +1, -3, -1, +1, +1, -2,  0,  -1, -1] },
+  { cat:'hist',  name:'José Rizal',         tag:'Reformist, 1861–96',    vals:[  0, -2, -1, +1, -1,  0, -1, -2, +1, -1,  -1,  0] },
+  { cat:'hist',  name:'Toussaint Louverture', tag:'Liberator, 1743',     vals:[ -1, +1, -1, +2, +1,  0, +1, +2,  0, +1,   0,  0] },
+  { cat:'hist',  name:'Eleanor Roosevelt',  tag:'Diplomat, 1884–1962',   vals:[ -1, -1, -2, -2,  0, -1,  0, -2,  0, -2,  -2, -1] },
+
+  // ── more Thinkers ──
+  { cat:'thinkers', name:'Hannah Arendt',    tag:'Philosopher, 1906',    vals:[  0, -2, -1, -1, -1,  0, -1, -1,  0, -1,  -1, +1] },
+  { cat:'thinkers', name:'John Rawls',       tag:'Philosopher, 1921',    vals:[ -1, -1, -2, -1,  0, -1, -1, -1,  0, -2,  -1,  0] },
+  { cat:'thinkers', name:'Friedrich Hayek',  tag:'Economist, 1899',      vals:[ +3, -2, +1,  0, -3, +1, -1, -1, +1, +1,   0, +2] },
+  { cat:'thinkers', name:'J. M. Keynes',     tag:'Economist, 1883',      vals:[ -1,  0, -1, -1, +1, -1, -1, -1, +1,  0,  -1,  0] },
+  { cat:'thinkers', name:'Milton Friedman',  tag:'Economist, 1912',      vals:[ +3, -2,  0,  0, -2, +2, -1, -1, +2, +1,   0, +2] },
+  { cat:'thinkers', name:'Carl Jung',        tag:'Psychiatrist, 1875',   vals:[  0, -1, +1,  0, -1,  0, +1, -1,  0,  0,   0, +2] },
+  { cat:'thinkers', name:'Bertrand Russell', tag:'Philosopher, 1872',    vals:[ -1, -2, -2, -2, -1, -1, -3, -3, +1, -2,  -1, +1] },
+  { cat:'thinkers', name:'Frantz Fanon',     tag:'Philosopher, 1925',    vals:[ -2,  0, -2, +1,  0, -1, -1, +2,  0, -1,  -1, -2] },
+  { cat:'thinkers', name:'M. Wollstonecraft',tag:'Philosopher, 1759',    vals:[ -1, -2, -3, -1, -1,  0, -1, -1,  0, -2,  -1, -2] },
+  { cat:'thinkers', name:'Simone Weil',      tag:'Philosopher, 1909',    vals:[ -2, -2, -1, -1, -2, -1, +2, -2, -2, -2,  -1, +1] },
+
+  // ── more Tech & Business ──
+  { cat:'tech',  name:'Linus Torvalds',     tag:'Linux',                 vals:[  0, -2, -1, -1, -2,  0, -2, -1, +2,  0,  -1, +1] },
+  { cat:'tech',  name:'Richard Stallman',   tag:'GNU / FSF',             vals:[ -2, -3, -1, -2, -3,  0, -3, -2, +1, -1,  -1, +1] },
+  { cat:'tech',  name:'Ada Lovelace',       tag:'Mathematician, 1815',   vals:[  0, -1, -1,  0, -1,  0,  0, -1, +3, -1,   0, +1] },
+  { cat:'tech',  name:'Alan Turing',        tag:'Computer Science, 1912',vals:[  0, -1, -2, -1, -1,  0, -2, -1, +3, -1,  -1, +1] },
+  { cat:'tech',  name:'Nikola Tesla',       tag:'Inventor, 1856',        vals:[ -1, -1, -1, -1, -1, -1, -1, -2, +3, -1,   0, +1] },
+  { cat:'tech',  name:'Thomas Edison',      tag:'Inventor, 1847',        vals:[ +3,  0, +1, +1, -1, +1,  0,  0, +3, +1,   0, +1] },
+  { cat:'tech',  name:'Henry Ford',         tag:'Ford Motor Co.',        vals:[ +2, +1, +2, +2,  0, +2, +1, -1, +3, +1,  +2, +2] },
+  { cat:'tech',  name:'Jensen Huang',       tag:'NVIDIA',                vals:[ +2,  0,  0,  0, -1,  0, -1,  0, +3,  0,   0, +1] },
+  { cat:'tech',  name:'Satoshi Nakamoto',   tag:'Bitcoin',               vals:[ +1, -3,  0, -1, -3,  0, -1, -1, +2,  0,   0,  0] },
+  { cat:'tech',  name:'Grace Hopper',       tag:'US Navy / COBOL',       vals:[  0, +1,  0, +1,  0,  0,  0, +1, +3,  0,   0, +1] },
+
+  // ── more Anime ──
+  { cat:'anime', name:'Monkey D. Luffy',    tag:'One Piece',             vals:[ -1, -3, -1, -1, -3, -1, -1, -1, -1, -1,  -1, -1] },
+  { cat:'anime', name:'Son Goku',           tag:'Dragon Ball Z',         vals:[  0, -2,  0,  0, -2,  0, -1, +1,  0, -1,   0,  0] },
+  { cat:'anime', name:'L Lawliet',          tag:'Death Note',            vals:[  0,  0, -1, -1,  0,  0, -1,  0, +2, +1,   0, +1] },
+  { cat:'anime', name:'Ainz Ooal Gown',     tag:'Overlord',              vals:[  0, +3, +1, +1, +3,  0, -1, +2, +2, +2,  +1, +2] },
+  { cat:'anime', name:'Rimuru Tempest',     tag:'Slime',                 vals:[ -1, +1, -1, -1, +1, -1, -1,  0, +1,  0,  -3,  0] },
+  { cat:'anime', name:'Motoko Kusanagi',    tag:'Ghost in the Shell',    vals:[  0, +1, -1,  0,  0,  0, -2, +1, +3, +1,   0, -1] },
+  { cat:'anime', name:'Dio Brando',         tag:"JoJo's Bizarre Adv.",   vals:[ +2, +3, +1,  0, +1,  0, -1, +2,  0, +3,   0, +3] },
+  { cat:'anime', name:'Jotaro Kujo',        tag:"JoJo's Bizarre Adv.",   vals:[  0, -1, +1,  0, -1,  0, -1, +1,  0, +2,   0, +1] },
+  { cat:'anime', name:'Tanjiro Kamado',     tag:'Demon Slayer',          vals:[ -1, -1, +1,  0, -1, -1,  0, -2, -1, -2,  -1,  0] },
+  { cat:'anime', name:'Loid Forger',        tag:'Spy × Family',          vals:[  0,  0, -1,  0,  0,  0, -1, -1, +1,  0,  -1,  0] },
+
+  // ── more Games ──
+  { cat:'games', name:'Link',               tag:'The Legend of Zelda',   vals:[ -1, -2,  0, +1, -2, -1,  0, -1, -1, -1,   0,  0] },
+  { cat:'games', name:'Samus Aran',         tag:'Metroid',               vals:[  0, -1,  0,  0, -2,  0, -1, +2, +2, +1,   0,  0] },
+  { cat:'games', name:'Lara Croft',         tag:'Tomb Raider',           vals:[ +2, -1,  0, +1, -1,  0, -1,  0, +1,  0,   0, +1] },
+  { cat:'games', name:'Andrew Ryan',        tag:'BioShock',              vals:[ +3, -1, +1, +1, -3, +2, -3,  0, +3, +2,   0, +3] },
+  { cat:'games', name:'Gordon Freeman',     tag:'Half-Life',             vals:[  0, -2, -1, -1, -2,  0, -2,  0, +2, -1,   0,  0] },
+  { cat:'games', name:'Aloy',               tag:'Horizon',               vals:[ -1, -2, -1, -1, -2, -2, -2,  0, +1, -1,  -1,  0] },
+  { cat:'games', name:'JC Denton',          tag:'Deus Ex',               vals:[ -1, -3, -1, -1, -3,  0, -1,  0, +1, -1,   0, -1] },
+  { cat:'games', name:'The Illusive Man',   tag:'Mass Effect',           vals:[ +2, +2, +1, +3, +2, +1, -1, +3, +3, +2,  +1, +2] },
+
+  // ── more Film / TV ──
+  { cat:'film',  name:'Gandalf',            tag:'The Lord of the Rings', vals:[ -1, -1,  0, -1, -2, -2, +1, -1, -2, -1,  -1, +1] },
+  { cat:'film',  name:'Aragorn',            tag:'The Lord of the Rings', vals:[  0,  0, +1, +1,  0, -1,  0, +1, -1,  0,   0, +1] },
+  { cat:'film',  name:'Luke Skywalker',     tag:'Star Wars',             vals:[ -1, -2, -1, -1, -2, -1, +1, -1,  0, -2,  -1, -1] },
+  { cat:'film',  name:'Emperor Palpatine',  tag:'Star Wars',             vals:[  0, +3, +2, +2, +3, +1,  0, +3, +2, +3,  +2, +3] },
+  { cat:'film',  name:'Captain America',    tag:'Marvel',                vals:[  0, -1, +1, +1, -1,  0, +1, +1,  0,  0,   0, +1] },
+  { cat:'film',  name:'Homelander',         tag:'The Boys',              vals:[ +2, +3, +2, +3, +2, +1, +2, +3, +1, +3,  +2, +2] },
+  { cat:'film',  name:'Daenerys Targaryen', tag:'Game of Thrones',       vals:[ -1, +2, -1,  0, +2,  0, -1, +2,  0, +3,  -1,  0] },
+  { cat:'film',  name:'Ned Stark',          tag:'Game of Thrones',       vals:[  0,  0, +2, +1, -1,  0, +1,  0, -1, +1,  +1, +1] },
+  { cat:'film',  name:'The Mandalorian',    tag:'Star Wars',             vals:[  0, -1, +2, +1, -2,  0, +3,  0,  0, +1,  +2, +1] },
+  { cat:'film',  name:'Sarah Connor',       tag:'Terminator',            vals:[  0, -2,  0,  0, -2, -1, -1, +2, -3, +1,   0,  0] },
+  { cat:'film',  name:'Rick Sanchez',       tag:'Rick and Morty',        vals:[ +1, -3, -1, -1, -3,  0, -3,  0, +3,  0,   0, +3] },
+  { cat:'film',  name:'Tony Soprano',       tag:'The Sopranos',          vals:[ +2, +1, +2, +1, -1, +1, +1, +1, -1, +3,  +1, +1] },
+
+  // ── Leaders expansion ──
+  { cat:'pres', name:'Lyndon B. Johnson',  tag:'🇺🇸 US President',      vals:[-1,+1, 0,+1,+2, 0, 0,+2,+1, 0, -1, 0] },
+  { cat:'pres', name:'Harry Truman',       tag:'🇺🇸 US President',      vals:[+1,+1,+1,+1,+1, 0,+1,+2,+1,+1,  0,+1] },
+  { cat:'pres', name:'Woodrow Wilson',     tag:'🇺🇸 US President',      vals:[ 0,+2,+1,-1,+2, 0,+1,+1,+1,+1, +2,+1] },
+  { cat:'pres', name:'Jimmy Carter',       tag:'🇺🇸 US President',      vals:[-1,-1,-1,-1, 0,-2,+1,-2, 0,-2, -1, 0] },
+  { cat:'pres', name:'Gerald Ford',        tag:'🇺🇸 US President',      vals:[+1, 0,+1,+1, 0, 0,+1,+1, 0,+1,  0,+1] },
+  { cat:'pres', name:'Ulysses S. Grant',   tag:'🇺🇸 US President',      vals:[+1,+1,+1,+2,+2, 0, 0,+3,+1,+1, +1,+1] },
+  { cat:'pres', name:'Andrew Jackson',     tag:'🇺🇸 US President',      vals:[ 0,+2,+2,+3,-1,+1,+1,+3,-1,+2, +3,+2] },
+  { cat:'pres', name:'Herbert Hoover',     tag:'🇺🇸 US President',      vals:[+3, 0,+2,+1,-1,+1,+1, 0,+1,+1, +1,+1] },
+  { cat:'pres', name:'Calvin Coolidge',    tag:'🇺🇸 US President',      vals:[+3,-1,+2,+1,-2,+1,+1,-1,+1,+1, +1,+2] },
+  { cat:'pres', name:'Tony Blair',         tag:'🇬🇧 UK PM',             vals:[+1,+1,-1, 0,+1,-1, 0,+2,+1,+1, -1, 0] },
+  { cat:'pres', name:'Boris Johnson',      tag:'🇬🇧 UK PM',             vals:[+2, 0,+1,+2, 0, 0, 0,+1,+1,+1,  0,+1] },
+  { cat:'pres', name:'David Cameron',      tag:'🇬🇧 UK PM',             vals:[+2, 0, 0,+1, 0,-1, 0,+1,+1,+1,  0,+1] },
+  { cat:'pres', name:'Theresa May',        tag:'🇬🇧 UK PM',             vals:[+1,+1,+1,+1,+1,-1, 0,+1, 0,+2, +1,+1] },
+  { cat:'pres', name:'Rishi Sunak',        tag:'🇬🇧 UK PM',             vals:[+2, 0,+1,+1, 0, 0,+1,+1,+2,+1,  0,+1] },
+  { cat:'pres', name:'Clement Attlee',     tag:'🇬🇧 UK PM',             vals:[-3, 0,-1, 0,+2,-1,-1, 0, 0,-1, -1,-1] },
+  { cat:'pres', name:'Helmut Kohl',        tag:'🇩🇪 Chancellor',        vals:[+1, 0,+1, 0,+1, 0,+1, 0, 0,+1, +1,+1] },
+  { cat:'pres', name:'Willy Brandt',       tag:'🇩🇪 Chancellor',        vals:[-2,-1,-2,-2,+1,-1,-1,-2, 0,-1, -1,-1] },
+  { cat:'pres', name:'Konrad Adenauer',    tag:'🇩🇪 Chancellor',        vals:[+2,+1,+2, 0,+1, 0,+2,+1,+1,+1, +1,+1] },
+  { cat:'pres', name:'Nicolas Sarkozy',    tag:'🇫🇷 France',            vals:[+2,+1,+1,+2,+1, 0, 0,+2,+1,+2, +2,+1] },
+  { cat:'pres', name:'François Hollande',  tag:'🇫🇷 France',            vals:[-1, 0,-2,-1,+1,-1,-2, 0, 0,-1, -1,-1] },
+  { cat:'pres', name:'François Mitterrand',tag:'🇫🇷 France',            vals:[-2, 0,-1,-1,+2, 0,-2,+1, 0,-1,  0,-1] },
+  { cat:'pres', name:'Jacques Chirac',     tag:'🇫🇷 France',            vals:[+1, 0, 0,+1,+1, 0,-1,+1, 0, 0, +1, 0] },
+  { cat:'pres', name:'Silvio Berlusconi',  tag:'🇮🇹 Italy',             vals:[+3,+1,+1,+1, 0,+1,+1, 0,+1,+1, +1,+1] },
+  { cat:'pres', name:'Mario Draghi',       tag:'🇮🇹 Italy',             vals:[+2, 0,-1,-1,+2,-1,-1, 0,+1, 0,  0, 0] },
+  { cat:'pres', name:'Dilma Rousseff',     tag:'🇧🇷 Brazil',            vals:[-2, 0,-1,-1,+1,-1,-1,-1, 0,-1, -1,-1] },
+  { cat:'pres', name:'Jair Bolsonaro',     tag:'🇧🇷 Brazil',            vals:[+2,+2,+3,+3, 0,+3,+2,+2, 0,+3, +2,+3] },
+  { cat:'pres', name:'Cristina Kirchner',  tag:'🇦🇷 Argentina',         vals:[-2,+1,-1,+1,+2, 0, 0,-1,-1, 0,  0,-1] },
+  { cat:'pres', name:'Juan Perón',         tag:'🇦🇷 Argentina',         vals:[-2,+2,+1,+3,+3,+1,+1,+1, 0,+1, +1,+1] },
+  { cat:'pres', name:'Salvador Allende',   tag:'🇨🇱 Chile',             vals:[-3,-1,-1,-1,+2,-1,-2,-2, 0,-2, -1,-2] },
+  { cat:'pres', name:'Augusto Pinochet',   tag:'🇨🇱 Chile',             vals:[+3,+3,+3,+3,+3,+2,+2,+3,+1,+3, +2,+3] },
+  { cat:'pres', name:'Gabriel Boric',      tag:'🇨🇱 Chile',             vals:[-2,-1,-2,-1, 0,-2,-2,-2, 0,-2, -2,-2] },
+  { cat:'pres', name:'Evo Morales',        tag:'🇧🇴 Bolivia',           vals:[-3,+1, 0,+1,+1,-2, 0,-1,-1, 0, -1,-1] },
+  { cat:'pres', name:'Vicente Fox',        tag:'🇲🇽 Mexico',            vals:[+2, 0,+1, 0,-1, 0,+1,-1, 0,+1,  0,+1] },
+  { cat:'pres', name:'Benito Juárez',      tag:'🇲🇽 Mexico',            vals:[ 0, 0,-1,+2,+1, 0,-3,+1,+1, 0, +1, 0] },
+  { cat:'pres', name:'Junichiro Koizumi',  tag:'🇯🇵 Japan',             vals:[+2, 0,+1,+2,+1, 0,+1,+1,+2,+1, +2,+1] },
+  { cat:'pres', name:'Fumio Kishida',      tag:'🇯🇵 Japan',             vals:[+1, 0,+1,+2,+1, 0, 0,+1,+1,+1, +2,+1] },
+  { cat:'pres', name:'Park Chung-hee',     tag:'🇰🇷 South Korea',       vals:[+1,+3,+2,+3,+3,+2, 0,+2,+3,+3, +2,+2] },
+  { cat:'pres', name:'Moon Jae-in',        tag:'🇰🇷 South Korea',       vals:[-1, 0,-1, 0,+1,-1, 0,-1,+1,-1,  0,-1] },
+  { cat:'pres', name:'Yoon Suk-yeol',      tag:'🇰🇷 South Korea',       vals:[+2,+2,+1,+1,+1,+1, 0,+2,+2,+2, +1,+1] },
+  { cat:'pres', name:'Rodrigo Duterte',    tag:'🇵🇭 Philippines',       vals:[ 0,+3,+1,+2,+2,+1, 0,+2, 0,+3, +1,+2] },
+  { cat:'pres', name:'Ferdinand Marcos',   tag:'🇵🇭 Philippines',       vals:[+1,+3,+2,+3,+3,+1,+1,+2, 0,+3, +1,+2] },
+  { cat:'pres', name:'Corazon Aquino',     tag:'🇵🇭 Philippines',       vals:[ 0,-1,+1, 0,-1, 0,+2,-2, 0,-1,  0,+1] },
+  { cat:'pres', name:'Sukarno',            tag:'🇮🇩 Indonesia',         vals:[-2,+2, 0,+3,+2, 0, 0,+2,-1,+1, +1, 0] },
+  { cat:'pres', name:'Suharto',            tag:'🇮🇩 Indonesia',         vals:[+1,+3,+2,+3,+3,+2,+1,+2, 0,+3, +2,+2] },
+  { cat:'pres', name:'Joko Widodo',        tag:'🇮🇩 Indonesia',         vals:[+1,+1,+1,+1,+1,+1,+1, 0,+1,+1, +1,+1] },
+  { cat:'pres', name:'Mahathir Mohamad',   tag:'🇲🇾 Malaysia',          vals:[+1,+2,+2,+3,+2,+1,+2, 0,+2,+2, +2,+2] },
+  { cat:'pres', name:'Ho Chi Minh',        tag:'🇻🇳 Vietnam',           vals:[-3,+2,-1,+3,+3, 0,-2,+2, 0,+2, +1,-1] },
+  { cat:'pres', name:'Bashar al-Assad',    tag:'🇸🇾 Syria',             vals:[-1,+3,+1,+2,+3,+1, 0,+3,-1,+3, +1,+2] },
+  { cat:'pres', name:'Saddam Hussein',     tag:'🇮🇶 Iraq',              vals:[-1,+3,+1,+3,+3,+1,+1,+3, 0,+3, +2,+2] },
+  { cat:'pres', name:'Muammar Gaddafi',    tag:'🇱🇾 Libya',             vals:[-2,+3,+1,+3,+3,+1,+2,+2,-1,+3, +1,+2] },
+  { cat:'pres', name:'Abdel F. el-Sisi',   tag:'🇪🇬 Egypt',             vals:[+1,+3,+2,+2,+3,+1,+1,+2, 0,+3, +2,+2] },
+  { cat:'pres', name:'Gamal Abdel Nasser', tag:'🇪🇬 Egypt',             vals:[-2,+2, 0,+3,+3,+1, 0,+2, 0,+2, +2,+1] },
+  { cat:'pres', name:'Anwar Sadat',        tag:'🇪🇬 Egypt',             vals:[ 0,+2,+1,+2,+2, 0,+1,+1, 0,+2, +1,+1] },
+  { cat:'pres', name:'Ruhollah Khomeini',  tag:'🇮🇷 Iran',              vals:[-1,+3,+3,+2,+3,+1,+3,+2,-1,+3, +2,+3] },
+  { cat:'pres', name:'Golda Meir',         tag:'🇮🇱 Israel',            vals:[-1,+1, 0,+3,+1, 0, 0,+3, 0,+1, +1,+1] },
+  { cat:'pres', name:'Alexander Lukashenko', tag:'🇧🇾 Belarus',         vals:[-1,+3,+2,+2,+3, 0, 0,+2,-1,+3, +2,+1] },
+
+  // ── Historical expansion ──
+  { cat:'hist', name:'Augustus',            tag:'Emperor, 27 BC',        vals:[+1,+3,+2,+2,+3, 0,+1,+2, 0,+2, +1,+2] },
+  { cat:'hist', name:'Constantine',         tag:'Emperor, 306–337',      vals:[ 0,+3,+1,+2,+3, 0,+3,+2, 0,+2, +2,+2] },
+  { cat:'hist', name:'Charlemagne',         tag:'Emperor, 768–814',      vals:[ 0,+3,+2,+2,+2, 0,+3,+3, 0,+2, +2,+2] },
+  { cat:'hist', name:'William the Conqueror', tag:'King, 1066',          vals:[+1,+3,+2,+2,+3, 0,+1,+3, 0,+3, +2,+2] },
+  { cat:'hist', name:'Frederick the Great', tag:'King, 1740–86',         vals:[+1,+2, 0,+2,+3, 0,-2,+3,+1,+1, +1,+1] },
+  { cat:'hist', name:'Peter the Great',     tag:'Tsar, 1682–1725',       vals:[ 0,+3,-1,+2,+3,+1,-1,+3,+2,+2, +2,+1] },
+  { cat:'hist', name:'Ivan the Terrible',   tag:'Tsar, 1547–84',         vals:[ 0,+3,+2,+2,+3, 0,+2,+3,-1,+3, +2,+2] },
+  { cat:'hist', name:'Suleiman I',          tag:'Sultan, 1520–66',       vals:[+1,+2,+2,+2,+3, 0,+2,+2, 0,+1, +1,+2] },
+  { cat:'hist', name:'Mehmed II',           tag:'Sultan, 1451–81',       vals:[ 0,+3,+1,+2,+3, 0,+2,+3,+1,+2, +1,+2] },
+  { cat:'hist', name:'Akbar',               tag:'Mughal Emperor, 1556',  vals:[ 0,+2, 0,+1,+2, 0,-1,+2, 0,+1, -2,+1] },
+  { cat:'hist', name:'Ashoka',              tag:'Emperor, 268 BC',       vals:[-1,+1, 0,+1,+2,-1,+2,-2, 0,-2, -1,+1] },
+  { cat:'hist', name:'Qin Shi Huang',       tag:'Emperor, 221 BC',       vals:[ 0,+3,+1,+3,+3,+1,-1,+3,+1,+3, +3,+2] },
+  { cat:'hist', name:'Kublai Khan',         tag:'Khan, 1260–94',         vals:[ 0,+2, 0,+1,+3, 0,-1,+2,+1,+1, -1,+1] },
+  { cat:'hist', name:'Tokugawa Ieyasu',     tag:'Shōgun, 1603',          vals:[+1,+3,+3,+3,+3, 0, 0,+1,-1,+2, +3,+2] },
+  { cat:'hist', name:'Toyotomi Hideyoshi',  tag:'Regent, 1585',          vals:[ 0,+3,+2,+3,+3, 0, 0,+3, 0,+2, +2,+1] },
+  { cat:'hist', name:'Attila',              tag:'Hun King, 434–453',     vals:[ 0,+3,+1,+2,+2, 0, 0,+3,-1,+3,  0,+1] },
+  { cat:'hist', name:'Hannibal Barca',      tag:'General, 247 BC',       vals:[ 0,+2,+1,+3,+1, 0,+1,+3, 0,+2, +1,+1] },
+  { cat:'hist', name:'Leonidas',            tag:'Spartan King, 480 BC',  vals:[ 0,+2,+3,+3,+1, 0,+1,+3,-1,+3, +3,+2] },
+  { cat:'hist', name:'Pericles',            tag:'Statesman, 461 BC',     vals:[ 0,-1, 0,+2,+1, 0, 0,+2,+1, 0, +1,+1] },
+  { cat:'hist', name:'Cicero',              tag:'Statesman, 106 BC',     vals:[+1, 0,+2,+2, 0, 0,+1, 0, 0,+1, +1,+2] },
+  { cat:'hist', name:'Boudica',             tag:'Queen, 60 AD',          vals:[ 0,-1,+1,+3,-2, 0,+1,+3,-1,+3, +2,+1] },
+  { cat:'hist', name:'Spartacus',           tag:'Rebel, 73 BC',          vals:[-2,-3, 0, 0,-3, 0, 0,+2, 0,-1, -1, 0] },
+  { cat:'hist', name:'Elizabeth I',         tag:'Queen, 1558–1603',      vals:[+1,+2,+1,+3,+2, 0,+1,+2,+1,+2, +2,+1] },
+  { cat:'hist', name:'Henry VIII',          tag:'King, 1509–47',         vals:[+1,+3,+1,+3,+3, 0,+3,+2, 0,+3, +2,+2] },
+  { cat:'hist', name:'Louis XIV',           tag:'Sun King, 1643–1715',   vals:[+1,+3,+2,+2,+3, 0,+2,+3, 0,+2, +2,+2] },
+  { cat:'hist', name:'Marie Antoinette',    tag:'Queen, 1774–92',        vals:[+2,+1,+2, 0,+1, 0,+2, 0, 0,+1,  0,+1] },
+  { cat:'hist', name:'Robespierre',         tag:'Revolutionary, 1758',   vals:[-2,+3,-2,+2,+3, 0,-2,+2, 0,+3, +2,+1] },
+  { cat:'hist', name:'Garibaldi',           tag:'Unifier, 1807–82',      vals:[-1,-1,-1,+3,-1, 0,-2,+2, 0, 0, +1, 0] },
+  { cat:'hist', name:'Metternich',          tag:'Chancellor, 1821',      vals:[+1,+3,+3, 0,+2, 0,+2,+1,-1,+2, +1,+2] },
+  { cat:'hist', name:'Lafayette',           tag:'General, 1757–1834',    vals:[ 0,-2,-1, 0,-2, 0,-1,+1, 0,-1,  0,+1] },
+  { cat:'hist', name:'José de San Martín',  tag:'Liberator, 1778',       vals:[ 0, 0, 0,+2, 0, 0, 0,+2, 0, 0,  0,+1] },
+  { cat:'hist', name:'Miguel Hidalgo',      tag:'Insurgent, 1753–1811',  vals:[-1,-1,-1,+2,-1, 0,+2,+2,-1, 0,  0,+1] },
+  { cat:'hist', name:'Pancho Villa',        tag:'Revolutionary, 1878',   vals:[-2, 0, 0,+2,-2, 0, 0,+2,-1,+1,  0, 0] },
+  { cat:'hist', name:'Atatürk',             tag:'Founder, 1923–38',      vals:[ 0,+2,-2,+3,+3,+1,-3,+2,+2,+2, +3,+1] },
+  { cat:'hist', name:'Lawrence of Arabia',  tag:'Officer, 1888–1935',    vals:[ 0,-1, 0, 0,-2, 0, 0,+2, 0, 0, -1, 0] },
+  { cat:'hist', name:'Rasputin',            tag:'Mystic, 1869–1916',     vals:[ 0,+1,+2,+1,+1, 0,+3,-1,-1, 0, +1,+2] },
+  { cat:'hist', name:'Nicholas II',         tag:'Tsar, 1894–1917',       vals:[+1,+3,+3,+2,+3, 0,+3,+1,-1,+2, +2,+2] },
+  { cat:'hist', name:'Wilhelm II',          tag:'Kaiser, 1888–1918',     vals:[+1,+3,+2,+3,+3,+1,+1,+3,+1,+2, +2,+2] },
+  { cat:'hist', name:'Erwin Rommel',        tag:'Field Marshal, 1891',   vals:[ 0,+1,+1,+2,+1, 0, 0,+3,+1,+1,  0,+1] },
+  { cat:'hist', name:'George S. Patton',    tag:'General, 1885–1945',    vals:[+1,+2,+2,+3,+1,+1,+1,+3,+1,+2, +2,+2] },
+  { cat:'hist', name:'Douglas MacArthur',   tag:'General, 1880–1964',    vals:[+1,+2,+2,+3,+1, 0,+1,+3,+1,+2, +1,+2] },
+  { cat:'hist', name:'Georgy Zhukov',       tag:'Marshal, 1896–1974',    vals:[-2,+2, 0,+2,+3,+1,-2,+3,+1,+2, +1, 0] },
+  { cat:'hist', name:'Bernard Montgomery',  tag:'Field Marshal, 1887',   vals:[+1,+2,+2,+2,+1, 0,+1,+3, 0,+2, +1,+1] },
+  { cat:'hist', name:'Isoroku Yamamoto',    tag:'Admiral, 1884–1943',    vals:[ 0,+1,+1,+2,+1, 0, 0,+1,+2,+1, +1,+1] },
+  { cat:'hist', name:'Hirohito',            tag:'Emperor, 1926–89',      vals:[+1,+2,+3,+3,+2, 0,+2,+1, 0,+1, +3,+2] },
+  { cat:'hist', name:'Mussolini',           tag:'Duce, 1922–43',         vals:[-1,+3,+2,+3,+3,+1, 0,+3,+1,+3, +2,+2] },
+  { cat:'hist', name:'Francisco Franco',    tag:'Caudillo, 1939–75',     vals:[+1,+3,+3,+3,+3,+1,+3,+2,-1,+3, +3,+3] },
+  { cat:'hist', name:'António Salazar',     tag:'PM, 1932–68',           vals:[+1,+3,+3,+2,+3, 0,+3, 0,-2,+2, +2,+3] },
+  { cat:'hist', name:'Josip Broz Tito',     tag:'Yugoslavia, 1953–80',   vals:[-2,+2, 0,+1,+2, 0,-2,+2,+1,+2, -2,-1] },
+  { cat:'hist', name:'Nicolae Ceaușescu',   tag:'Romania, 1965–89',      vals:[-3,+3,+2,+3,+3,+2,-1,+1, 0,+3, +2,+1] },
+  { cat:'hist', name:'David Ben-Gurion',    tag:'Founder, 1948',         vals:[-1,+1, 0,+3,+2, 0, 0,+2,+1,+1, +2,+1] },
+  { cat:'hist', name:'Hammurabi',           tag:'King, 1792 BC',         vals:[ 0,+2,+2,+1,+2, 0,+2,+1, 0,+3, +1,+2] },
+  { cat:'hist', name:'Ramses II',           tag:'Pharaoh, 1279 BC',      vals:[ 0,+3,+2,+3,+3, 0,+3,+3, 0,+2, +2,+2] },
+  { cat:'hist', name:'Susan B. Anthony',    tag:'Suffragist, 1820',      vals:[ 0,-2,-3, 0,-1, 0, 0,-1, 0,-1, -1,-2] },
+  { cat:'hist', name:'Harriet Tubman',      tag:'Abolitionist, 1822',    vals:[-1,-2,-1, 0,-2, 0,+2,+1, 0,-1, -1, 0] },
+  { cat:'hist', name:'Frederick Douglass',  tag:'Abolitionist, 1818',    vals:[ 0,-2,-2, 0,-1, 0,+1, 0,+1,-1, -1,-1] },
+  { cat:'hist', name:'Rosa Parks',          tag:'Activist, 1913–2005',   vals:[-1,-2,-1,-1,-1, 0,+1,-2, 0,-2, -2,-1] },
+  { cat:'hist', name:'Emmeline Pankhurst',  tag:'Suffragette, 1858',     vals:[ 0,-1,-3,+1,-1, 0, 0,+1, 0, 0,  0,-2] },
+  { cat:'hist', name:'Cesar Chavez',        tag:'Labor Leader, 1927',    vals:[-2,-1,-1, 0,-2,-1,+1,-2,-1,-2, -1,-1] },
+  { cat:'hist', name:'Sitting Bull',        tag:'Lakota Chief, 1831',    vals:[-1,-1,+2,+2,-3,-2,+2,+1,-2, 0, +2,+1] },
+  { cat:'hist', name:'Tecumseh',            tag:'Shawnee Chief, 1768',   vals:[-1, 0,+2,+2,-2,-2,+2,+2,-2, 0, +2,+1] },
+
+  // ── Thinkers expansion ──
+  { cat:'thinkers', name:'Socrates',          tag:'Philosopher, 470 BC',  vals:[ 0,-1, 0, 0, 0, 0, 0,-1, 0, 0,  0,+1] },
+  { cat:'thinkers', name:'Diogenes',          tag:'Cynic, 412 BC',        vals:[-1,-3,-1,-2,-3,-1,-1,-2,-2,-1, -1, 0] },
+  { cat:'thinkers', name:'Epicurus',          tag:'Philosopher, 341 BC',  vals:[ 0,-2,-1,-1,-2,-1,-2,-3, 0,-1,  0,+1] },
+  { cat:'thinkers', name:'Seneca',            tag:'Stoic, 4 BC',          vals:[+1, 0,+1, 0, 0, 0, 0,-1, 0, 0,  0,+2] },
+  { cat:'thinkers', name:'Epictetus',         tag:'Stoic, 50 AD',         vals:[ 0,-1, 0, 0,-1, 0,+1,-1, 0,-1,  0,+2] },
+  { cat:'thinkers', name:'Heraclitus',        tag:'Philosopher, 535 BC',  vals:[ 0, 0, 0, 0,-1, 0, 0, 0, 0, 0,  0,-1] },
+  { cat:'thinkers', name:'Pythagoras',        tag:'Philosopher, 570 BC',  vals:[ 0,+1,+1, 0,+1, 0,+2,-1, 0, 0, +1,+3] },
+  { cat:'thinkers', name:'Thomas Aquinas',    tag:'Theologian, 1225',     vals:[ 0,+1,+2, 0,+1, 0,+3,-1,-1,+1, +1,+3] },
+  { cat:'thinkers', name:'Augustine of Hippo',tag:'Theologian, 354',      vals:[ 0,+1,+2, 0,+1, 0,+3, 0,-1,+1, +1,+3] },
+  { cat:'thinkers', name:'Averroes',          tag:'Philosopher, 1126',    vals:[ 0, 0, 0, 0, 0, 0,+1,-1,+1, 0,  0,+2] },
+  { cat:'thinkers', name:'Avicenna',          tag:'Polymath, 980',        vals:[ 0, 0,+1, 0,+1, 0,+1,-1,+1, 0,  0,+2] },
+  { cat:'thinkers', name:'Ibn Khaldun',       tag:'Historian, 1332',      vals:[+1, 0,+1, 0, 0, 0,+1, 0, 0,+1,  0,+1] },
+  { cat:'thinkers', name:'Maimonides',        tag:'Philosopher, 1138',    vals:[ 0, 0,+1, 0, 0, 0,+2,-1, 0, 0, +1,+2] },
+  { cat:'thinkers', name:'Laozi',             tag:'Philosopher, 6th c. BC', vals:[-1,-3, 0,-1,-3,-2,+1,-3,-2,-1,  0,+1] },
+  { cat:'thinkers', name:'Zhuangzi',          tag:'Philosopher, 369 BC',  vals:[-1,-3,-1,-1,-3,-2, 0,-3,-2,-1,  0,-1] },
+  { cat:'thinkers', name:'Mencius',           tag:'Philosopher, 372 BC',  vals:[-1, 0,+1, 0,+1, 0,+1,-2,-1,-1, +1,+2] },
+  { cat:'thinkers', name:'Siddhartha Gautama',tag:'Buddha, 563 BC',       vals:[-1,-2, 0,-2,-2,-1,+1,-3,-1,-3, -1, 0] },
+  { cat:'thinkers', name:'Descartes',         tag:'Philosopher, 1596',    vals:[ 0, 0, 0, 0, 0, 0,+1,-1,+1, 0,  0,+2] },
+  { cat:'thinkers', name:'Spinoza',           tag:'Philosopher, 1632',    vals:[ 0,-2,-1,-1,-1, 0,-2,-2, 0,-1, -1,+2] },
+  { cat:'thinkers', name:'Leibniz',           tag:'Polymath, 1646',       vals:[+1, 0, 0, 0, 0, 0,+1,-1,+2, 0,  0,+2] },
+  { cat:'thinkers', name:'David Hume',        tag:'Philosopher, 1711',    vals:[+1,-1, 0, 0,-1, 0,-2,-1, 0, 0,  0,-1] },
+  { cat:'thinkers', name:'Thomas Hobbes',     tag:'Philosopher, 1588',    vals:[+1,+3,+1,+1,+3, 0, 0,+1, 0,+2, +1,+1] },
+  { cat:'thinkers', name:'Montesquieu',       tag:'Philosopher, 1689',    vals:[+1,-1, 0, 0,-2, 0,-1,-1, 0, 0,  0,+1] },
+  { cat:'thinkers', name:'Voltaire',          tag:'Philosopher, 1694',    vals:[+1,-1,-1,-1,-1, 0,-3,-1,+1,-1,  0, 0] },
+  { cat:'thinkers', name:'Diderot',           tag:'Encyclopedist, 1713',  vals:[ 0,-2,-2,-1,-1, 0,-3,-1,+1,-1, -1,-1] },
+  { cat:'thinkers', name:'Thomas Paine',      tag:'Pamphleteer, 1737',    vals:[ 0,-2,-2,-1,-2, 0,-2, 0,+1,-1, -1, 0] },
+  { cat:'thinkers', name:'Edmund Burke',      tag:'Philosopher, 1729',    vals:[+2,+1,+3,+1, 0, 0,+1, 0,-1,+1, +1,+2] },
+  { cat:'thinkers', name:'Jeremy Bentham',    tag:'Utilitarian, 1748',    vals:[+1,-1,-2,-1, 0, 0,-2,-1,+1,-2,  0, 0] },
+  { cat:'thinkers', name:'John Stuart Mill',  tag:'Philosopher, 1806',    vals:[+1,-2,-2,-1,-1, 0,-1,-1,+1,-1, -1, 0] },
+  { cat:'thinkers', name:'Kierkegaard',       tag:'Philosopher, 1813',    vals:[ 0,-1,+1,-1,-1, 0,+3,-1,-1, 0,  0,+1] },
+  { cat:'thinkers', name:'Schopenhauer',      tag:'Philosopher, 1788',    vals:[ 0, 0,+1,-1,-1, 0,-1,-2,-1, 0,  0,+1] },
+  { cat:'thinkers', name:'Hegel',             tag:'Philosopher, 1770',    vals:[ 0,+2,+1,+2,+2, 0,+1,+1, 0,+1, +1,+2] },
+  { cat:'thinkers', name:'Friedrich Engels',  tag:'Philosopher, 1820',    vals:[-3,+1,-2,-2,+2,+1,-3,+1,+2,-1, -1,-2] },
+  { cat:'thinkers', name:'Mikhail Bakunin',   tag:'Anarchist, 1814',      vals:[-3,-3,-2,-2,-3, 0,-3,+1, 0,-2, -1,-2] },
+  { cat:'thinkers', name:'Peter Kropotkin',   tag:'Anarchist, 1842',      vals:[-3,-3,-2,-2,-3,-1,-3,-1, 0,-3, -1,-2] },
+  { cat:'thinkers', name:'Proudhon',          tag:'Anarchist, 1809',      vals:[-2,-3, 0,-1,-3, 0,-2,-1, 0,-1,  0,-1] },
+  { cat:'thinkers', name:'Max Weber',         tag:'Sociologist, 1864',    vals:[+1, 0, 0,+1,+1, 0,-1, 0,+1, 0,  0, 0] },
+  { cat:'thinkers', name:'Émile Durkheim',    tag:'Sociologist, 1858',    vals:[-1,+1, 0, 0,+1, 0,-1, 0, 0, 0, +1,-1] },
+  { cat:'thinkers', name:'Auguste Comte',     tag:'Positivist, 1798',     vals:[ 0,+1,-1, 0,+2, 0,-2,-1,+2, 0, +1,+2] },
+  { cat:'thinkers', name:'William James',     tag:'Pragmatist, 1842',     vals:[ 0,-1,-1, 0,-1, 0, 0,-2,+1,-1, -1,-1] },
+  { cat:'thinkers', name:'John Dewey',        tag:'Pragmatist, 1859',     vals:[-1,-1,-2,-1,-1, 0,-1,-1,+1,-2, -1,-2] },
+  { cat:'thinkers', name:'Wittgenstein',      tag:'Philosopher, 1889',    vals:[ 0,-1, 0, 0,-1, 0, 0,-1, 0, 0,  0,-1] },
+  { cat:'thinkers', name:'Heidegger',         tag:'Philosopher, 1889',    vals:[ 0,+1,+2,+2, 0,-2, 0, 0,-3, 0, +1,+1] },
+  { cat:'thinkers', name:'Sartre',            tag:'Existentialist, 1905', vals:[-2,-2,-2,-2,-1, 0,-3,-1, 0,-2, -1,-3] },
+  { cat:'thinkers', name:'Albert Camus',      tag:'Philosopher, 1913',    vals:[-1,-2,-2,-1,-2, 0,-2,-2, 0,-2, -1,-1] },
+  { cat:'thinkers', name:'Derrida',           tag:'Philosopher, 1930',    vals:[-1,-2,-2,-1,-1, 0,-2,-1, 0,-1, -1,-3] },
+  { cat:'thinkers', name:'Deleuze',           tag:'Philosopher, 1925',    vals:[-2,-3,-2,-2,-2, 0,-2,-1, 0,-2, -1,-3] },
+  { cat:'thinkers', name:'Baudrillard',       tag:'Philosopher, 1929',    vals:[ 0,-1,-1,-1,-1, 0,-1,-1,-1, 0,  0,-3] },
+  { cat:'thinkers', name:'Habermas',          tag:'Philosopher, 1929',    vals:[-1,-1,-2,-2, 0,-1,-2,-1, 0,-1, -1,-1] },
+  { cat:'thinkers', name:'Slavoj Žižek',      tag:'Philosopher, 1949',    vals:[-2, 0,-1,-1, 0, 0,-2, 0, 0,-1,  0,-1] },
+  { cat:'thinkers', name:'Jordan Peterson',   tag:'Psychologist, 1962',   vals:[+2,-1,+2, 0,-1,+1,+1, 0, 0,+1, +1,+3] },
+  { cat:'thinkers', name:'Peter Singer',      tag:'Ethicist, 1946',       vals:[-1,-1,-2,-2, 0,-2,-3,-1,+1,-2, -1, 0] },
+  { cat:'thinkers', name:'Martha Nussbaum',   tag:'Philosopher, 1947',    vals:[-1,-1,-2,-1, 0,-1,-1,-1, 0,-2, -1, 0] },
+  { cat:'thinkers', name:'Judith Butler',     tag:'Philosopher, 1956',    vals:[-2,-2,-3,-2,-1,-1,-2,-2, 0,-2, -2,-3] },
+  { cat:'thinkers', name:'bell hooks',        tag:'Author, 1952',         vals:[-2,-2,-3,-1,-1,-1,-1,-2, 0,-2, -2,-2] },
+  { cat:'thinkers', name:'Angela Davis',      tag:'Activist, 1944',       vals:[-3,-2,-2,-1,-1,-1,-2,-2, 0,-3, -2,-2] },
+  { cat:'thinkers', name:'Cornel West',       tag:'Philosopher, 1953',    vals:[-2,-2,-2,-1,-1,-1,+1,-2, 0,-2, -2,-1] },
+  { cat:'thinkers', name:'Thomas Sowell',     tag:'Economist, 1930',      vals:[+3,-1,+2,+1,-2,+1, 0,+1,+1,+2, +1,+2] },
+  { cat:'thinkers', name:'Steven Pinker',     tag:'Psychologist, 1954',   vals:[+1,-1,-1,-1, 0, 0,-2,-1,+2, 0,  0,+2] },
+  { cat:'thinkers', name:'Sam Harris',        tag:'Author, 1967',         vals:[+1,-1,-1,-1, 0, 0,-3,+1,+1, 0, +1,+2] },
+  { cat:'thinkers', name:'Richard Dawkins',   tag:'Biologist, 1941',      vals:[+1,-1,-1,-1, 0, 0,-3,-1,+2, 0,  0,+2] },
+  { cat:'thinkers', name:'Christopher Hitchens', tag:'Author, 1949',      vals:[ 0,-2,-1,-1,-1, 0,-3,+2,+1, 0,  0,+1] },
+  { cat:'thinkers', name:'Carl Sagan',        tag:'Astronomer, 1934',     vals:[-1,-1,-2,-2, 0,-1,-2,-2,+2,-1, -1,+1] },
+  { cat:'thinkers', name:'Neil deGrasse Tyson', tag:'Astrophysicist, 1958', vals:[ 0,-1,-1,-1, 0,-1,-2,-1,+2,-1, -1,+1] },
+  { cat:'thinkers', name:'Stephen Hawking',   tag:'Physicist, 1942',      vals:[-1,-1,-1,-1, 0,-1,-2,-2,+2,-1, -1,+1] },
+  { cat:'thinkers', name:'Isaac Newton',      tag:'Physicist, 1643',      vals:[+1, 0,+1,+1, 0, 0,+2, 0,+2,+1,  0,+3] },
+  { cat:'thinkers', name:'Galileo Galilei',   tag:'Astronomer, 1564',     vals:[ 0,-1, 0, 0,-1, 0, 0,-1,+3, 0,  0,+2] },
+  { cat:'thinkers', name:'Charles Darwin',    tag:'Naturalist, 1809',     vals:[ 0,-1, 0, 0, 0, 0,-1,-1,+2,-1,  0,+1] },
+  { cat:'thinkers', name:'Marie Curie',       tag:'Physicist, 1867',      vals:[ 0,-1,-1,-1, 0, 0,-2,-1,+3,-1, -1,+1] },
+  { cat:'thinkers', name:'Sigmund Freud',     tag:'Psychoanalyst, 1856',  vals:[+1, 0, 0, 0, 0, 0,-3,-1,+1, 0,  0,+1] },
+  { cat:'thinkers', name:'B. F. Skinner',     tag:'Behaviorist, 1904',    vals:[ 0,+1,-1, 0,+1, 0,-2,-1,+2,-2,  0,-1] },
+  { cat:'thinkers', name:'David Graeber',     tag:'Anthropologist, 1961', vals:[-3,-3,-2,-2,-3,-1,-2,-2, 0,-3, -2,-2] },
+  { cat:'thinkers', name:'Marshall McLuhan',  tag:'Media Theorist, 1911', vals:[ 0, 0, 0,-1, 0, 0,+1,-1,+1, 0,  0,-1] },
+  { cat:'thinkers', name:'Alan Watts',        tag:'Philosopher, 1915',    vals:[-1,-2,-1,-2,-2,-1, 0,-2,-1,-2, -1,-1] },
+  { cat:'thinkers', name:'Umberto Eco',       tag:'Semiotician, 1932',    vals:[-1,-1,-1,-1, 0, 0,-1,-1, 0,-1, -1,-1] },
+
+  // ── Tech & Business expansion ──
+  { cat:'tech', name:'Larry Page',        tag:'Google',                vals:[+2,-1,-1,-1,-1,-1,-2,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Sergey Brin',       tag:'Google',                vals:[+2,-1,-1,-2,-1,-1,-2,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Sundar Pichai',     tag:'Google',                vals:[+2, 0,-1,-1, 0,-1,-1,-1,+2, 0, -1, 0] },
+  { cat:'tech', name:'Tim Cook',          tag:'Apple',                 vals:[+2, 0,-1,-1, 0,-1,-1,-1,+2, 0, -1,+1] },
+  { cat:'tech', name:'Steve Wozniak',     tag:'Apple',                 vals:[ 0,-2,-1,-1,-2, 0,-1,-2,+3,-1, -1, 0] },
+  { cat:'tech', name:'Michael Dell',      tag:'Dell',                  vals:[+3, 0, 0, 0,-1, 0, 0, 0,+2,+1,  0,+1] },
+  { cat:'tech', name:'Larry Ellison',     tag:'Oracle',                vals:[+3,+1,+1,+1,-1,+1,-1,+1,+3,+1,  0,+2] },
+  { cat:'tech', name:'Sheryl Sandberg',   tag:'Meta',                  vals:[+2, 0,-1,-1, 0,-1,-1, 0,+2, 0, -1, 0] },
+  { cat:'tech', name:'Jack Dorsey',       tag:'Twitter / Block',       vals:[+1,-2,-1,-2,-3, 0,-1,-1,+2,-1, -1, 0] },
+  { cat:'tech', name:'Reed Hastings',     tag:'Netflix',               vals:[+2,-1,-1,-1,-1, 0,-1,-1,+2, 0, -1,+1] },
+  { cat:'tech', name:'Brian Chesky',      tag:'Airbnb',                vals:[+2, 0,-1,-1,-1, 0,-1,-1,+2, 0, -1, 0] },
+  { cat:'tech', name:'Travis Kalanick',   tag:'Uber',                  vals:[+3, 0, 0, 0,-2,+1,-1, 0,+3,+1,  0,+2] },
+  { cat:'tech', name:'Daniel Ek',         tag:'Spotify',               vals:[+2, 0,-1,-1,-1, 0,-1,-1,+2, 0, -1, 0] },
+  { cat:'tech', name:'Patrick Collison',  tag:'Stripe',                vals:[+2,-1,-1,-1,-1, 0,-1,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Tobi Lütke',        tag:'Shopify',               vals:[+2,-1, 0, 0,-1, 0,-1,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Zhang Yiming',      tag:'ByteDance',             vals:[+2,+1, 0,+1,+1, 0,-1, 0,+3,+1, +1,+1] },
+  { cat:'tech', name:'Pony Ma',           tag:'Tencent',               vals:[+2,+1,+1,+1,+2, 0,-1, 0,+2,+1, +1,+1] },
+  { cat:'tech', name:'Lei Jun',           tag:'Xiaomi',                vals:[+2, 0, 0,+1, 0, 0,-1, 0,+3, 0, +1,+1] },
+  { cat:'tech', name:'Ren Zhengfei',      tag:'Huawei',                vals:[+1,+2,+1,+2,+2, 0,-1,+1,+3,+2, +1,+1] },
+  { cat:'tech', name:'Morris Chang',      tag:'TSMC',                  vals:[+2, 0,+1,+1, 0, 0, 0, 0,+3,+1, +1,+1] },
+  { cat:'tech', name:'Lisa Su',           tag:'AMD',                   vals:[+2, 0, 0, 0, 0, 0,-1, 0,+3, 0,  0,+1] },
+  { cat:'tech', name:'Andy Grove',        tag:'Intel',                 vals:[+2,+1, 0, 0, 0, 0,-1, 0,+3,+1,  0,+2] },
+  { cat:'tech', name:'Gordon Moore',      tag:'Intel',                 vals:[+2, 0, 0, 0, 0, 0,-1,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'Robert Noyce',      tag:'Fairchild / Intel',     vals:[+2,-1, 0, 0,-1, 0,-1,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'John Carmack',      tag:'id Software',           vals:[+2,-2, 0,-1,-2, 0,-2,-1,+3, 0,  0,+2] },
+  { cat:'tech', name:'Gabe Newell',       tag:'Valve',                 vals:[+2,-2,-1,-1,-2, 0,-1,-1,+3,-1, -1,+1] },
+  { cat:'tech', name:'Shigeru Miyamoto',  tag:'Nintendo',              vals:[ 0,-1,+1,+1,-1,-1, 0,-2,+2,-1, +1,+1] },
+  { cat:'tech', name:'Hideo Kojima',      tag:'Kojima Productions',    vals:[-1,-2,-1,-2,-1,-1,-1,-2,+2,-1, -1,-1] },
+  { cat:'tech', name:'Satoru Iwata',      tag:'Nintendo',              vals:[ 0,-1, 0, 0,-1, 0, 0,-2,+2,-1,  0, 0] },
+  { cat:'tech', name:'Masayoshi Son',     tag:'SoftBank',              vals:[+3, 0, 0, 0, 0, 0,-1,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'Akio Morita',       tag:'Sony',                  vals:[+2, 0,+1,+2, 0, 0, 0,-1,+3,+1, +2,+1] },
+  { cat:'tech', name:'Soichiro Honda',    tag:'Honda',                 vals:[+2,-1, 0,+1,-1, 0, 0,-1,+3, 0, +1,+1] },
+  { cat:'tech', name:'Richard Branson',   tag:'Virgin',                vals:[+2,-2,-1,-1,-2,-1,-2,-2,+2,-1, -1, 0] },
+  { cat:'tech', name:'Howard Hughes',     tag:'Hughes Aircraft',       vals:[+3,-1,+1,+2,-2,+1, 0,+2,+3,+1, +1,+2] },
+  { cat:'tech', name:'John D. Rockefeller', tag:'Standard Oil',        vals:[+3,+1,+2,+1,-1,+2,+2, 0,+2,+2, +1,+2] },
+  { cat:'tech', name:'Andrew Carnegie',   tag:'Carnegie Steel',        vals:[+3, 0,+1, 0,-1,+2, 0,-2,+2,+1, +1,+2] },
+  { cat:'tech', name:'J. P. Morgan',      tag:'Banking',               vals:[+3,+1,+2,+1, 0,+2,+1,+1,+2,+2, +1,+2] },
+  { cat:'tech', name:'Cornelius Vanderbilt', tag:'Railroads',          vals:[+3, 0,+2,+1,-1,+2, 0, 0,+2,+2, +1,+2] },
+  { cat:'tech', name:'Walt Disney',       tag:'Disney',                vals:[+2,+1,+2,+2, 0,+1,+1, 0,+3,+1, +2,+2] },
+  { cat:'tech', name:'Ray Kroc',          tag:"McDonald's",            vals:[+3, 0,+1,+1,-1,+1, 0, 0,+2,+1, +1,+2] },
+  { cat:'tech', name:'Sam Walton',        tag:'Walmart',               vals:[+3,-1,+2,+1,-2,+1,+1,-1,+1,+1, +1,+2] },
+  { cat:'tech', name:'Ingvar Kamprad',    tag:'IKEA',                  vals:[+3,-1,+1,+1,-2, 0, 0,-1,+1,+1, +1,+1] },
+  { cat:'tech', name:'Amancio Ortega',    tag:'Inditex / Zara',        vals:[+3, 0,+1, 0,-1,+1, 0,-1,+1,+1,  0,+1] },
+  { cat:'tech', name:'Bernard Arnault',   tag:'LVMH',                  vals:[+3, 0,+1,+1, 0,+1, 0, 0,+1,+1, +1,+2] },
+  { cat:'tech', name:'Coco Chanel',       tag:'Chanel',                vals:[+2, 0, 0,+1,-1, 0,-1, 0,+1, 0, +1,+1] },
+  { cat:'tech', name:'Estée Lauder',      tag:'Estée Lauder',          vals:[+2, 0,+1, 0,-1, 0, 0,-1,+1, 0,  0,+1] },
+  { cat:'tech', name:'Oprah Winfrey',     tag:'Harpo',                 vals:[+2,-1,-2,-1,-1,-1,+1,-2,+1,-2, -2,-1] },
+  { cat:'tech', name:'Martha Stewart',    tag:'MSLO',                  vals:[+2, 0,+1, 0,-1, 0, 0,-1,+1, 0,  0,+1] },
+  { cat:'tech', name:'Mark Cuban',        tag:'Investor',              vals:[+2,-1,-1, 0,-1, 0,-1, 0,+2, 0, -1,+1] },
+  { cat:'tech', name:'Palmer Luckey',     tag:'Oculus / Anduril',      vals:[+2, 0,+1,+3,-1,+1, 0,+3,+3,+2, +1,+2] },
+  { cat:'tech', name:'Alex Karp',         tag:'Palantir',              vals:[+1,+1, 0,+2, 0, 0,-1,+3,+3,+2,  0,+2] },
+  { cat:'tech', name:'Demis Hassabis',    tag:'DeepMind',              vals:[+1, 0,-1,-1, 0,-1,-2,-1,+3,-1, -1,+1] },
+  { cat:'tech', name:'Dario Amodei',      tag:'Anthropic',             vals:[+1, 0,-1,-1, 0,-1,-2,-1,+1,-1, -1,+1] },
+  { cat:'tech', name:'Ilya Sutskever',    tag:'OpenAI / SSI',          vals:[ 0, 0,-1,-1, 0, 0,-1,-1,+2,-1, -1,+1] },
+  { cat:'tech', name:'Andrej Karpathy',   tag:'AI Researcher',         vals:[+1,-1,-1,-1,-1, 0,-1,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Yann LeCun',        tag:'Meta AI',               vals:[+1,-1,-1,-2,-1, 0,-2,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Geoffrey Hinton',   tag:'AI Researcher',         vals:[ 0,-1,-1,-1, 0,-1,-2,-2, 0,-1, -1,+1] },
+  { cat:'tech', name:'Fei-Fei Li',        tag:'Stanford AI',           vals:[ 0,-1,-1,-1, 0,-1,-1,-1,+2,-1, -1, 0] },
+  { cat:'tech', name:'Andrew Ng',         tag:'AI Educator',           vals:[+1,-1,-1,-1,-1, 0,-1,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Tim Berners-Lee',   tag:'World Wide Web',        vals:[-1,-2,-1,-2,-2,-1,-1,-2,+2,-1, -1, 0] },
+  { cat:'tech', name:'Vint Cerf',         tag:'Internet / TCP-IP',     vals:[ 0,-1,-1,-1,-1, 0,-1,-1,+3,-1, -1,+1] },
+  { cat:'tech', name:'Dennis Ritchie',    tag:'C / Unix',              vals:[ 0,-1, 0, 0,-1, 0,-1,-1,+2, 0,  0,+1] },
+  { cat:'tech', name:'Ken Thompson',      tag:'Unix / Go',             vals:[ 0,-2, 0,-1,-2, 0,-1,-1,+2, 0,  0,+1] },
+  { cat:'tech', name:'Bjarne Stroustrup', tag:'C++',                   vals:[ 0,-1, 0, 0,-1, 0,-1,-1,+2, 0,  0,+2] },
+  { cat:'tech', name:'Guido van Rossum',  tag:'Python',                vals:[ 0,-1,-1,-1,-1, 0,-1,-1,+2,-1, -1,+1] },
+  { cat:'tech', name:'Brendan Eich',      tag:'JavaScript / Brave',    vals:[+1,-1,+2, 0,-1, 0,+2, 0,+2,+1,  0,+2] },
+  { cat:'tech', name:'John von Neumann',  tag:'Mathematician, 1903',   vals:[+1,+1, 0,+1, 0, 0,-1,+3,+3,+1,  0,+2] },
+  { cat:'tech', name:'Claude Shannon',    tag:'Information Theory',    vals:[ 0,-1, 0, 0,-1, 0,-1,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'Douglas Engelbart', tag:'Augmentation Lab',      vals:[ 0,-1,-1,-1,-1, 0,-1,-1,+3,-1, -1, 0] },
+  { cat:'tech', name:'Alan Kay',          tag:'Xerox PARC',            vals:[ 0,-2,-1,-1,-2, 0,-1,-1,+3,-1, -1,-1] },
+  { cat:'tech', name:'Margaret Hamilton', tag:'Apollo Software',       vals:[ 0, 0,-1, 0, 0, 0, 0, 0,+3, 0,  0,+1] },
+  { cat:'tech', name:'Katherine Johnson', tag:'NASA',                  vals:[ 0, 0, 0, 0, 0, 0,+1, 0,+3, 0,  0,+1] },
+  { cat:'tech', name:'Hedy Lamarr',       tag:'Inventor / Actress',    vals:[ 0,-1,-1,-1,-1, 0,-1, 0,+3, 0, -1, 0] },
+  { cat:'tech', name:'James Watt',        tag:'Steam Engine',          vals:[+2, 0,+1, 0,-1,+2, 0,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'Alexander G. Bell', tag:'Telephone',             vals:[+1, 0, 0, 0, 0,+1, 0,-1,+3, 0, +1,+2] },
+  { cat:'tech', name:'Guglielmo Marconi', tag:'Radio',                 vals:[+2,+1,+1,+2, 0,+1,+1,+1,+3,+1, +1,+1] },
+  { cat:'tech', name:'Johannes Gutenberg',tag:'Printing Press',        vals:[+1, 0, 0, 0,-1, 0,+1,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'Leonardo da Vinci', tag:'Polymath, 1452',        vals:[ 0,-1,-1,-1,-1,-1, 0,-1,+3,-1,  0, 0] },
+  { cat:'tech', name:'Benjamin Franklin', tag:'Inventor / Founder',    vals:[+1,-1, 0,+1,-1, 0,-1,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'The Wright Brothers', tag:'Aviation',            vals:[+1, 0,+1,+1,-1, 0,+1,-1,+3, 0,  0,+1] },
+
+  // ── Anime expansion ──
+  { cat:'anime', name:'Levi Ackerman',      tag:'Attack on Titan',      vals:[ 0,-1, 0,+1,-1, 0,-1,+2, 0,+1,  0, 0] },
+  { cat:'anime', name:'Mikasa Ackerman',    tag:'Attack on Titan',      vals:[ 0,-1, 0, 0,-1, 0,-1, 0, 0,-1,  0, 0] },
+  { cat:'anime', name:'Armin Arlert',       tag:'Attack on Titan',      vals:[-1,-1,-1,-2,-1, 0,-1,-2,+1,-2, -1,-1] },
+  { cat:'anime', name:'Satoru Gojo',        tag:'Jujutsu Kaisen',       vals:[ 0,-2,-1, 0,-2, 0,-1,+1,+1, 0,  0,+1] },
+  { cat:'anime', name:'Ryomen Sukuna',      tag:'Jujutsu Kaisen',       vals:[+1,+1,+1, 0,-2, 0,-1,+3, 0,+3,  0,+3] },
+  { cat:'anime', name:'Yuji Itadori',       tag:'Jujutsu Kaisen',       vals:[-1,-1, 0, 0,-1, 0, 0,-1, 0,-2, -1, 0] },
+  { cat:'anime', name:'Denji',              tag:'Chainsaw Man',         vals:[ 0,-1, 0, 0,-1, 0,-1, 0, 0, 0,  0,-1] },
+  { cat:'anime', name:'Power',              tag:'Chainsaw Man',         vals:[+2,-2, 0, 0,-2,+1,-1,+1, 0,+1,  0,+1] },
+  { cat:'anime', name:'Aki Hayakawa',       tag:'Chainsaw Man',         vals:[ 0,+1,+1, 0, 0, 0, 0,+1, 0,+1,  0,+1] },
+  { cat:'anime', name:'Kirito',             tag:'Sword Art Online',     vals:[ 0,-1,-1,-1,-1, 0,-1, 0,+2, 0, -1, 0] },
+  { cat:'anime', name:'Ichigo Kurosaki',    tag:'Bleach',               vals:[ 0,-1, 0, 0,-1, 0, 0, 0, 0,-1,  0, 0] },
+  { cat:'anime', name:'Sasuke Uchiha',      tag:'Naruto',               vals:[ 0, 0, 0, 0,-1, 0,-1,+2, 0,+3,  0,+1] },
+  { cat:'anime', name:'Kakashi Hatake',     tag:'Naruto',               vals:[ 0, 0, 0, 0, 0, 0,-1, 0, 0,-1,  0, 0] },
+  { cat:'anime', name:'Jiraiya',            tag:'Naruto',               vals:[ 0,-1,-1,-1,-1, 0, 0,-2, 0,-1, -1, 0] },
+  { cat:'anime', name:'Pain',               tag:'Naruto',               vals:[-1,+3, 0,+1,+3, 0,+2,+2, 0,+3,  0,+2] },
+  { cat:'anime', name:'Madara Uchiha',      tag:'Naruto',               vals:[ 0,+3,+1,+1,+3, 0, 0,+3, 0,+2, +1,+2] },
+  { cat:'anime', name:'Orochimaru',         tag:'Naruto',               vals:[+1,+1,-1,-1, 0, 0,-2,+1,+3,+1,  0,+1] },
+  { cat:'anime', name:'Hisoka',             tag:'Hunter × Hunter',      vals:[+1,-3, 0,-1,-3, 0,-1,+2, 0, 0,  0,+1] },
+  { cat:'anime', name:'Gon Freecss',        tag:'Hunter × Hunter',      vals:[ 0,-2, 0,-1,-2,-1,-1,-1, 0,-1, -1, 0] },
+  { cat:'anime', name:'Kurapika',           tag:'Hunter × Hunter',      vals:[ 0, 0, 0,+1,-1, 0, 0,+2, 0,+3,  0,+1] },
+  { cat:'anime', name:'Isaac Netero',       tag:'Hunter × Hunter',      vals:[ 0, 0,+1, 0, 0, 0,+1,+2,-1,+1,  0,+1] },
+  { cat:'anime', name:'Ken Kaneki',         tag:'Tokyo Ghoul',          vals:[-1,-1,-1,-1,-1, 0,-1,-1, 0,-2, -2,-1] },
+  { cat:'anime', name:'Alucard',            tag:'Hellsing',             vals:[ 0,+1,+1, 0, 0, 0,+1,+3,-1,+3,  0,+2] },
+  { cat:'anime', name:'Inuyasha',           tag:'Inuyasha',             vals:[ 0,-1,+1, 0,-1,-1, 0,+1,-2, 0, -1, 0] },
+  { cat:'anime', name:'Usagi Tsukino',      tag:'Sailor Moon',          vals:[-1,-1,-1,-1,-1,-1, 0,-2, 0,-3, -1,-1] },
+  { cat:'anime', name:'Rei Ayanami',        tag:'Evangelion',           vals:[ 0,+1, 0, 0,+1, 0, 0, 0, 0, 0,  0,-1] },
+  { cat:'anime', name:'Asuka Langley',      tag:'Evangelion',           vals:[+1,-1, 0, 0,-1, 0,-1,+1,+1,+1,  0,+1] },
+  { cat:'anime', name:'Shinji Ikari',       tag:'Evangelion',           vals:[ 0,-1,-1,-1,-1, 0, 0,-2,-1,-1, -1,-1] },
+  { cat:'anime', name:'Gendo Ikari',        tag:'Evangelion',           vals:[ 0,+3, 0, 0,+3, 0,+1,+2,+3,+2,  0,+1] },
+  { cat:'anime', name:'Near',               tag:'Death Note',           vals:[ 0,+1,-1,-1, 0, 0,-1, 0,+2,+1,  0,+1] },
+  { cat:'anime', name:'Ryuk',               tag:'Death Note',           vals:[ 0,-2, 0,-1,-2, 0,-1, 0, 0, 0,  0,-1] },
+  { cat:'anime', name:'Vash the Stampede',  tag:'Trigun',               vals:[-1,-2,-1,-1,-2,-1, 0,-3, 0,-3, -1,-1] },
+  { cat:'anime', name:'Kenshin Himura',     tag:'Rurouni Kenshin',      vals:[ 0,-1, 0, 0,-1, 0, 0,-3,-1,-3,  0, 0] },
+  { cat:'anime', name:'Shishio Makoto',     tag:'Rurouni Kenshin',      vals:[+2,+3,+1,+2,+2,+1,-1,+3,+1,+3, +1,+3] },
+  { cat:'anime', name:'Mugen',              tag:'Samurai Champloo',     vals:[+1,-3, 0,-1,-3, 0,-1,+1,-1, 0,  0, 0] },
+  { cat:'anime', name:'Jin',                tag:'Samurai Champloo',     vals:[ 0,-1,+2,+1,-1, 0, 0, 0,-1,+1, +1,+1] },
+  { cat:'anime', name:'Faye Valentine',     tag:'Cowboy Bebop',         vals:[+2,-2, 0,-1,-2, 0,-1,-1,+1, 0,  0, 0] },
+  { cat:'anime', name:'Jet Black',          tag:'Cowboy Bebop',         vals:[ 0,+1,+1, 0, 0, 0, 0,+1, 0,+2,  0,+1] },
+  { cat:'anime', name:'Alphonse Elric',     tag:'Fullmetal Alchemist',  vals:[-1,-2,-1,-1,-2,-1,-1,-2,+1,-2, -1, 0] },
+  { cat:'anime', name:'Scar',               tag:'Fullmetal Alchemist',  vals:[ 0, 0,+2,+2,-1, 0,+3,+2,-2,+2, +1,+2] },
+  { cat:'anime', name:'King Bradley',       tag:'Fullmetal Alchemist',  vals:[ 0,+3,+1,+3,+3, 0,-2,+3,+1,+3, +2,+1] },
+  { cat:'anime', name:'Kyojuro Rengoku',    tag:'Demon Slayer',         vals:[ 0, 0,+2,+1,-1, 0,+1,+1,-1,+1, +1,+1] },
+  { cat:'anime', name:'Muzan Kibutsuji',    tag:'Demon Slayer',         vals:[+1,+3, 0, 0,+3, 0,-2,+2,+1,+3,  0,+2] },
+  { cat:'anime', name:'Shanks',             tag:'One Piece',            vals:[-1,-2, 0,-1,-2, 0,-1,-1,-1,-1, -1, 0] },
+  { cat:'anime', name:'Roronoa Zoro',       tag:'One Piece',            vals:[ 0,-2,+1, 0,-2, 0,-1,+1,-1,+1,  0,+1] },
+  { cat:'anime', name:'Sanji',              tag:'One Piece',            vals:[ 0,-1, 0,-1,-1,-1,-1,-1, 0,-1, -1, 0] },
+  { cat:'anime', name:'Trafalgar Law',      tag:'One Piece',            vals:[ 0,-1, 0, 0,-1, 0,-1,+1,+2,+1,  0, 0] },
+  { cat:'anime', name:'Doflamingo',         tag:'One Piece',            vals:[+3,+3, 0, 0,+2,+1,-1,+2,+1,+3,  0,+3] },
+  { cat:'anime', name:'Sakazuki Akainu',    tag:'One Piece',            vals:[ 0,+3,+2,+2,+3, 0, 0,+3, 0,+3, +2,+2] },
+  { cat:'anime', name:'Whitebeard',         tag:'One Piece',            vals:[-1,-1, 0, 0,-2, 0, 0,+1,-1, 0, -2, 0] },
+  { cat:'anime', name:'Joseph Joestar',     tag:"JoJo's Bizarre Adv.",  vals:[ 0,-2, 0,-1,-2, 0,-1, 0,+1, 0, -1, 0] },
+  { cat:'anime', name:'Giorno Giovanna',    tag:"JoJo's Bizarre Adv.",  vals:[ 0, 0, 0, 0, 0, 0, 0,+1, 0,+2,  0,+1] },
+  { cat:'anime', name:'Yoshikage Kira',     tag:"JoJo's Bizarre Adv.",  vals:[+1, 0,+2, 0,-1, 0,-1,-1, 0,-3, +1,+1] },
+  { cat:'anime', name:'Garou',              tag:'One Punch Man',        vals:[-1,-2, 0, 0,-2, 0,-1,+2, 0,-2,  0,-1] },
+  { cat:'anime', name:'Genos',              tag:'One Punch Man',        vals:[ 0, 0, 0, 0, 0, 0, 0,+2,+3,+2,  0,+1] },
+  { cat:'anime', name:'Shigeo Kageyama',    tag:'Mob Psycho 100',       vals:[-1,-1, 0,-1,-1, 0,-1,-3, 0,-2, -1,-1] },
+  { cat:'anime', name:'Reigen Arataka',     tag:'Mob Psycho 100',       vals:[+2,-1, 0, 0,-1, 0,-2,-2, 0,-1,  0,-1] },
+  { cat:'anime', name:'Suzaku Kururugi',    tag:'Code Geass',           vals:[ 0,+1, 0, 0,+1, 0, 0,+1,+1,+2, +1,+1] },
+  { cat:'anime', name:'Kamina',             tag:'Gurren Lagann',        vals:[ 0,-2, 0, 0,-2,+1,-1,+2,+2, 0,  0,+2] },
+  { cat:'anime', name:'Simon',              tag:'Gurren Lagann',        vals:[-1,-1, 0, 0,-1, 0,-1, 0,+2,-1, -1,+1] },
+  { cat:'anime', name:'Homura Akemi',       tag:'Madoka Magica',        vals:[ 0, 0, 0,-1, 0, 0,-1,+1, 0,+1,  0,+1] },
+  { cat:'anime', name:'Madoka Kaname',      tag:'Madoka Magica',        vals:[-1,-1,-1,-1,-1, 0, 0,-3, 0,-3, -1, 0] },
+  { cat:'anime', name:'Kyubey',             tag:'Madoka Magica',        vals:[+2,+1,-1,-2,+2, 0,-3, 0,+3,+1,  0,+3] },
+  { cat:'anime', name:'Frieren',            tag:'Frieren',              vals:[ 0,-1, 0,-1,-1, 0,-1,-1, 0,-1, -1, 0] },
+  { cat:'anime', name:'Askeladd',           tag:'Vinland Saga',         vals:[+1, 0, 0,+1,-1, 0,-2,+2, 0,+2,  0, 0] },
+
+  // ── Games expansion ──
+  { cat:'games', name:'Mario',              tag:'Super Mario',          vals:[ 0,-1, 0, 0,-1, 0, 0,-1, 0, 0,  0, 0] },
+  { cat:'games', name:'Luigi',              tag:'Super Mario',          vals:[ 0,-1, 0, 0,-1, 0, 0,-2, 0,-1,  0, 0] },
+  { cat:'games', name:'Bowser',             tag:'Super Mario',          vals:[+1,+3,+1,+2,+3,+1, 0,+3,+1,+3, +1,+2] },
+  { cat:'games', name:'Wario',              tag:'WarioWare',            vals:[+3,-1, 0, 0,-2,+2,-1, 0,+1,+1,  0,+1] },
+  { cat:'games', name:'Princess Zelda',     tag:'The Legend of Zelda',  vals:[ 0, 0,+1,+1, 0,-1,+1,-1, 0,-1,  0,+1] },
+  { cat:'games', name:'Ganondorf',          tag:'The Legend of Zelda',  vals:[ 0,+3,+1,+2,+3, 0,+1,+3, 0,+3, +1,+3] },
+  { cat:'games', name:'Sonic',              tag:'Sonic the Hedgehog',   vals:[ 0,-3,-1,-1,-3,-2,-1, 0,+1,-1, -1, 0] },
+  { cat:'games', name:'Dr. Eggman',         tag:'Sonic the Hedgehog',   vals:[+2,+3, 0, 0,+3,+3,-1,+2,+3,+2,  0,+2] },
+  { cat:'games', name:'The Arbiter',        tag:'Halo',                 vals:[ 0,+1,+1,+1, 0, 0,+2,+2, 0,+1,  0,+1] },
+  { cat:'games', name:'Marcus Fenix',       tag:'Gears of War',         vals:[ 0, 0,+1,+1,-1, 0, 0,+2, 0,+1,  0,+1] },
+  { cat:'games', name:'Duke Nukem',         tag:'Duke Nukem',           vals:[+2,-1,+2,+2,-1,+2,-1,+3,+1,+2, +1,+2] },
+  { cat:'games', name:'B.J. Blazkowicz',    tag:'Wolfenstein',          vals:[ 0,-2, 0,+1,-2, 0, 0,+3, 0,+2, -1,+1] },
+  { cat:'games', name:'Isaac Clarke',       tag:'Dead Space',           vals:[ 0,-1, 0, 0,-1, 0,-2, 0,+1, 0,  0, 0] },
+  { cat:'games', name:'Alyx Vance',         tag:'Half-Life',            vals:[-1,-2,-1,-1,-2, 0,-1,+1,+2,-1, -1, 0] },
+  { cat:'games', name:'G-Man',              tag:'Half-Life',            vals:[+1,+2, 0, 0,+2, 0,-1,+1,+2,+1,  0,+1] },
+  { cat:'games', name:'Wheatley',           tag:'Portal 2',             vals:[ 0,+1, 0, 0,+1, 0, 0, 0,+1, 0,  0,-1] },
+  { cat:'games', name:'Cave Johnson',       tag:'Portal 2',             vals:[+3,+1, 0,+1,-1,+2,-1,+1,+3,+1,  0,+2] },
+  { cat:'games', name:'Frank Fontaine',     tag:'BioShock',             vals:[+3,+1, 0, 0, 0,+1,-2,+1,+1,+2,  0,+2] },
+  { cat:'games', name:'Booker DeWitt',      tag:'BioShock Infinite',    vals:[ 0,-1, 0, 0,-1, 0,-2,+1, 0, 0,  0, 0] },
+  { cat:'games', name:'Elizabeth',          tag:'BioShock Infinite',    vals:[-1,-2,-1,-1,-1, 0,-1,-1,+1,-1, -1,-1] },
+  { cat:'games', name:'Zachary Comstock',   tag:'BioShock Infinite',    vals:[+1,+3,+3,+3,+3,+1,+3,+2, 0,+3, +3,+3] },
+  { cat:'games', name:'Mr. House',          tag:'Fallout: New Vegas',   vals:[+3,+2, 0,+1,+3,+1,-2,+1,+3,+2,  0,+2] },
+  { cat:'games', name:'Caesar (Legion)',    tag:'Fallout: New Vegas',   vals:[ 0,+3,+3,+2,+3,+1,+1,+3,-2,+3, +3,+2] },
+  { cat:'games', name:'Sheogorath',         tag:'The Elder Scrolls',    vals:[ 0,-3, 0, 0,-2, 0,+1,+1, 0,+1,  0,-3] },
+  { cat:'games', name:'Yennefer',           tag:'The Witcher',          vals:[+1, 0,-1, 0,-1, 0,-1, 0,+2, 0,  0, 0] },
+  { cat:'games', name:'Ciri',               tag:'The Witcher',          vals:[ 0,-1,-1,-1,-1, 0,-1, 0, 0,-1, -1, 0] },
+  { cat:'games', name:'Emhyr var Emreis',   tag:'The Witcher',          vals:[+1,+3,+1,+2,+3, 0,-1,+3,+1,+2, +2,+2] },
+  { cat:'games', name:'Johnny Silverhand',  tag:'Cyberpunk 2077',       vals:[-2,-3,-1,-1,-3, 0,-2,+2,-1,-1, -1,-1] },
+  { cat:'games', name:'Saburo Arasaka',     tag:'Cyberpunk 2077',       vals:[+2,+3,+3,+3,+3,+1,+1,+2,+2,+3, +3,+2] },
+  { cat:'games', name:'Dutch van der Linde',tag:'Red Dead Redemption',  vals:[-2,-2, 0, 0,-3, 0,-1,+2,-1,+1, -1, 0] },
+  { cat:'games', name:'John Marston',       tag:'Red Dead Redemption',  vals:[ 0,-1,+1, 0,-2, 0, 0, 0,-1, 0,  0, 0] },
+  { cat:'games', name:'Niko Bellic',        tag:'Grand Theft Auto IV',  vals:[ 0,-1,+1, 0,-1, 0, 0, 0,-1,+1,  0, 0] },
+  { cat:'games', name:'Trevor Philips',     tag:'Grand Theft Auto V',   vals:[ 0,-3, 0, 0,-3, 0,-1,+2,-1,+1,  0, 0] },
+  { cat:'games', name:'Michael De Santa',   tag:'Grand Theft Auto V',   vals:[+2, 0,+1, 0,-1, 0,-1, 0, 0,+1,  0,+1] },
+  { cat:'games', name:'Liquid Snake',       tag:'Metal Gear',           vals:[ 0,+2, 0,+1,+1, 0,-1,+3,+1,+2,  0,+2] },
+  { cat:'games', name:'Revolver Ocelot',    tag:'Metal Gear',           vals:[+1,+1, 0, 0, 0, 0,-1,+2,+1,+1,  0,+1] },
+  { cat:'games', name:'Raiden',             tag:'Metal Gear',           vals:[ 0,-1, 0, 0,-1, 0,-1,+1,+2, 0,  0, 0] },
+  { cat:'games', name:'The Boss',           tag:'Metal Gear Solid 3',   vals:[ 0, 0, 0,-2, 0, 0, 0,+1, 0, 0, -1, 0] },
+  { cat:'games', name:'Tifa Lockhart',      tag:'Final Fantasy VII',    vals:[-1,-1,-1, 0,-2,-2,-1,-1,-1,-1, -1, 0] },
+  { cat:'games', name:'Aerith Gainsborough',tag:'Final Fantasy VII',    vals:[-1,-1,-1,-1,-1,-3,+1,-2,-2,-2, -1, 0] },
+  { cat:'games', name:'Auron',              tag:'Final Fantasy X',      vals:[ 0, 0,+1, 0, 0, 0,-1, 0,-1, 0,  0,+1] },
+  { cat:'games', name:'Kefka',              tag:'Final Fantasy VI',     vals:[ 0,+2, 0, 0,+1,+2,-2,+3,+1,+3,  0,-3] },
+  { cat:'games', name:'Giovanni',           tag:'Pokémon',              vals:[+3,+2, 0, 0,+1,+1,-1,+1,+2,+2,  0,+2] },
+  { cat:'games', name:'Joker (Persona 5)',  tag:'Persona 5',            vals:[-1,-3,-1,-1,-2, 0,-1, 0,+1,-1, -1,-1] },
+  { cat:'games', name:'Solaire',            tag:'Dark Souls',           vals:[ 0,-1, 0, 0,-1, 0,+3, 0,-1,-1,  0,+1] },
+  { cat:'games', name:'Ranni',              tag:'Elden Ring',           vals:[ 0,-2, 0, 0,-3, 0,+1,-1,-1, 0,  0,-1] },
+  { cat:'games', name:'Zagreus',            tag:'Hades',                vals:[ 0,-2,-1, 0,-2, 0,+1, 0, 0,-1, -1, 0] },
+  { cat:'games', name:'Tracer',             tag:'Overwatch',            vals:[-1,-1,-1,-1,-1, 0, 0,+1,+2,-1, -1, 0] },
+  { cat:'games', name:'The Heavy',          tag:'Team Fortress 2',      vals:[-1, 0,+1,+1, 0, 0, 0,+2,-1,+1,  0,+1] },
+  { cat:'games', name:'Tom Nook',           tag:'Animal Crossing',      vals:[+3, 0,+1, 0, 0,+1,-1,-1,+1,+1,  0,+1] },
+  { cat:'games', name:'Sans',               tag:'Undertale',            vals:[ 0,-2, 0, 0,-2, 0, 0,-1, 0,-1,  0,-1] },
+  { cat:'games', name:'Jinx',               tag:'Arcane',               vals:[ 0,-3, 0, 0,-3, 0,-1,+2,+2, 0,  0,-1] },
+  { cat:'games', name:'Silco',              tag:'Arcane',               vals:[-1,+2, 0,+2,+2,+1,-1,+1,+1,+2, +1,+1] },
+  { cat:'games', name:'Arthas Menethil',    tag:'Warcraft',             vals:[ 0,+3, 0,+1,+3, 0,-1,+3, 0,+3, +1,+2] },
+  { cat:'games', name:'Thrall',             tag:'Warcraft',             vals:[-1, 0,+1,+1, 0,-1,+2, 0,-1, 0, -1,+1] },
+  { cat:'games', name:'Sylvanas Windrunner',tag:'Warcraft',             vals:[ 0,+2, 0,+2,+2, 0,-1,+3, 0,+3, +1,+1] },
+  { cat:'games', name:'Sarah Kerrigan',     tag:'StarCraft',            vals:[ 0,+2, 0,+1,+2, 0,-1,+2,+1,+2,  0,+1] },
+  { cat:'games', name:'Jim Raynor',         tag:'StarCraft',            vals:[ 0,-2, 0, 0,-2, 0, 0,+1, 0,-1,  0, 0] },
+  { cat:'games', name:'Arcturus Mengsk',    tag:'StarCraft',            vals:[+1,+3,+1,+3,+3,+1,-1,+3,+1,+3, +2,+2] },
+  { cat:'games', name:'Garrus Vakarian',    tag:'Mass Effect',          vals:[ 0,-1, 0, 0,-1, 0,-1,+1,+1,+2, -1, 0] },
+  { cat:'games', name:'Mordin Solus',       tag:'Mass Effect',          vals:[ 0, 0, 0, 0, 0, 0,+1,+1,+3, 0,  0,+1] },
+  { cat:'games', name:'Revan',              tag:'Star Wars: KOTOR',     vals:[ 0,+1, 0, 0,+1, 0,+1,+2, 0,+1,  0, 0] },
+  { cat:'games', name:'HK-47',              tag:'Star Wars: KOTOR',     vals:[ 0, 0, 0, 0, 0, 0,-2,+3,+2,+3,  0,+1] },
+  { cat:'games', name:'Adam Jensen',        tag:'Deus Ex',              vals:[ 0,-1, 0, 0,-1, 0,-1, 0,+2, 0,  0, 0] },
+  { cat:'games', name:'Agent 47',           tag:'Hitman',               vals:[+1, 0, 0,-1, 0, 0,-2, 0,+1,+1,  0, 0] },
+  { cat:'games', name:'Sam Fisher',         tag:'Splinter Cell',        vals:[ 0,+1,+1,+2, 0, 0, 0,+2,+1,+1,  0,+1] },
+  { cat:'games', name:'Altaïr',             tag:"Assassin's Creed",     vals:[-1,-2,-1,-1,-2, 0,-2,+1, 0, 0, -1,-3] },
+  { cat:'games', name:'Vaas Montenegro',    tag:'Far Cry 3',            vals:[ 0,-1, 0, 0,-1, 0,-1,+2,-1,+2,  0,-2] },
+  { cat:'games', name:'Pagan Min',          tag:'Far Cry 4',            vals:[+2,+3, 0,+1,+3,+1,-1,+2,+1,+2, +1,+1] },
+  { cat:'games', name:'Joseph Seed',        tag:'Far Cry 5',            vals:[-1,+3,+3,+1,+2,-1,+3,+1,-2,+2, +2,+3] },
+  { cat:'games', name:'Leon Kennedy',       tag:'Resident Evil',        vals:[ 0, 0, 0,+1, 0, 0, 0,+1, 0, 0,  0, 0] },
+  { cat:'games', name:'Albert Wesker',      tag:'Resident Evil',        vals:[+2,+3, 0, 0,+2,+1,-2,+2,+3,+2,  0,+3] },
+  { cat:'games', name:'Sam Porter Bridges', tag:'Death Stranding',      vals:[-1,-2, 0,-2,-2, 0,-1,-2,+1,-1, -1, 0] },
+  { cat:'games', name:'Dante',              tag:'Devil May Cry',        vals:[ 0,-2, 0, 0,-2, 0,-1,+1, 0, 0,  0, 0] },
+  { cat:'games', name:'Harry Du Bois',      tag:'Disco Elysium',        vals:[ 0,-1,-1,-1,-1, 0,-1,-1,-1,-1, -1,-2] },
+  { cat:'games', name:'Kim Kitsuragi',      tag:'Disco Elysium',        vals:[ 0,+1, 0, 0, 0, 0,-1, 0, 0,+1,  0,+1] },
+
+  // ── Film / TV expansion ──
+  { cat:'film', name:'Frodo Baggins',      tag:'The Lord of the Rings', vals:[-1,-2, 0,-1,-2,-2, 0,-2,-2,-2, -1, 0] },
+  { cat:'film', name:'Samwise Gamgee',     tag:'The Lord of the Rings', vals:[-1,-1,+1, 0,-2,-2, 0,-1,-2,-1,  0,+1] },
+  { cat:'film', name:'Gollum',             tag:'The Lord of the Rings', vals:[ 0,-2, 0, 0,-2, 0,-1, 0,-2, 0,  0, 0] },
+  { cat:'film', name:'Sauron',             tag:'The Lord of the Rings', vals:[ 0,+3,+1,+1,+3,+3,+1,+3,+2,+3, +3,+2] },
+  { cat:'film', name:'Saruman',            tag:'The Lord of the Rings', vals:[+1,+3, 0,+1,+3,+3, 0,+3,+3,+2, +2,+2] },
+  { cat:'film', name:'Dumbledore',         tag:'Harry Potter',          vals:[-1,-1,-1,-1,-1,-1, 0,-1, 0,-2, -1, 0] },
+  { cat:'film', name:'Voldemort',          tag:'Harry Potter',          vals:[ 0,+3,+2,+3,+3, 0, 0,+3, 0,+3, +3,+3] },
+  { cat:'film', name:'Severus Snape',      tag:'Harry Potter',          vals:[ 0,+1,+1, 0, 0, 0, 0, 0, 0,+2,  0,+1] },
+  { cat:'film', name:'Harry Potter',       tag:'Harry Potter',          vals:[ 0,-1, 0, 0,-1, 0, 0, 0, 0,-1, -1, 0] },
+  { cat:'film', name:'Hermione Granger',   tag:'Harry Potter',          vals:[-1,-1,-2,-1, 0,-1,-1,-1,+1,-2, -2,-1] },
+  { cat:'film', name:'Dolores Umbridge',   tag:'Harry Potter',          vals:[+1,+3,+3,+2,+3, 0,+1,+1,-1,+3, +3,+2] },
+  { cat:'film', name:'Obi-Wan Kenobi',     tag:'Star Wars',             vals:[ 0,-1,+1,-1,-1, 0,+2, 0, 0,-1, -1,+1] },
+  { cat:'film', name:'Yoda',               tag:'Star Wars',             vals:[-1,-1,+1,-2,-1,-1,+2,-1,-1,-1, -1,+1] },
+  { cat:'film', name:'Han Solo',           tag:'Star Wars',             vals:[+2,-2, 0,-1,-2, 0,-1, 0,+1, 0, -1, 0] },
+  { cat:'film', name:'Princess Leia',      tag:'Star Wars',             vals:[-1,-1,-1,-1,-1,-1, 0,+1, 0,-1, -1,-1] },
+  { cat:'film', name:'Kylo Ren',           tag:'Star Wars',             vals:[ 0,+2, 0, 0,+2, 0,+1,+2,+1,+2,  0,+1] },
+  { cat:'film', name:'Grand Moff Tarkin',  tag:'Star Wars',             vals:[+1,+3,+2,+2,+3,+1,-1,+3,+2,+3, +2,+2] },
+  { cat:'film', name:'James T. Kirk',      tag:'Star Trek',             vals:[ 0,-1, 0,-1,-1, 0,-1,+1,+2,-1, -1, 0] },
+  { cat:'film', name:'Spock',              tag:'Star Trek',             vals:[ 0, 0,-1,-2, 0,-1,-2,-1,+2,-1, -2,+1] },
+  { cat:'film', name:'Jean-Luc Picard',    tag:'Star Trek: TNG',        vals:[-2,-1,-1,-2, 0,-1,-2,-1,+1,-2, -2, 0] },
+  { cat:'film', name:'Khan Noonien Singh', tag:'Star Trek',             vals:[ 0,+3, 0,+1,+2, 0,-1,+3,+2,+3, +1,+3] },
+  { cat:'film', name:'Indiana Jones',      tag:'Indiana Jones',         vals:[ 0,-1, 0, 0,-1, 0, 0,+1,-1, 0, -1,+1] },
+  { cat:'film', name:'James Bond',         tag:'007',                   vals:[+1,+1,+1,+2, 0, 0, 0,+2,+1,+1,  0,+1] },
+  { cat:'film', name:'Jason Bourne',       tag:'The Bourne Identity',   vals:[ 0,-2, 0, 0,-2, 0,-1, 0, 0, 0,  0, 0] },
+  { cat:'film', name:'John McClane',       tag:'Die Hard',              vals:[ 0, 0,+1,+1,-1, 0, 0,+1,-1,+1,  0,+1] },
+  { cat:'film', name:'John Rambo',         tag:'Rambo',                 vals:[ 0,-1,+1,+1,-2, 0, 0,+2,-1,+1,  0,+1] },
+  { cat:'film', name:'RoboCop',            tag:'RoboCop',               vals:[ 0,+2,+1, 0,+1, 0, 0,+1,+2,+3,  0,+1] },
+  { cat:'film', name:'Judge Dredd',        tag:'Judge Dredd',           vals:[ 0,+3,+2,+1,+3, 0,-1,+2,+1,+3, +1,+2] },
+  { cat:'film', name:'Snake Plissken',     tag:'Escape from New York',  vals:[+1,-3, 0, 0,-3, 0,-1,+1,-1, 0,  0, 0] },
+  { cat:'film', name:'Mad Max',            tag:'Mad Max',               vals:[ 0,-2, 0, 0,-3, 0,-1, 0,-1, 0,  0, 0] },
+  { cat:'film', name:'Furiosa',            tag:'Mad Max: Fury Road',    vals:[-1,-2, 0, 0,-2,-2,-1,+1,-1,+1, -1, 0] },
+  { cat:'film', name:'The Dude',           tag:'The Big Lebowski',      vals:[-1,-2,-1,-1,-2,-1,-1,-2,-2,-1, -1,-1] },
+  { cat:'film', name:'Forrest Gump',       tag:'Forrest Gump',          vals:[ 0, 0,+1,+1, 0, 0,+1, 0,-1, 0,  0, 0] },
+  { cat:'film', name:'Atticus Finch',      tag:'To Kill a Mockingbird', vals:[ 0,-1,-1, 0,-1, 0,+1,-1,-1,-3, -1, 0] },
+  { cat:'film', name:'Hannibal Lecter',    tag:'Silence of the Lambs',  vals:[+1,-1,+2, 0,-1, 0,-1, 0, 0,+2,  0,+2] },
+  { cat:'film', name:'Alex DeLarge',       tag:'A Clockwork Orange',    vals:[ 0,-2, 0, 0,-2, 0,-1,+2, 0,-2,  0, 0] },
+  { cat:'film', name:'Randle McMurphy',    tag:"One Flew Over the Cuckoo's Nest", vals:[ 0,-3,-1, 0,-3, 0,-1,-1,-1,-2,  0,-1] },
+  { cat:'film', name:'Nurse Ratched',      tag:"One Flew Over the Cuckoo's Nest", vals:[ 0,+3,+2, 0,+2, 0, 0, 0, 0,+2, +1,+1] },
+  { cat:'film', name:'Miranda Priestly',   tag:'The Devil Wears Prada', vals:[+3,+1,+1, 0,+1,+1,-1, 0,+1,+2,  0,+2] },
+  { cat:'film', name:'Gordon Gekko',       tag:'Wall Street',           vals:[+3, 0,+1, 0,-1,+2,-1,+1,+2,+1,  0,+2] },
+  { cat:'film', name:'Jordan Belfort',     tag:'The Wolf of Wall Street', vals:[+3,-1, 0, 0,-1,+1,-1, 0,+1, 0,  0,+1] },
+  { cat:'film', name:'Charles Foster Kane',tag:'Citizen Kane',          vals:[+2,+1, 0,+2,+1,+1,-1,+1,+1,+1,  0,+1] },
+  { cat:'film', name:'Daniel Plainview',   tag:'There Will Be Blood',   vals:[+3, 0,+1,+1,-2,+3,-2,+1,+2,+2,  0,+2] },
+  { cat:'film', name:'Tony Montana',       tag:'Scarface',              vals:[+2,+1,+1,+1,-1,+1, 0,+2, 0,+2,  0,+1] },
+  { cat:'film', name:"T'Challa",           tag:'Black Panther',         vals:[ 0, 0,+1,+2,+1,-1,+1, 0,+2, 0, +1,+1] },
+  { cat:'film', name:'Killmonger',         tag:'Black Panther',         vals:[-1,+2, 0,+2,+1, 0,-1,+3,+1,+3, +1,+1] },
+  { cat:'film', name:'Professor X',        tag:'X-Men',                 vals:[-1,-1,-1,-2, 0, 0,-1,-2,+1,-2, -2, 0] },
+  { cat:'film', name:'Wolverine',          tag:'X-Men',                 vals:[ 0,-2,+1, 0,-2, 0,-1,+1,-1,+1,  0, 0] },
+  { cat:'film', name:'Deadpool',           tag:'Marvel',                vals:[+1,-2,-1,-1,-2, 0,-1,+1,+1, 0,  0,-3] },
+  { cat:'film', name:'Loki',               tag:'Marvel',                vals:[+1,+2, 0, 0,+1, 0,+1,+1,+1, 0,  0,-1] },
+  { cat:'film', name:'Batman',             tag:'DC',                    vals:[+2, 0,+1,+1,-1, 0,-1,+1,+2,+2,  0,+1] },
+  { cat:'film', name:'Superman',           tag:'DC',                    vals:[ 0,-1,+1, 0,-1, 0,+1, 0,+1,-1, -1,+1] },
+  { cat:'film', name:'Wonder Woman',       tag:'DC',                    vals:[-1,-1,-1,-2,-1,-1,+2,+1,-1, 0, -1,+1] },
+  { cat:'film', name:'Lex Luthor',         tag:'DC',                    vals:[+3,+2, 0,+2,+1,+2,-2,+2,+3,+2, +1,+2] },
+  { cat:'film', name:'Bane',               tag:'The Dark Knight Rises', vals:[-2,+3, 0, 0,+2, 0, 0,+3, 0,+3,  0,+1] },
+  { cat:'film', name:"Ra's al Ghul",       tag:'Batman Begins',         vals:[ 0,+2,+2, 0,+1,-3,+1,+2,-1,+3, +1,+2] },
+  { cat:'film', name:'Jesse Pinkman',      tag:'Breaking Bad',          vals:[ 0,-2,-1, 0,-2, 0,-1,-1, 0,-2, -1,-1] },
+  { cat:'film', name:'Gus Fring',          tag:'Breaking Bad',          vals:[+3,+1,+1, 0, 0, 0, 0,+1,+1,+2,  0,+2] },
+  { cat:'film', name:'Saul Goodman',       tag:'Better Call Saul',      vals:[+2,-2, 0, 0,-2, 0,-1,-1, 0,-2,  0, 0] },
+  { cat:'film', name:'Jon Snow',           tag:'Game of Thrones',       vals:[ 0,-1, 0, 0,-1, 0, 0, 0,-1,-1, -1, 0] },
+  { cat:'film', name:'Cersei Lannister',   tag:'Game of Thrones',       vals:[+1,+3,+1,+1,+3, 0,-1,+2, 0,+3, +1,+2] },
+  { cat:'film', name:'Petyr Baelish',      tag:'Game of Thrones',       vals:[+3, 0, 0, 0, 0, 0,-2,+1, 0,+1,  0,-2] },
+  { cat:'film', name:'Tywin Lannister',    tag:'Game of Thrones',       vals:[+2,+2,+2,+1,+2, 0,-1,+2, 0,+3, +1,+2] },
+  { cat:'film', name:'Frank Underwood',    tag:'House of Cards',        vals:[+1,+2, 0,+1,+2, 0,-2,+2,+1,+2,  0,-1] },
+  { cat:'film', name:'Jed Bartlet',        tag:'The West Wing',         vals:[-1,-1,-1,-1,+1,-1,+1,-1,+1,-1, -1, 0] },
+  { cat:'film', name:'Leslie Knope',       tag:'Parks and Recreation',  vals:[-1, 0,-1,-1,+1,-1, 0,-1, 0,-1, -1, 0] },
+  { cat:'film', name:'Ron Swanson',        tag:'Parks and Recreation',  vals:[+3,-3,+2,+1,-3,+1, 0, 0,-1,+1,  0,+2] },
+
+  // ── Leaders expansion II ──
+  { cat:'pres', name:'John Adams',         tag:'🇺🇸 US President',      vals:[+1,+1,+1,+1,+1, 0,+1, 0, 0,+1, +1,+1] },
+  { cat:'pres', name:'James Madison',      tag:'🇺🇸 US President',      vals:[+1,-1, 0,+1,-1, 0,-1, 0,+1, 0,  0,+1] },
+  { cat:'pres', name:'James Monroe',       tag:'🇺🇸 US President',      vals:[+1, 0,+1,+2, 0, 0, 0,+1, 0,+1, +1,+1] },
+  { cat:'pres', name:'William McKinley',   tag:'🇺🇸 US President',      vals:[+3,+1,+2,+2, 0,+1,+1,+2,+1,+1, +1,+1] },
+  { cat:'pres', name:'Grover Cleveland',   tag:'🇺🇸 US President',      vals:[+2, 0,+1,+1,-1, 0, 0,-1, 0,+1, +1,+1] },
+  { cat:'pres', name:'Warren Harding',     tag:'🇺🇸 US President',      vals:[+3,-1,+1,+1,-1,+1, 0,-1, 0, 0, +1,+1] },
+  { cat:'pres', name:'Yitzhak Rabin',      tag:'🇮🇱 Israel',            vals:[ 0, 0, 0,+2,+1, 0, 0,+1, 0,+1, +1, 0] },
+  { cat:'pres', name:'Ariel Sharon',       tag:'🇮🇱 Israel',            vals:[+1,+2,+1,+3,+1, 0,+1,+3, 0,+2, +2,+2] },
+  { cat:'pres', name:'Menachem Begin',     tag:'🇮🇱 Israel',            vals:[+1,+1,+2,+3,+1, 0,+2,+2, 0,+2, +2,+2] },
+  { cat:'pres', name:'Shimon Peres',       tag:'🇮🇱 Israel',            vals:[ 0, 0,-1,+1,+1,-1, 0, 0,+2, 0,  0, 0] },
+  { cat:'pres', name:'King Hussein',       tag:'🇯🇴 Jordan',            vals:[+1,+2,+2,+2,+2, 0,+2, 0, 0,+1, +1,+1] },
+  { cat:'pres', name:'Hafez al-Assad',     tag:'🇸🇾 Syria',             vals:[-1,+3,+1,+2,+3,+1, 0,+3,-1,+3, +1,+2] },
+  { cat:'pres', name:'Yasser Arafat',      tag:'🇵🇸 Palestine',         vals:[-1,+2,+1,+3,+2, 0,+1,+2,-1,+1, +1,+1] },
+  { cat:'pres', name:'Mahmoud Abbas',      tag:'🇵🇸 Palestine',         vals:[ 0,+2,+2,+2,+2, 0,+1, 0,-1,+1, +1,+1] },
+  { cat:'pres', name:'Boris Yeltsin',      tag:'🇷🇺 Russia',            vals:[+2, 0, 0,+1, 0,+1,-1, 0, 0, 0,  0, 0] },
+  { cat:'pres', name:'Leonid Brezhnev',    tag:'🇷🇺 USSR, 1964–82',     vals:[-3,+2,+1,+2,+3,+1,-3,+2, 0,+2, +1,-1] },
+  { cat:'pres', name:'Dmitry Medvedev',    tag:'🇷🇺 Russia',            vals:[ 0,+2,+1,+2,+3, 0, 0,+2,+1,+2, +1,+1] },
+  { cat:'pres', name:'Petro Poroshenko',   tag:'🇺🇦 Ukraine',           vals:[+2, 0,+1,+2,+1, 0,+1,+2, 0,+1, +1,+1] },
+  { cat:'pres', name:'Václav Havel',       tag:'🇨🇿 Czechia',           vals:[ 0,-2,-1,-1,-1,-1,-1,-1, 0,-1, -1,-1] },
+  { cat:'pres', name:'Lech Wałęsa',        tag:'🇵🇱 Poland',            vals:[-1,-1,+1,+1,-1, 0,+2,-1, 0, 0,  0, 0] },
+  { cat:'pres', name:'Donald Tusk',        tag:'🇵🇱 Poland',            vals:[+1, 0,-1,-1,+1,-1,-1, 0, 0, 0, -1, 0] },
+  { cat:'pres', name:'Jarosław Kaczyński', tag:'🇵🇱 Poland',            vals:[ 0,+2,+3,+3,+2,+1,+3,+1,-1,+2, +2,+2] },
+  { cat:'pres', name:'Robert Fico',        tag:'🇸🇰 Slovakia',          vals:[-1,+2,+2,+2,+2, 0,+1, 0,-1,+1, +1,+1] },
+  { cat:'pres', name:'Aleksandar Vučić',   tag:'🇷🇸 Serbia',            vals:[ 0,+2,+2,+3,+2, 0,+1,+1, 0,+2, +2,+1] },
+  { cat:'pres', name:'Alexis Tsipras',     tag:'🇬🇷 Greece',            vals:[-2, 0,-1,-1,+1,-1,-2,-1, 0,-1, -1,-1] },
+  { cat:'pres', name:'Ursula von der Leyen', tag:'🇪🇺 EU Commission',   vals:[+1,+1,-1,-2,+3,-2,-1,+1,+1,+1, -1, 0] },
+  { cat:'pres', name:'Sanna Marin',        tag:'🇫🇮 Finland',           vals:[-2,-1,-2,-2,+1,-2,-1,-1, 0,-2, -2,-1] },
+  { cat:'pres', name:'Mette Frederiksen',  tag:'🇩🇰 Denmark',           vals:[-1, 0,-1,+1,+1,-1,-1, 0, 0, 0, +1,-1] },
+  { cat:'pres', name:'Jens Stoltenberg',   tag:'🇳🇴 NATO / Norway',     vals:[-1, 0,-1,-1,+2,-1,-1,+2, 0, 0, -1, 0] },
+  { cat:'pres', name:'Leo Varadkar',       tag:'🇮🇪 Ireland',           vals:[+1, 0,-2,-1, 0,-1,-1,-1,+1, 0, -1, 0] },
+  { cat:'pres', name:'Paul Kagame',        tag:'🇷🇼 Rwanda',            vals:[ 0,+3,+1,+1,+3, 0, 0,+1,+2,+2, +2,+1] },
+  { cat:'pres', name:'Julius Nyerere',     tag:'🇹🇿 Tanzania',          vals:[-3, 0, 0,+1,+2,-1, 0,-1,-1, 0,  0,-1] },
+  { cat:'pres', name:'Kwame Nkrumah',      tag:'🇬🇭 Ghana',             vals:[-2,+2, 0,+2,+3, 0, 0, 0, 0,+1,  0, 0] },
+  { cat:'pres', name:'Jomo Kenyatta',      tag:'🇰🇪 Kenya',             vals:[ 0,+2,+1,+2,+2, 0,+1, 0, 0,+1, +1,+1] },
+  { cat:'pres', name:'Haile Selassie',     tag:'🇪🇹 Ethiopia',          vals:[ 0,+2,+2,+2,+3, 0,+2, 0, 0,+1, +1,+2] },
+  { cat:'pres', name:'Idi Amin',           tag:'🇺🇬 Uganda',            vals:[ 0,+3,+2,+3,+3, 0,+1,+3,-2,+3, +2,+2] },
+  { cat:'pres', name:'Mobutu Sese Seko',   tag:'🇨🇩 Zaire',             vals:[+1,+3,+2,+3,+3,+1,+1,+1,-1,+3, +2,+2] },
+  { cat:'pres', name:'Robert Mugabe',      tag:'🇿🇼 Zimbabwe',          vals:[-2,+3,+2,+3,+3, 0,+1,+2,-1,+3, +2,+1] },
+  { cat:'pres', name:'Thomas Sankara',     tag:'🇧🇫 Burkina Faso',      vals:[-3,+1,-1,+2,+2,-2,-1,+1,-1,+1,  0,-1] },
+  { cat:'pres', name:'Patrice Lumumba',    tag:'🇨🇩 DR Congo',          vals:[-2, 0,-1,+2,+1, 0,-1, 0, 0, 0,  0,-1] },
+  { cat:'pres', name:'Indira Gandhi',      tag:'🇮🇳 India',             vals:[-1,+3,+1,+2,+3, 0, 0,+2,+1,+2, +1,+1] },
+  { cat:'pres', name:'Jawaharlal Nehru',   tag:'🇮🇳 India',             vals:[-2, 0,-1,+1,+2,-1,-2,-1,+1, 0,  0,-1] },
+  { cat:'pres', name:'Imran Khan',         tag:'🇵🇰 Pakistan',          vals:[ 0,+1,+2,+2,+1, 0,+2, 0, 0,+1, +1,+2] },
+  { cat:'pres', name:'Benazir Bhutto',     tag:'🇵🇰 Pakistan',          vals:[-1, 0, 0,+1,+1, 0, 0, 0, 0, 0,  0, 0] },
+  { cat:'pres', name:'Aung San Suu Kyi',   tag:'🇲🇲 Myanmar',           vals:[ 0,-1, 0,+2, 0, 0,+1,-1, 0, 0, +1, 0] },
+  { cat:'pres', name:'Chiang Kai-shek',    tag:'🇹🇼 Taiwan / ROC',      vals:[+1,+3,+2,+3,+3, 0, 0,+3, 0,+3, +2,+2] },
+  { cat:'pres', name:'Kim Il-sung',        tag:'🇰🇵 North Korea',       vals:[-3,+3,+2,+3,+3, 0,-2,+3,-1,+3, +3,+2] },
+  { cat:'pres', name:'Pol Pot',            tag:'🇰🇭 Kampuchea',         vals:[-3,+3,+2,+3,+3,-2,-3,+2,-3,+3, +3,+2] },
+  { cat:'pres', name:'José "Pepe" Mujica', tag:'🇺🇾 Uruguay',           vals:[-2,-2,-2,-1,-1,-2,-2,-2,-1,-2, -1,-1] },
+  { cat:'pres', name:'Alberto Fujimori',   tag:'🇵🇪 Peru',              vals:[+2,+3,+1,+2,+3,+1, 0,+2,+1,+3, +1,+2] },
+
+  // ── Historical expansion II ──
+  { cat:'hist', name:'Cyrus the Great',    tag:'Persian King, 559 BC',  vals:[ 0,+1, 0,+1,+2, 0,-1,+2, 0, 0, -2,+1] },
+  { cat:'hist', name:'Xerxes I',           tag:'Persian King, 486 BC',  vals:[ 0,+3,+2,+2,+3, 0,+2,+3, 0,+2, +1,+2] },
+  { cat:'hist', name:'Nebuchadnezzar II',  tag:'Babylonian King',       vals:[ 0,+3,+2,+2,+3,+1,+3,+2,+1,+2, +2,+2] },
+  { cat:'hist', name:'Hatshepsut',         tag:'Pharaoh, 1479 BC',      vals:[+1,+2,+1,+1,+2, 0,+2,-1,+1,+1, +1,+1] },
+  { cat:'hist', name:'Nero',               tag:'Emperor, 54–68',        vals:[+1,+3, 0,+1,+3,+1,+1,+1,+1,+3, +1,+1] },
+  { cat:'hist', name:'Caligula',           tag:'Emperor, 37–41',        vals:[ 0,+3, 0, 0,+3, 0,+2,+2, 0,+3, +1,+1] },
+  { cat:'hist', name:'Diocletian',         tag:'Emperor, 284–305',      vals:[-1,+3,+2,+1,+3, 0,+2,+2, 0,+3, +2,+2] },
+  { cat:'hist', name:'Justinian I',        tag:'Emperor, 527–565',      vals:[ 0,+3,+2,+2,+3, 0,+3,+2,+1,+3, +2,+2] },
+  { cat:'hist', name:'Theodora',           tag:'Empress, 527–548',      vals:[ 0,+2, 0,+1,+2, 0,+2,+1, 0,+1, +1,+1] },
+  { cat:'hist', name:'Harun al-Rashid',    tag:'Caliph, 786–809',       vals:[+1,+2,+1,+1,+2, 0,+2,+1,+1,+1, +1,+2] },
+  { cat:'hist', name:'Timur',              tag:'Conqueror, 1370',       vals:[ 0,+3,+2,+2,+3, 0,+2,+3, 0,+3, +2,+2] },
+  { cat:'hist', name:'Babur',              tag:'Mughal Founder, 1526',  vals:[ 0,+2,+1,+2,+2, 0,+2,+3,+1,+1,  0,+1] },
+  { cat:'hist', name:'Aurangzeb',          tag:'Mughal Emperor, 1658',  vals:[ 0,+3,+3,+2,+3, 0,+3,+3,-1,+3, +3,+3] },
+  { cat:'hist', name:'Shivaji',            tag:'Maratha King, 1674',    vals:[ 0,+1,+2,+3,+1, 0,+2,+2, 0,+1, +1,+2] },
+  { cat:'hist', name:'Saigō Takamori',     tag:'Samurai, 1828–77',      vals:[ 0,+1,+3,+3, 0, 0,+1,+2,-2,+1, +2,+2] },
+  { cat:'hist', name:'Emperor Meiji',      tag:'Emperor, 1867–1912',    vals:[+1,+2,+1,+3,+3,+1,+1,+2,+3,+2, +2,+1] },
+  { cat:'hist', name:'Takeda Shingen',     tag:'Daimyō, 1521–73',       vals:[ 0,+2,+2,+2,+2, 0,+1,+3, 0,+2, +1,+1] },
+  { cat:'hist', name:'Uesugi Kenshin',     tag:'Daimyō, 1530–78',       vals:[ 0,+1,+2,+2,+1, 0,+3,+2, 0,+1, +1,+2] },
+  { cat:'hist', name:'Date Masamune',      tag:'Daimyō, 1567–1636',     vals:[+1,+2,+1,+2,+2, 0, 0,+2,+2,+2, +1,+1] },
+  { cat:'hist', name:'Miyamoto Musashi',   tag:'Swordsman, 1584',       vals:[ 0,-2,+1, 0,-2, 0, 0,+2,-1, 0,  0,+2] },
+  { cat:'hist', name:'Yi Sun-sin',         tag:'Admiral, 1545–98',      vals:[ 0,+1,+2,+3,+1, 0, 0,+2,+2,+1, +1,+1] },
+  { cat:'hist', name:'Sejong the Great',   tag:'King, 1418–50',         vals:[-1,+1,+1,+2,+2, 0, 0, 0,+3,-1, +1,+1] },
+  { cat:'hist', name:'Wu Zetian',          tag:'Empress, 690–705',      vals:[ 0,+3, 0,+1,+3, 0,+2,+1,+1,+3, +1,+1] },
+  { cat:'hist', name:'Zheng He',           tag:'Admiral, 1405',         vals:[ 0,+1, 0, 0,+1, 0,+1, 0,+2, 0, -1,+1] },
+  { cat:'hist', name:'Sun Yat-sen',        tag:'Revolutionary, 1866',   vals:[-1, 0,-1,+2,+1, 0,-1,+1,+1, 0, +1, 0] },
+  { cat:'hist', name:'Empress Dowager Cixi', tag:'Regent, 1861–1908',   vals:[+1,+3,+3,+2,+3, 0,+1,+1,-2,+2, +2,+2] },
+  { cat:'hist', name:'Montezuma II',       tag:'Aztec Emperor, 1502',   vals:[ 0,+3,+2,+2,+3, 0,+3,+2, 0,+2, +1,+2] },
+  { cat:'hist', name:'Atahualpa',          tag:'Inca Emperor, 1532',    vals:[-1,+2,+2,+2,+3, 0,+2,+2, 0,+2, +1,+2] },
+  { cat:'hist', name:'Pachacuti',          tag:'Inca Emperor, 1438',    vals:[-2,+2,+1,+2,+3, 0,+2,+2,+1,+2, +2,+1] },
+  { cat:'hist', name:'Hernán Cortés',      tag:'Conquistador, 1485',    vals:[+2,+2,+2,+2, 0,+1,+3,+3, 0,+2, +3,+2] },
+  { cat:'hist', name:'Francisco Pizarro',  tag:'Conquistador, 1478',    vals:[+2,+2,+2,+2, 0,+1,+2,+3,-1,+3, +3,+2] },
+  { cat:'hist', name:'Christopher Columbus', tag:'Explorer, 1451',      vals:[+2,+1,+2,+1, 0,+1,+3,+1,+1,+2, +2,+2] },
+  { cat:'hist', name:'Ferdinand Magellan', tag:'Explorer, 1480',        vals:[+1,+1,+1,+1, 0, 0,+2,+1,+2,+1, +1,+1] },
+  { cat:'hist', name:'James Cook',         tag:'Explorer, 1728',        vals:[+1,+1,+1,+2, 0, 0, 0,+1,+2,+1,  0,+1] },
+  { cat:'hist', name:'Marco Polo',         tag:'Explorer, 1254',        vals:[+2,-1, 0,-1,-1, 0, 0,-1,+1, 0, -2, 0] },
+  { cat:'hist', name:'Ibn Battuta',        tag:'Explorer, 1304',        vals:[ 0, 0,+1, 0,-1, 0,+2,-1, 0, 0, -1,+1] },
+  { cat:'hist', name:'Leif Erikson',       tag:'Explorer, 970',         vals:[ 0,-1, 0,+1,-2, 0, 0,+1, 0, 0,  0, 0] },
+  { cat:'hist', name:'Vlad the Impaler',   tag:'Voivode, 1448',         vals:[ 0,+3,+2,+3,+2, 0,+2,+3,-1,+3, +2,+2] },
+  { cat:'hist', name:'Gustavus Adolphus',  tag:'King, 1611–32',         vals:[ 0,+2,+1,+2,+2, 0,+3,+3,+2,+1, +1,+2] },
+  { cat:'hist', name:'Oliver Cromwell',    tag:'Lord Protector, 1653',  vals:[ 0,+3,+2,+2,+2, 0,+3,+2, 0,+3, +2,+3] },
+  { cat:'hist', name:'Guy Fawkes',         tag:'Plotter, 1570–1606',    vals:[ 0,-1,+2,+1,-2, 0,+3,+2,-1,+1, +1,+2] },
+  { cat:'hist', name:'William Wallace',    tag:'Guardian, 1297',        vals:[ 0,-2,+1,+3,-2, 0,+1,+3,-1,+2, +2,+1] },
+  { cat:'hist', name:'Richard the Lionheart', tag:'King, 1189–99',      vals:[+1,+2,+2,+2,+1, 0,+3,+3, 0,+2, +1,+2] },
+  { cat:'hist', name:'Eleanor of Aquitaine', tag:'Queen, 1137–1204',    vals:[+1,+1, 0,+1,+1, 0,+1,+1, 0,+1,  0,+1] },
+  { cat:'hist', name:'Martin Luther',      tag:'Reformer, 1483',        vals:[ 0, 0,+1,+1,-1, 0,+3, 0,+1,+1, +1,+3] },
+  { cat:'hist', name:'John Calvin',        tag:'Reformer, 1509',        vals:[+1,+2,+2, 0,+1, 0,+3, 0, 0,+3, +2,+3] },
+  { cat:'hist', name:'Cesare Borgia',      tag:'Duke, 1475–1507',       vals:[+1,+3, 0,+1,+2, 0, 0,+3, 0,+3, +1,+1] },
+  { cat:'hist', name:'Isabella I',         tag:'Queen, 1474–1504',      vals:[+1,+2,+3,+3,+2, 0,+3,+2, 0,+2, +3,+3] },
+  { cat:'hist', name:'Rosa Luxemburg',     tag:'Revolutionary, 1871',   vals:[-3,-1,-2,-3, 0, 0,-3,-1, 0,-2, -2,-2] },
+  { cat:'hist', name:'Emma Goldman',       tag:'Anarchist, 1869',       vals:[-3,-3,-3,-2,-3, 0,-3,-2, 0,-3, -2,-2] },
+
+  // ── Thinkers expansion II ──
+  { cat:'thinkers', name:'Plotinus',          tag:'Philosopher, 204',     vals:[ 0, 0, 0,-1, 0,-1,+2,-2,-1, 0,  0,+3] },
+  { cat:'thinkers', name:'Boethius',          tag:'Philosopher, 477',     vals:[ 0, 0,+1, 0, 0, 0,+2,-1, 0, 0,  0,+2] },
+  { cat:'thinkers', name:'Anselm',            tag:'Theologian, 1033',     vals:[ 0,+1,+1, 0,+1, 0,+3,-1, 0, 0, +1,+3] },
+  { cat:'thinkers', name:'William of Ockham', tag:'Philosopher, 1287',    vals:[ 0,-1, 0, 0,-2, 0,+2,-1, 0, 0,  0,-1] },
+  { cat:'thinkers', name:'Erasmus',           tag:'Humanist, 1466',       vals:[ 0,-1,-1,-2,-1, 0,+1,-3,+1,-1, -1,+1] },
+  { cat:'thinkers', name:'Thomas More',       tag:'Humanist, 1478',       vals:[-2, 0,+1, 0,+1,-1,+3,-1,-1, 0,  0,+2] },
+  { cat:'thinkers', name:'Francis Bacon',     tag:'Philosopher, 1561',    vals:[+1,+1, 0,+1,+1,+1, 0, 0,+3, 0,  0,+1] },
+  { cat:'thinkers', name:'Blaise Pascal',     tag:'Polymath, 1623',       vals:[ 0, 0,+1, 0, 0, 0,+3,-1,+1, 0,  0,+2] },
+  { cat:'thinkers', name:'George Berkeley',   tag:'Philosopher, 1685',    vals:[ 0, 0,+1, 0, 0, 0,+3,-1, 0, 0,  0,-2] },
+  { cat:'thinkers', name:'Fichte',            tag:'Philosopher, 1762',    vals:[-1,+1, 0,+3,+1, 0, 0,+1, 0,+1, +2,+1] },
+  { cat:'thinkers', name:'Feuerbach',         tag:'Philosopher, 1804',    vals:[-1,-1,-1,-1, 0, 0,-3,-1, 0,-1, -1,-1] },
+  { cat:'thinkers', name:'Max Stirner',       tag:'Egoist, 1806',         vals:[ 0,-3,-2,-3,-3, 0,-3,-1, 0,-2, -1,-3] },
+  { cat:'thinkers', name:'Herbert Spencer',   tag:'Philosopher, 1820',    vals:[+3,-2,+1, 0,-2,+1,-1,-2,+2,+1,  0,+2] },
+  { cat:'thinkers', name:'Thomas Malthus',    tag:'Economist, 1766',      vals:[+1,+1,+2, 0, 0,-1,+2,-1,-1,+1,  0,+2] },
+  { cat:'thinkers', name:'David Ricardo',     tag:'Economist, 1772',      vals:[+3,-1, 0,-1,-1,+1,-1,-1,+1, 0,  0,+2] },
+  { cat:'thinkers', name:'Tocqueville',       tag:'Political Theorist, 1805', vals:[+1,-1,+1, 0,-2, 0, 0,-1, 0, 0,  0,+1] },
+  { cat:'thinkers', name:'Ralph Waldo Emerson', tag:'Essayist, 1803',     vals:[ 0,-2,-1,-1,-2,-1, 0,-2, 0,-1, -1,+1] },
+  { cat:'thinkers', name:'Henry David Thoreau', tag:'Essayist, 1817',     vals:[-1,-3,-1,-1,-3,-3, 0,-3,-2,-2, -1, 0] },
+  { cat:'thinkers', name:'Leo Tolstoy',       tag:'Novelist, 1828',       vals:[-2,-3, 0,-1,-3,-2,+2,-3,-2,-3, -1,+1] },
+  { cat:'thinkers', name:'Dostoevsky',        tag:'Novelist, 1821',       vals:[-1, 0,+2,+2,-1, 0,+3,-1,-2,-1, +1,+2] },
+  { cat:'thinkers', name:'Charles Peirce',    tag:'Pragmatist, 1839',     vals:[ 0,-1, 0, 0,-1, 0, 0,-1,+2, 0,  0, 0] },
+  { cat:'thinkers', name:'Husserl',           tag:'Phenomenologist, 1859', vals:[ 0, 0, 0,-1, 0, 0, 0,-1, 0, 0,  0, 0] },
+  { cat:'thinkers', name:'Henri Bergson',     tag:'Philosopher, 1859',    vals:[ 0,-1,-1,-1,-1,-1, 0,-1,-1,-1, -1,-1] },
+  { cat:'thinkers', name:'Whitehead',         tag:'Philosopher, 1861',    vals:[ 0,-1,-1,-1,-1,-1, 0,-1,+1,-1, -1, 0] },
+  { cat:'thinkers', name:'Antonio Gramsci',   tag:'Marxist, 1891',        vals:[-3, 0,-2,-1,+1, 0,-2,-1, 0,-1, -1,-2] },
+  { cat:'thinkers', name:'Theodor Adorno',    tag:'Frankfurt School, 1903', vals:[-2,-1,-2,-2, 0,-1,-2,-2,-2,-1, -1,-2] },
+  { cat:'thinkers', name:'Herbert Marcuse',   tag:'Frankfurt School, 1898', vals:[-3,-2,-3,-2,-1,-1,-2,-2,-1,-2, -1,-2] },
+  { cat:'thinkers', name:'Walter Benjamin',   tag:'Critic, 1892',         vals:[-2,-1,-2,-1,-1, 0,-1,-1,-1,-1, -1,-2] },
+  { cat:'thinkers', name:'Leo Strauss',       tag:'Political Theorist, 1899', vals:[+1,+1,+2,+1, 0, 0,+1,+1,-1,+1, +1,+3] },
+  { cat:'thinkers', name:'Carl Schmitt',      tag:'Jurist, 1888',         vals:[ 0,+3,+2,+3,+3, 0,+2,+2, 0,+2, +2,+2] },
+  { cat:'thinkers', name:'Isaiah Berlin',     tag:'Philosopher, 1909',    vals:[ 0,-2,-1,-1,-1, 0,-1,-1, 0,-1, -1,-1] },
+  { cat:'thinkers', name:'W. V. O. Quine',    tag:'Philosopher, 1908',    vals:[+1, 0, 0, 0, 0, 0,-2,-1,+1, 0,  0, 0] },
+  { cat:'thinkers', name:'Thomas Kuhn',       tag:'Historian of Science, 1922', vals:[ 0,-1, 0,-1, 0, 0,-1,-1,+1, 0,  0,-2] },
+  { cat:'thinkers', name:'Paul Feyerabend',   tag:'Philosopher, 1924',    vals:[ 0,-3,-1,-1,-2, 0,-1,-2,-1,-1, -1,-3] },
+  { cat:'thinkers', name:'Richard Rorty',     tag:'Pragmatist, 1931',     vals:[-1,-1,-2,-1,-1, 0,-2,-1, 0,-1, -1,-3] },
+  { cat:'thinkers', name:'Robert Nozick',     tag:'Philosopher, 1938',    vals:[+3,-3, 0, 0,-3, 0,-1,-1,+1, 0,  0,+1] },
+  { cat:'thinkers', name:'Alasdair MacIntyre', tag:'Philosopher, 1929',   vals:[-1, 0,+2, 0,-2, 0,+2,-1,-1, 0, +1,+2] },
+  { cat:'thinkers', name:'Ivan Illich',       tag:'Philosopher, 1926',    vals:[-2,-3, 0,-1,-3,-2,+1,-2,-3,-2, -1, 0] },
+  { cat:'thinkers', name:'Paulo Freire',      tag:'Educator, 1921',       vals:[-2,-2,-2,-1,-2,-1, 0,-2, 0,-2, -2,-2] },
+  { cat:'thinkers', name:'Edward Said',       tag:'Critic, 1935',         vals:[-1,-1,-2,-1,-1, 0,-1,-2, 0,-1, -2,-2] },
+  { cat:'thinkers', name:'Byung-Chul Han',    tag:'Philosopher, 1959',    vals:[-1,-1, 0,-1,-1,-1, 0,-1,-3,-1,  0,-1] },
+  { cat:'thinkers', name:'Nick Land',         tag:'Accelerationist, 1962', vals:[+3, 0,+1, 0,-2,+2,-2, 0,+3,+1, +1,+1] },
+  { cat:'thinkers', name:'Nick Bostrom',      tag:'Philosopher, 1973',    vals:[ 0, 0,-1,-2,+1, 0,-2,-1, 0,-1, -1,+1] },
+  { cat:'thinkers', name:'Eliezer Yudkowsky', tag:'AI Theorist, 1979',    vals:[+1,-1,-1,-2, 0, 0,-3,-1,-2, 0, -1,+2] },
+  { cat:'thinkers', name:'Daniel Dennett',    tag:'Philosopher, 1942',    vals:[ 0,-1,-1,-1, 0, 0,-3,-1,+2,-1, -1, 0] },
+  { cat:'thinkers', name:'Daniel Kahneman',   tag:'Psychologist, 1934',   vals:[ 0,-1,-1,-1, 0, 0,-1,-1,+1,-1, -1,-1] },
+  { cat:'thinkers', name:'Nassim Taleb',      tag:'Author, 1960',         vals:[+2,-2,+1, 0,-3, 0, 0,-1,-1,+1,  0,+1] },
+  { cat:'thinkers', name:'Yuval Noah Harari', tag:'Historian, 1976',      vals:[ 0,-1,-1,-2,+1,-1,-2,-1, 0,-1, -1,-2] },
+  { cat:'thinkers', name:'Francis Fukuyama',  tag:'Political Scientist, 1952', vals:[+1, 0,-1,-1, 0, 0,-1, 0,+1, 0,  0,+1] },
+  { cat:'thinkers', name:'Samuel Huntington', tag:'Political Scientist, 1927', vals:[+1,+1,+2,+2, 0, 0,+1,+1, 0,+1, +2,+2] },
+
+  // ── Tech & Business expansion II ──
+  { cat:'tech', name:'Changpeng Zhao',     tag:'Binance',               vals:[+3,-2, 0,-2,-3, 0,-1,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Brian Armstrong',    tag:'Coinbase',              vals:[+3,-2, 0,-1,-2, 0,-1,-1,+3, 0, -1,+1] },
+  { cat:'tech', name:'Michael Saylor',     tag:'MicroStrategy',         vals:[+3,-1,+1, 0,-2,+1,-1,-1,+3,+1,  0,+3] },
+  { cat:'tech', name:'Cathie Wood',        tag:'ARK Invest',            vals:[+3,-1, 0,-1,-1, 0,+1,-1,+3, 0,  0,+2] },
+  { cat:'tech', name:'Ray Dalio',          tag:'Bridgewater',           vals:[+2, 0, 0, 0,+1, 0,-1, 0,+1,+1,  0,+2] },
+  { cat:'tech', name:'Carl Icahn',         tag:'Investor',              vals:[+3, 0,+1, 0,-1,+1,-1, 0,+1,+1,  0,+2] },
+  { cat:'tech', name:'George Soros',       tag:'Investor',              vals:[+1,-1,-2,-2, 0,-1,-2,-1,+1,-2, -2,-2] },
+  { cat:'tech', name:'Charlie Munger',     tag:'Berkshire Hathaway',    vals:[+2, 0,+1, 0,-1, 0,-1,-1, 0,+2,  0,+2] },
+  { cat:'tech', name:'Jamie Dimon',        tag:'JPMorgan Chase',        vals:[+2,+1, 0, 0, 0, 0,-1,+1,+1,+1,  0,+1] },
+  { cat:'tech', name:'Gwynne Shotwell',    tag:'SpaceX',                vals:[+2, 0, 0,+1, 0, 0,-1,+1,+3,+1,  0,+1] },
+  { cat:'tech', name:'Enzo Ferrari',       tag:'Ferrari',               vals:[+2,+1,+2,+2,-1,+2, 0, 0,+3,+2, +1,+2] },
+  { cat:'tech', name:'Ferdinand Porsche',  tag:'Porsche',               vals:[+2,+1,+1,+2, 0,+2, 0,+1,+3,+1, +1,+1] },
+  { cat:'tech', name:'Karl Benz',          tag:'Mercedes-Benz',         vals:[+2, 0,+1,+1,-1,+1,+1,-1,+3, 0, +1,+1] },
+  { cat:'tech', name:'Kiichiro Toyoda',    tag:'Toyota',                vals:[+2, 0,+1,+2, 0,+1, 0,-1,+3,+1, +2,+1] },
+  { cat:'tech', name:'Lee Byung-chul',     tag:'Samsung',               vals:[+2,+1,+2,+2,+1,+1, 0, 0,+3,+2, +2,+1] },
+  { cat:'tech', name:'Jack Welch',         tag:'General Electric',      vals:[+3,+1,+1,+1, 0,+1, 0, 0,+1,+2,  0,+2] },
+  { cat:'tech', name:'Lee Iacocca',        tag:'Chrysler',              vals:[+2, 0,+1,+2, 0,+1, 0, 0,+2,+1, +1,+1] },
+  { cat:'tech', name:'Howard Schultz',     tag:'Starbucks',             vals:[+2, 0,-1,-1,-1,-1, 0,-1,+1, 0, -1, 0] },
+  { cat:'tech', name:'Phil Knight',        tag:'Nike',                  vals:[+3,-1, 0, 0,-1, 0,-1,-1,+1, 0, -1,+1] },
+  { cat:'tech', name:'Yvon Chouinard',     tag:'Patagonia',             vals:[-1,-2,-1,-1,-2,-3,-1,-2,-1,-2, -1,-1] },
+  { cat:'tech', name:'James Dyson',        tag:'Dyson',                 vals:[+3, 0,+1,+2,-1, 0,-1, 0,+3,+1, +1,+2] },
+  { cat:'tech', name:'Markus "Notch" Persson', tag:'Minecraft',         vals:[+2,-2, 0, 0,-2, 0,-1,-1,+2, 0,  0,+1] },
+  { cat:'tech', name:'John Romero',        tag:'id Software',           vals:[+1,-2, 0,-1,-2, 0,-2, 0,+2, 0,  0, 0] },
+  { cat:'tech', name:'Sid Meier',          tag:'Civilization',          vals:[ 0,-1, 0,-1,-1, 0,-1,-1,+2,-1, -1, 0] },
+  { cat:'tech', name:'Will Wright',        tag:'SimCity / The Sims',    vals:[ 0,-1,-1,-1,-1,-1,-1,-1,+2,-1, -1,-1] },
+  { cat:'tech', name:'Todd Howard',        tag:'Bethesda',              vals:[+2, 0, 0, 0,-1, 0,-1, 0,+2, 0,  0, 0] },
+  { cat:'tech', name:'Gunpei Yokoi',       tag:'Nintendo / Game Boy',   vals:[ 0,-1, 0,+1,-1, 0, 0,-1,+1,-1, +1, 0] },
+  { cat:'tech', name:'Masahiro Sakurai',   tag:'Smash Bros.',           vals:[ 0, 0, 0,+1, 0, 0, 0,-1,+2, 0, +1, 0] },
+  { cat:'tech', name:'Bobby Kotick',       tag:'Activision Blizzard',   vals:[+3,+1,+1, 0, 0,+1,-1, 0,+1,+2,  0,+2] },
+  { cat:'tech', name:'Tim Sweeney',        tag:'Epic Games',            vals:[+2,-2,-1,-1,-2, 0,-1,-1,+3,-1, -1,+1] },
+  { cat:'tech', name:'Aaron Swartz',       tag:'Open Access',           vals:[-2,-3,-2,-2,-3, 0,-2,-2,+2,-3, -2,-1] },
+  { cat:'tech', name:'Edward Snowden',     tag:'Whistleblower',         vals:[ 0,-3,-1,-1,-3, 0,-1,-2,+1,-1, -1, 0] },
+  { cat:'tech', name:'Julian Assange',     tag:'WikiLeaks',             vals:[ 0,-3,-1,-2,-3, 0,-1,-2,+1,-1, -1,-1] },
+  { cat:'tech', name:'Kevin Mitnick',      tag:'Hacker',                vals:[+1,-3, 0,-1,-3, 0,-1,-1,+2,-1, -1, 0] },
+  { cat:'tech', name:'David H. Hansson',   tag:'Ruby on Rails / 37signals', vals:[+2,-2, 0, 0,-3, 0,-1,-1,+1,+1,  0,+2] },
+  { cat:'tech', name:'Paul Graham',        tag:'Y Combinator',          vals:[+3,-2, 0, 0,-2, 0,-2,-1,+3, 0,  0,+2] },
+  { cat:'tech', name:'Marc Andreessen',    tag:'a16z',                  vals:[+3,-1,+1,+1,-2,+2,-1,+1,+3,+1,  0,+2] },
+  { cat:'tech', name:'Reid Hoffman',       tag:'LinkedIn',              vals:[+2,-1,-1,-1,-1, 0,-1, 0,+2, 0, -1,+1] },
+  { cat:'tech', name:'Naval Ravikant',     tag:'AngelList',             vals:[+3,-2, 0,-1,-3, 0,-1,-1,+3, 0,  0,+2] },
+  { cat:'tech', name:'Balaji Srinivasan',  tag:'Network State',         vals:[+3,-2, 0,-2,-3,+1,-1,-1,+3, 0,  0,+2] },
+  { cat:'tech', name:'Steve Ballmer',      tag:'Microsoft',             vals:[+3, 0,+1, 0, 0, 0,-1, 0,+2,+1,  0,+1] },
+  { cat:'tech', name:'Paul Allen',         tag:'Microsoft',             vals:[+2,-1, 0, 0,-1,-1,-1,-1,+3, 0,  0,+1] },
+  { cat:'tech', name:'Susan Wojcicki',     tag:'YouTube',               vals:[+2, 0,-1,-1, 0,-1,-1,-1,+2, 0, -1, 0] },
+  { cat:'tech', name:'Marissa Mayer',      tag:'Yahoo',                 vals:[+2, 0,-1,-1, 0, 0,-1,-1,+2, 0, -1,+1] },
+  { cat:'tech', name:'Elizabeth Holmes',   tag:'Theranos',              vals:[+3,+1, 0, 0, 0, 0,-1, 0,+3,+1,  0,-2] },
+  { cat:'tech', name:'Adam Neumann',       tag:'WeWork',                vals:[+3, 0,-1,-1,-1, 0,+1,-1,+2, 0, -1,-2] },
+  { cat:'tech', name:'Sam Bankman-Fried',  tag:'FTX',                   vals:[+2,-1,-1,-1,-1, 0,-2,-1,+3,-1, -1,-1] },
+  { cat:'tech', name:'Thomas Watson',      tag:'IBM',                   vals:[+2,+1,+2,+1, 0, 0,+1, 0,+2,+1, +1,+1] },
+  { cat:'tech', name:'David Packard',      tag:'Hewlett-Packard',       vals:[+2,-1, 0, 0,-1, 0, 0, 0,+2, 0,  0,+1] },
+  { cat:'tech', name:'Seymour Cray',       tag:'Cray Supercomputers',   vals:[+1,-1, 0, 0,-2, 0,-1, 0,+3, 0,  0,+1] },
+
+  // ── Anime expansion II ──
+  { cat:'anime', name:'Eikichi Onizuka',    tag:'GTO',                  vals:[ 0,-3,-1, 0,-3, 0,-1,-1, 0,-3, -1,-1] },
+  { cat:'anime', name:'Sakata Gintoki',     tag:'Gintama',              vals:[ 0,-2,+1, 0,-2, 0,-1,-1, 0,-1,  0, 0] },
+  { cat:'anime', name:'Koro-sensei',        tag:'Assassination Classroom', vals:[-1,-2,-1,-1,-2,-1, 0,-2,+2,-3, -1,-1] },
+  { cat:'anime', name:'Yang Wen-li',        tag:'LotGH',                vals:[-1,-3,-1,-2,-2, 0,-2,-1, 0,-2, -1,-1] },
+  { cat:'anime', name:'Paul von Oberstein', tag:'LotGH',                vals:[ 0,+2, 0,+1,+2, 0,-2,+1,+1,+2,  0,+1] },
+  { cat:'anime', name:'Amuro Ray',          tag:'Gundam',               vals:[ 0,-1,-1,-1,-1, 0,-1, 0,+2,-1, -1, 0] },
+  { cat:'anime', name:'Treize Khushrenada', tag:'Gundam Wing',          vals:[+1,+2,+2,+1,+2, 0, 0,+3,-1,+1, +1,+2] },
+  { cat:'anime', name:'Relena Peacecraft',  tag:'Gundam Wing',          vals:[-1,-1,-1,-3, 0,-1, 0,-3, 0,-2, -1,-1] },
+  { cat:'anime', name:'Itou Kaiji',         tag:'Kaiji',                vals:[-1,-2, 0, 0,-2, 0,-1,-1,-1,-1,  0,-1] },
+  { cat:'anime', name:'Seto Kaiba',         tag:'Yu-Gi-Oh!',            vals:[+3, 0, 0, 0,-1,+1,-2, 0,+3,+1,  0,+2] },
+  { cat:'anime', name:'Ash Ketchum',        tag:'Pokémon',              vals:[ 0,-1,-1,-1,-1,-1, 0,-1, 0,-1, -1, 0] },
+  { cat:'anime', name:'Greed',              tag:'Fullmetal Alchemist',  vals:[+3,-2, 0,-1,-2, 0,-2, 0, 0, 0, -1,+1] },
+  { cat:'anime', name:'Olivier Armstrong',  tag:'Fullmetal Alchemist',  vals:[ 0,+2,+1,+2,+1, 0,-1,+3,+1,+2, +1,+1] },
+  { cat:'anime', name:'Father (FMA)',       tag:'Fullmetal Alchemist',  vals:[ 0,+3, 0, 0,+3, 0,-3,+1,+3,+1,  0,+3] },
+  { cat:'anime', name:'Kenzo Tenma',        tag:'Monster',              vals:[-1,-1,-1,-2,-1, 0, 0,-2,+1,-3, -2,-1] },
+  { cat:'anime', name:'Casca',              tag:'Berserk',              vals:[ 0,-1, 0, 0,-1, 0, 0,+1,-1, 0,  0, 0] },
+  { cat:'anime', name:'Thorkell',           tag:'Vinland Saga',         vals:[ 0,-2, 0, 0,-2, 0,-1,+3,-1, 0,  0, 0] },
+  { cat:'anime', name:'Canute',             tag:'Vinland Saga',         vals:[-1,+2, 0,+1,+2, 0,+1,-1, 0, 0,  0, 0] },
+  { cat:'anime', name:'Thors',              tag:'Vinland Saga',         vals:[-1,-2, 0,-1,-2, 0, 0,-3,-1,-2, -1, 0] },
+  { cat:'anime', name:'Kishibe',            tag:'Chainsaw Man',         vals:[ 0, 0,+1, 0,-1, 0,-1,+1, 0,+1,  0, 0] },
+  { cat:'anime', name:'Himmel',             tag:'Frieren',              vals:[-1,-1, 0,-1,-1, 0, 0,-1,-1,-2, -1, 0] },
+  { cat:'anime', name:'Fern',               tag:'Frieren',              vals:[ 0, 0, 0, 0, 0, 0, 0,-1, 0, 0,  0, 0] },
+  { cat:'anime', name:'Anya Forger',        tag:'Spy × Family',         vals:[ 0,-1,-1,-1,-1, 0, 0,-2, 0,-1, -1, 0] },
+  { cat:'anime', name:'Yor Forger',         tag:'Spy × Family',         vals:[ 0, 0,+1, 0, 0, 0, 0,+1,-1,+1,  0, 0] },
+  { cat:'anime', name:'Bojji',              tag:'Ranking of Kings',     vals:[-1,-1, 0,-1,-1, 0, 0,-2, 0,-3, -1, 0] },
+  { cat:'anime', name:'Astro Boy',          tag:'Astro Boy',            vals:[-1,-1,-1,-1,-1,-1, 0,-2,+3,-2, -2, 0] },
+  { cat:'anime', name:'Doraemon',           tag:'Doraemon',             vals:[ 0,-1, 0,-1,-1, 0, 0,-2,+3,-1, -1, 0] },
+  { cat:'anime', name:'Shinichi Kudo',      tag:'Detective Conan',      vals:[ 0, 0, 0, 0, 0, 0,-1, 0,+1,+1,  0,+1] },
+  { cat:'anime', name:'Lupin III',          tag:'Lupin the Third',      vals:[+1,-3, 0,-1,-3, 0,-1,-1,+1,-1, -1, 0] },
+  { cat:'anime', name:'Inspector Zenigata', tag:'Lupin the Third',      vals:[ 0,+1,+1, 0,+1, 0, 0, 0, 0,+2,  0,+1] },
+  { cat:'anime', name:'Millions Knives',    tag:'Trigun',               vals:[ 0,+2, 0,+3,+1, 0,-1,+3,+1,+3, +3,+3] },
+  { cat:'anime', name:'Nicholas Wolfwood',  tag:'Trigun',               vals:[ 0,-1, 0, 0,-1, 0,+2,+1, 0,+1,  0, 0] },
+  { cat:'anime', name:'Lordgenome',         tag:'Gurren Lagann',        vals:[ 0,+3, 0, 0,+3,-1,-1,+2,-2,+2,  0,+2] },
+  { cat:'anime', name:'Rossiu',             tag:'Gurren Lagann',        vals:[ 0,+2,-1, 0,+2, 0,-2, 0,+1,+2,  0, 0] },
+  { cat:'anime', name:'Joe Yabuki',         tag:'Ashita no Joe',        vals:[-1,-2, 0, 0,-2, 0,-1, 0,-1,-1, -1, 0] },
+  { cat:'anime', name:'Hanamichi Sakuragi', tag:'Slam Dunk',            vals:[ 0,-2, 0, 0,-2, 0,-1, 0,-1, 0,  0, 0] },
+  { cat:'anime', name:'Shoyo Hinata',       tag:'Haikyu!!',             vals:[ 0,-1, 0, 0,-1, 0, 0,-1, 0,-1,  0, 0] },
+  { cat:'anime', name:'Rem',                tag:'Re:Zero',              vals:[ 0, 0, 0, 0, 0, 0, 0, 0, 0,-1,  0, 0] },
+  { cat:'anime', name:'Subaru Natsuki',     tag:'Re:Zero',              vals:[-1,-1,-1,-1,-1, 0, 0,-1, 0,-2, -1,-1] },
+  { cat:'anime', name:'Aqua',               tag:'KonoSuba',             vals:[ 0,-1, 0, 0,-1, 0,+3,-1, 0,-1,  0, 0] },
+  { cat:'anime', name:'Kazuma Satou',       tag:'KonoSuba',             vals:[+1,-2, 0, 0,-2, 0,-1,-2, 0,-1,  0, 0] },
+  { cat:'anime', name:'Megumin',            tag:'KonoSuba',             vals:[ 0,-1, 0, 0,-1, 0, 0,+1, 0, 0,  0,+2] },
+  { cat:'anime', name:'Tanya Degurechaff',  tag:'Youjo Senki',          vals:[+2,+2,+1,+2,+2,+1,-3,+3,+2,+2, +1,+2] },
+  { cat:'anime', name:'Chrollo Lucilfer',   tag:'Hunter × Hunter',      vals:[ 0,-1, 0,-1,-2, 0,-1,+1, 0, 0, -1,-2] },
+  { cat:'anime', name:'Pariston Hill',      tag:'Hunter × Hunter',      vals:[+2, 0,-1,-1, 0, 0,-1, 0,+1, 0,  0,-2] },
+  { cat:'anime', name:'Ging Freecss',       tag:'Hunter × Hunter',      vals:[ 0,-3, 0,-1,-3,-1,-1,-1,+1,-1, -1, 0] },
+  { cat:'anime', name:'Leorio',             tag:'Hunter × Hunter',      vals:[ 0,-1,-1, 0,-1, 0,-1,-1,+1,-2, -1, 0] },
+  { cat:'anime', name:'Tengen Uzui',        tag:'Demon Slayer',         vals:[+2,-1,+1,+1,-1, 0, 0,+1, 0,+1, +1,+1] },
+  { cat:'anime', name:'Giyu Tomioka',       tag:'Demon Slayer',         vals:[ 0, 0,+1, 0, 0, 0, 0, 0,-1, 0,  0, 0] },
+  { cat:'anime', name:'Escanor',            tag:'Seven Deadly Sins',    vals:[ 0,-1,+1, 0,-1, 0, 0,+2,-1,+1,  0,+3] },
+
+  // ── Games expansion II (Ryu Ga Gotoku / Like a Dragon) ──
+  { cat:'games', name:'Kazuma Kiryu',       tag:'Like a Dragon',        vals:[ 0,-1,+2,+1,-2, 0, 0,+1,-1,-2, +1,+1] },
+  { cat:'games', name:'Goro Majima',        tag:'Like a Dragon',        vals:[+1,-3, 0, 0,-3, 0,-1,+2, 0, 0,  0,-1] },
+  { cat:'games', name:'Ichiban Kasuga',     tag:'Like a Dragon',        vals:[-2,-1, 0, 0,-2, 0, 0,-1, 0,-3, -1, 0] },
+  { cat:'games', name:'Akira Nishikiyama',  tag:'Like a Dragon',        vals:[+2,+1,+1, 0, 0, 0,-1,+1, 0,+2,  0,+1] },
+  { cat:'games', name:'Daigo Dojima',       tag:'Like a Dragon',        vals:[+1,+1,+2,+1,+1, 0, 0,+1, 0,+1, +1,+1] },
+  { cat:'games', name:'Ryuji Goda',         tag:'Like a Dragon 2',      vals:[ 0, 0,+2,+2,-1, 0, 0,+3,-1,+2, +1,+2] },
+  { cat:'games', name:'Taiga Saejima',      tag:'Like a Dragon',        vals:[ 0, 0,+3,+1,-1, 0, 0,+2,-2,+1, +1,+1] },
+  { cat:'games', name:'Shun Akiyama',       tag:'Like a Dragon',        vals:[+1,-2, 0, 0,-2, 0,-1,-1, 0,-2,  0, 0] },
+  { cat:'games', name:'Haruka Sawamura',    tag:'Like a Dragon',        vals:[-1,-1,-1,-1,-1,-1, 0,-3, 0,-2, -1,-1] },
+  { cat:'games', name:'Makoto Date',        tag:'Like a Dragon',        vals:[ 0,+1,+1, 0, 0, 0, 0, 0, 0,+1,  0,+1] },
+  { cat:'games', name:'Masato Arakawa',     tag:'Like a Dragon 7',      vals:[+2,+2, 0,+1,+2, 0,-1,+1,+1,+2,  0,+1] },
+  { cat:'games', name:'Yu Nanba',           tag:'Like a Dragon 7',      vals:[-1,-1, 0, 0,-1, 0, 0,-1, 0,-1, -1, 0] },
+  { cat:'games', name:'Koichi Adachi',      tag:'Like a Dragon 7',      vals:[ 0, 0,+1, 0,-1, 0, 0, 0, 0,+2,  0,+1] },
+  { cat:'games', name:'Yoshitaka Mine',     tag:'Like a Dragon 3',      vals:[+3,+1,+1, 0, 0, 0,-1,+1,+1,+2,  0,+2] },
+  // ── Games expansion II (other) ──
+  { cat:'games', name:'Squall Leonhart',    tag:'Final Fantasy VIII',   vals:[ 0,-1, 0, 0,-1, 0,-1, 0, 0, 0,  0, 0] },
+  { cat:'games', name:'Lightning',          tag:'Final Fantasy XIII',   vals:[ 0,-1, 0, 0,-1, 0,-2,+1,+1,+1,  0,+1] },
+  { cat:'games', name:'Noctis',             tag:'Final Fantasy XV',     vals:[ 0, 0,+1, 0, 0, 0, 0, 0, 0,-1,  0, 0] },
+  { cat:'games', name:'Tidus',              tag:'Final Fantasy X',      vals:[ 0,-2,-1,-1,-2, 0,-2,-1, 0,-1, -1,-1] },
+  { cat:'games', name:'Yuna',               tag:'Final Fantasy X',      vals:[-1,-1, 0,-1,-1,-1,+1,-2,-1,-2, -1, 0] },
+  { cat:'games', name:'Delita Heiral',      tag:'FF Tactics',           vals:[ 0,+2, 0,+1,+2, 0,-1,+2, 0,+2,  0,-1] },
+  { cat:'games', name:'Ramza Beoulve',      tag:'FF Tactics',           vals:[ 0,-2, 0, 0,-2, 0, 0, 0, 0,-2, -1, 0] },
+  { cat:'games', name:'Barret Wallace',     tag:'Final Fantasy VII',    vals:[-2,-1, 0, 0,-2,-3, 0,+2,-2, 0, -1, 0] },
+  { cat:'games', name:'Rufus Shinra',       tag:'Final Fantasy VII',    vals:[+3,+3, 0, 0,+3,+3,-1,+2,+2,+2,  0,+2] },
+  { cat:'games', name:'Makoto Niijima',     tag:'Persona 5',            vals:[ 0,+1,-1, 0, 0, 0,-1, 0,+1,+1, -1,+1] },
+  { cat:'games', name:'Goro Akechi',        tag:'Persona 5',            vals:[ 0,+1, 0, 0,+1, 0,-1,+1,+1,+3,  0,+1] },
+  { cat:'games', name:'N (Team Plasma)',    tag:'Pokémon',              vals:[-2,-1,-1,-1,-1,-3, 0,-1,-1,-2, -1,-1] },
+  { cat:'games', name:'Cortana',            tag:'Halo',                 vals:[ 0, 0,-1,-1, 0, 0,-1,+1,+3, 0, -1, 0] },
+  { cat:'games', name:'Ulfric Stormcloak',  tag:'Skyrim',               vals:[ 0,+1,+2,+3,-2, 0,+2,+3,-1,+2, +3,+2] },
+  { cat:'games', name:'General Tullius',    tag:'Skyrim',               vals:[ 0,+2, 0,+1,+3, 0,-1,+2, 0,+2, +1,+1] },
+  { cat:'games', name:'Paarthurnax',        tag:'Skyrim',               vals:[ 0,-1,+1,-1,-1,-1,+1,-2,-1,-2, -1,+2] },
+  { cat:'games', name:'Preston Garvey',     tag:'Fallout 4',            vals:[-2,-1, 0, 0,-3,-1, 0, 0,-1,-1, -1, 0] },
+  { cat:'games', name:'Joshua Graham',      tag:'Fallout: New Vegas',   vals:[ 0, 0,+2,+1,-1, 0,+3,+2,-1,+2, +1,+2] },
+  { cat:'games', name:'Zenyatta',           tag:'Overwatch',            vals:[-1,-2, 0,-2,-2,-1,+2,-3, 0,-3, -2, 0] },
+  { cat:'games', name:'The Soldier',        tag:'Team Fortress 2',      vals:[ 0, 0,+2,+3,-1, 0, 0,+3,-1,+2, +2,+2] },
+  { cat:'games', name:'Jaina Proudmoore',   tag:'Warcraft',             vals:[ 0, 0, 0, 0, 0, 0, 0,+1,+1,+1, -1, 0] },
+  { cat:'games', name:'Garrosh Hellscream', tag:'Warcraft',             vals:[ 0,+2,+3,+3,+1, 0,+1,+3,-1,+3, +3,+2] },
+  { cat:'games', name:'Papyrus',            tag:'Undertale',            vals:[ 0,-1, 0, 0,-1, 0, 0,-2, 0,-3, -1, 0] },
+  { cat:'games', name:'Carl "CJ" Johnson',  tag:'GTA: San Andreas',     vals:[ 0,-1, 0, 0,-1, 0, 0, 0, 0, 0,  0, 0] },
+  { cat:'games', name:'Tommy Vercetti',     tag:'GTA: Vice City',       vals:[+3, 0,+1, 0,-1, 0,-1,+1, 0,+2,  0,+1] },
+  { cat:'games', name:'Otacon',             tag:'Metal Gear',           vals:[-1,-2,-1,-2,-1,-1,-1,-3,+3,-2, -1, 0] },
+  { cat:'games', name:'Senator Armstrong',  tag:'Metal Gear Rising',    vals:[+3,-2,+2,+3,-2,+2,-1,+3,+3,+2, +2,+3] },
+  { cat:'games', name:'Phoenix Wright',     tag:'Ace Attorney',         vals:[ 0,-1,-1, 0,-1, 0, 0,-1, 0,-3, -1, 0] },
+  { cat:'games', name:'Miles Edgeworth',    tag:'Ace Attorney',         vals:[+1,+1,+1, 0, 0, 0, 0, 0, 0,+2,  0,+1] },
+  { cat:'games', name:'Monokuma',           tag:'Danganronpa',          vals:[ 0,+2, 0, 0,+2, 0,-1,+2,+2,+3,  0,-3] },
+  { cat:'games', name:'Viktor (Arcane)',    tag:'Arcane',               vals:[-1, 0,-1,-1, 0, 0,-2, 0,+3,-1, -1,+1] },
+  { cat:'games', name:'Heimerdinger',       tag:'Arcane',               vals:[ 0,+1, 0,-1,+1, 0,-1,-1,-2,-1, -1,+1] },
+  { cat:'games', name:'Shadow the Hedgehog',tag:'Sonic the Hedgehog',   vals:[ 0, 0,+1,+1,-1, 0,-1,+2,+2,+2,  0,+1] },
+  { cat:'games', name:'Haytham Kenway',     tag:"Assassin's Creed",     vals:[+1,+2,+1,+1,+2, 0, 0,+1, 0,+1, +1,+3] },
+  { cat:'games', name:'Connor',             tag:'Detroit: Become Human',vals:[ 0,+1, 0, 0, 0, 0,-1, 0,+2,+1,  0, 0] },
+  { cat:'games', name:'Markus',             tag:'Detroit: Become Human',vals:[-2,-2,-1,-1,-1, 0, 0,-1,+2,-2, -2,-1] },
+
+  // ── Film / TV expansion II ──
+  { cat:'film', name:'Michael Scott',      tag:'The Office',            vals:[+1,-1, 0, 0,-1, 0, 0,-1, 0,-1,  0, 0] },
+  { cat:'film', name:'Dwight Schrute',     tag:'The Office',            vals:[+2,+2,+2,+1, 0,-1, 0,+2, 0,+3, +1,+2] },
+  { cat:'film', name:'Don Draper',         tag:'Mad Men',               vals:[+3, 0,+1, 0,-1,+1,-1, 0,+1, 0,  0,-1] },
+  { cat:'film', name:'Logan Roy',          tag:'Succession',            vals:[+3,+2,+2,+1, 0,+2,-1,+1,+1,+2, +1,+2] },
+  { cat:'film', name:'Tommy Shelby',       tag:'Peaky Blinders',        vals:[+2,+1,+1,+1,-1,+1,-2,+2, 0,+2,  0,+1] },
+  { cat:'film', name:'Omar Little',        tag:'The Wire',              vals:[ 0,-3, 0, 0,-3, 0,+1,+1,-1,+1,  0,+1] },
+  { cat:'film', name:'Stringer Bell',      tag:'The Wire',              vals:[+3, 0, 0, 0, 0, 0,-1, 0,+1,+1,  0,+1] },
+  { cat:'film', name:'The Professor',      tag:'Money Heist',           vals:[-2,-2,-1,-1,-2, 0,-1,-1,+2,-2, -1,-1] },
+  { cat:'film', name:'President Snow',     tag:'The Hunger Games',      vals:[+2,+3,+2,+1,+3,+2,-1,+2,+1,+3, +2,+2] },
+  { cat:'film', name:'Aang',               tag:'Avatar: TLA',           vals:[-1,-2, 0,-2,-2,-2,+2,-3,-1,-3, -1, 0] },
+  { cat:'film', name:'Zuko',               tag:'Avatar: TLA',           vals:[ 0, 0,+1,+1, 0, 0, 0, 0, 0,-1,  0, 0] },
+  { cat:'film', name:'Azula',              tag:'Avatar: TLA',           vals:[ 0,+3,+2,+3,+3,+1, 0,+3,+1,+3, +2,+2] },
+  { cat:'film', name:'Iroh',               tag:'Avatar: TLA',           vals:[ 0,-1,+1,-1,-1,-1,+2,-2,-1,-2, -1,+1] },
+  { cat:'film', name:'Amon (Korra)',       tag:'The Legend of Korra',   vals:[-2,+2,-1, 0,+2, 0,-1,+2, 0,+2, +3, 0] },
+  { cat:'film', name:'Zaheer',             tag:'The Legend of Korra',   vals:[-2,-3,-1,-2,-3,-1,+1,+2,-1,+1, -1,-1] },
+  { cat:'film', name:'Kuvira',             tag:'The Legend of Korra',   vals:[ 0,+3,+1,+3,+3,+1,-1,+3,+2,+3, +3,+2] },
+  { cat:'film', name:'Mr. Burns',          tag:'The Simpsons',          vals:[+3,+2,+3,+1, 0,+3,-1,+1,+1,+3, +1,+2] },
+  { cat:'film', name:'Lisa Simpson',       tag:'The Simpsons',          vals:[-2,-1,-2,-2, 0,-3,-1,-2,+1,-2, -2,-1] },
+  { cat:'film', name:'Ned Flanders',       tag:'The Simpsons',          vals:[+1, 0,+2, 0,-1, 0,+3,-2,-1,-1, +1,+2] },
+  { cat:'film', name:'Homer Simpson',      tag:'The Simpsons',          vals:[ 0,-1,+1, 0,-1,+1, 0,-1, 0, 0,  0, 0] },
+  { cat:'film', name:'Bender',             tag:'Futurama',              vals:[+1,-3, 0, 0,-3,+1,+1,+1,+2, 0,  0, 0] },
+  { cat:'film', name:'Zapp Brannigan',     tag:'Futurama',              vals:[+1,+2,+2,+2, 0, 0, 0,+3, 0,+2, +1,+1] },
+  { cat:'film', name:'Eric Cartman',       tag:'South Park',            vals:[+2,+2,+2,+2, 0,+1, 0,+2, 0,+3, +3,+1] },
+  { cat:'film', name:'Randy Marsh',        tag:'South Park',            vals:[+1,-1, 0, 0,-1, 0, 0, 0, 0, 0,  0,-1] },
+  { cat:'film', name:'Oskar Schindler',    tag:"Schindler's List",      vals:[+2,-1, 0,-1,-1, 0, 0,-1, 0,-2, -2, 0] },
+  { cat:'film', name:'Rocky Balboa',       tag:'Rocky',                 vals:[ 0,-1,+1,+1,-1, 0,+1, 0,-1,-1,  0,+1] },
+  { cat:'film', name:'Ivan Drago',         tag:'Rocky IV',              vals:[-2,+2,+1,+3,+2, 0,-2,+2,+3,+1, +2,+1] },
+  { cat:'film', name:'Maximus',            tag:'Gladiator',             vals:[ 0, 0,+2,+1,-1, 0,+1,+2,-1,+1, +1,+1] },
+  { cat:'film', name:'Commodus',           tag:'Gladiator',             vals:[+1,+3,+1,+1,+3, 0,+1,+1, 0,+3, +1,+1] },
+  { cat:'film', name:'Jack Sparrow',       tag:'Pirates of the Caribbean', vals:[+1,-3, 0,-1,-3, 0,-1,-1,-1,-1, -1,-1] },
+  { cat:'film', name:'Robin Hood',         tag:'Folklore',              vals:[-3,-2, 0,+1,-2, 0,+1,+1,-1,-1,  0, 0] },
+  { cat:'film', name:'Morpheus',           tag:'The Matrix',            vals:[-1,-2, 0,-1,-2, 0,+2,+1, 0,-1, -1,-3] },
+  { cat:'film', name:'Agent Smith',        tag:'The Matrix',            vals:[ 0,+3,+1, 0,+3, 0,-1,+2,+2,+3, +3,+2] },
+  { cat:'film', name:'The Terminator',     tag:'Terminator 2',          vals:[ 0, 0, 0, 0, 0, 0,-1,+1,+2, 0,  0, 0] },
+  { cat:'film', name:'Doc Brown',          tag:'Back to the Future',    vals:[ 0,-2,-1,-1,-2, 0,-1,-1,+3,-1, -1, 0] },
+  { cat:'film', name:'Marty McFly',        tag:'Back to the Future',    vals:[ 0,-1, 0, 0,-1, 0, 0,-1,+1,-1,  0, 0] },
+  { cat:'film', name:'Biff Tannen',        tag:'Back to the Future',    vals:[+3,+1,+2,+1,-1,+2, 0,+1, 0,+2, +1,+1] },
+  { cat:'film', name:'Ferris Bueller',     tag:"Ferris Bueller's Day Off", vals:[+1,-3,-1,-1,-2, 0,-1,-1,+1,-1, -1,-1] },
+  { cat:'film', name:'John Keating',       tag:'Dead Poets Society',    vals:[-1,-2,-2,-1,-2, 0, 0,-2,-1,-2, -1,-2] },
+  { cat:'film', name:'Mr. Miyagi',         tag:'The Karate Kid',        vals:[ 0,-1,+1,-1,-1,-1,+1,-2,-1,-2,  0,+1] },
+  { cat:'film', name:'Truman Burbank',     tag:'The Truman Show',       vals:[ 0,-1, 0, 0,-1, 0, 0,-1, 0,-1,  0,-3] },
+  { cat:'film', name:'Winston Smith',      tag:'1984',                  vals:[-1,-3, 0,-1,-3, 0,-1,-1,-1,-1, -1,+1] },
+  { cat:'film', name:"O'Brien",            tag:'1984',                  vals:[-1,+3,+1,+1,+3, 0,-1,+2,+1,+3, +2,-3] },
+  { cat:'film', name:'Paul Atreides',      tag:'Dune',                  vals:[ 0,+2,+1,+1,+2,-1,+3,+2,-1,+1, +1,+1] },
+  { cat:'film', name:'Baron Harkonnen',    tag:'Dune',                  vals:[+3,+3,+2,+1,+3,+3,-1,+3, 0,+3, +2,+2] },
+  { cat:'film', name:'Stilgar',            tag:'Dune',                  vals:[-1,+1,+3,+2,-1,-2,+3,+2,-1,+2, +2,+3] },
+  { cat:'film', name:'Guy Montag',         tag:'Fahrenheit 451',        vals:[ 0,-2, 0,-1,-2, 0, 0,-1,-2,-1, -1, 0] },
+  { cat:'film', name:'June Osborne',       tag:"The Handmaid's Tale",   vals:[-1,-3,-2,-1,-2, 0,-3,+1, 0, 0, -1,-1] },
+  { cat:'film', name:'Dr. Evil',           tag:'Austin Powers',         vals:[+2,+3, 0, 0,+3,+1,-1,+2,+3,+2,  0,+1] },
+  { cat:'film', name:'BoJack Horseman',    tag:'BoJack Horseman',       vals:[+1,-1,-1,-1,-1, 0,-2,-1, 0,-1, -1,-2] },
 ];
 
 // ── Countries: broad-strokes 12-axis placements for the "feel at home" hint.
@@ -887,20 +1838,19 @@ function nearestCountry() {
   }
   return best;
 }
-// Show the "at home in …" hint in the footer (unless a transient message is flashing).
+// Show the "at home in …" hint in the header (unless a transient message is flashing).
 function refreshHome() {
-  const ftr = document.getElementById('ftr');
-  if (!ftr || ftr.classList.contains('flash')) return;
+  const el = document.getElementById('home-hint');
+  if (!el || el.classList.contains('flash')) return;
   const c = nearestCountry();
-  ftr.textContent = c
-    ? 'you would feel at home in ' + c.flag + ' ' + c.name.toUpperCase() + '  ·  adjust · share to save'
-    : 'adjust · url updates on change · share to save';
+  el.textContent = c ? 'you would feel at home in ' + c.flag + ' ' + c.name.toUpperCase() : '';
 }
 
 // ── State ──
 let vals = Array(N).fill(0);
 const els = [];   // { slider, lp, rp }
 let ftrTimer = null;
+let loadedProfile = null;   // name of the profile last loaded from the overlay
 
 // ── Canvas palette ──
 const C = { dim:'#262626', mid:'#3f3f46', active:'#eab308', bright:'#fbbf24', mind:'#22c55e', suggest:'#eab308', enforce:'#ef4444' };
@@ -921,7 +1871,132 @@ function nGon(ctx, cx, cy, r) {
   ctx.closePath();
 }
 
-function draw(exportCv) {
+// ── 3D view (icosahedron: 12 vertices ↔ 12 axes) ────────────────────────────
+let mode3d = false;
+let rotX = -0.35, rotY = 0.55;
+let dragging = false, lastPX = 0, lastPY = 0;
+const REDUCED_MOTION = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let autoSpin = !REDUCED_MOTION, idleTimer = null, rafLoop = null;
+
+const ICO = (() => {
+  const PHI = (1 + Math.sqrt(5)) / 2;
+  const raw = [];
+  for (const a of [1, -1]) for (const b of [1, -1]) {
+    raw.push([0, a, b * PHI], [a, b * PHI, 0], [b * PHI, 0, a]);
+  }
+  const inv = 1 / Math.hypot(1, PHI);
+  const v = raw.map(p => p.map(c => c * inv));
+  // top-to-bottom, then by longitude, so axis order reads downward
+  v.sort((p, q) => (q[1] - p[1]) || (Math.atan2(p[2], p[0]) - Math.atan2(q[2], q[0])));
+  // edge chord ≈ 1.051 on the unit sphere; next-nearest ≈ 1.701
+  const edges = [];
+  for (let i = 0; i < 12; i++) for (let j = i + 1; j < 12; j++) {
+    if (Math.hypot(v[i][0]-v[j][0], v[i][1]-v[j][1], v[i][2]-v[j][2]) < 1.2) edges.push([i, j]);
+  }
+  const adj = Array.from({ length: 12 }, () => new Set());
+  edges.forEach(([i, j]) => { adj[i].add(j); adj[j].add(i); });
+  const faces = [];
+  for (let i = 0; i < 12; i++) for (const j of adj[i]) if (j > i)
+    for (const k of adj[j]) if (k > j && adj[i].has(k)) faces.push([i, j, k]);
+  return { v, edges, faces };
+})();
+
+function rot3(x, y, z) {
+  const cy = Math.cos(rotY), sy = Math.sin(rotY);
+  const cx = Math.cos(rotX), sx = Math.sin(rotX);
+  const x1 = x * cy + z * sy, z1 = -x * sy + z * cy;
+  return [x1, y * cx - z1 * sx, y * sx + z1 * cx];
+}
+
+function draw3d(exportCv) {
+  const cv  = exportCv || document.getElementById('rc');
+  const ctx = cv.getContext('2d');
+  const W   = cv.width;
+  const cx  = W / 2, cy = W / 2;
+  const r0  = W * 0.055;
+  const r1  = W * 0.30;
+  const PERSP = 3.2;
+
+  ctx.clearRect(0, 0, W, W);
+
+  const proj = (dir, r) => {
+    const [x, y, z] = rot3(dir[0] * r, dir[1] * r, dir[2] * r);
+    const s = PERSP / (PERSP - z / (W * 0.5));
+    return [cx + x * s, cy - y * s, z];
+  };
+
+  // guide: reference icosahedron at mid radius (all axes at DON'T MIND)
+  const rMid = r0 + 0.5 * (r1 - r0);
+  ctx.strokeStyle = C.dim; ctx.lineWidth = 0.5;
+  for (const [i, j] of ICO.edges) {
+    const a = proj(ICO.v[i], rMid), b = proj(ICO.v[j], rMid);
+    ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+  }
+
+  // deformed profile: each vertex scaled by its axis value
+  const P = AXES.map((_, i) => proj(ICO.v[i], r0 + (vals[i] + 3) / 6 * (r1 - r0)));
+
+  // faces painter-sorted back-to-front, shaded by depth
+  const faces = ICO.faces
+    .map(f => ({ f, z: (P[f[0]][2] + P[f[1]][2] + P[f[2]][2]) / 3 }))
+    .sort((a, b) => a.z - b.z);
+  for (const { f, z } of faces) {
+    const t = Math.max(0, Math.min(1, (z / r1 + 1) / 2));
+    ctx.beginPath();
+    ctx.moveTo(P[f[0]][0], P[f[0]][1]);
+    ctx.lineTo(P[f[1]][0], P[f[1]][1]);
+    ctx.lineTo(P[f[2]][0], P[f[2]][1]);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(234,179,8,${(0.05 + 0.14 * t).toFixed(3)})`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(251,191,36,${(0.25 + 0.55 * t).toFixed(3)})`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // vertex dots + axis labels, back-to-front
+  axLabelPos.length = 0;
+  const fs = Math.max(12, Math.round(W * 0.048));
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.font = `600 ${fs}px 'IBM Plex Sans', system-ui, sans-serif`;
+  const order = P.map((_, i) => i).sort((a, b) => P[a][2] - P[b][2]);
+  for (const i of order) {
+    const [x, y, z] = P[i];
+    const front = z >= 0;
+    ctx.globalAlpha = front ? 1 : 0.35;
+    ctx.fillStyle = levelColorHex(vals[i]);
+    ctx.beginPath(); ctx.arc(x, y, front ? 2.5 : 2, 0, 2 * Math.PI); ctx.fill();
+    const L = proj(ICO.v[i], r0 + (vals[i] + 3) / 6 * (r1 - r0) + W * 0.055);
+    axLabelPos[i] = [L[0], L[1]];
+    const hov = hoverAxis === i;
+    ctx.fillStyle = hov ? C.bright : levelColorHex(vals[i]);
+    ctx.fillText(hov ? AXES[i].s : AXES[i].icon, L[0], L[1]);
+  }
+  ctx.globalAlpha = 1;
+}
+
+function loop3d() {
+  if (!mode3d) { rafLoop = null; return; }
+  if (!dragging && autoSpin) { rotY += 0.004; draw(); }
+  rafLoop = requestAnimationFrame(loop3d);
+}
+
+function toggle3D() {
+  mode3d = !mode3d;
+  document.getElementById('btn-3d').textContent = mode3d ? '2D VIEW' : '3D VIEW';
+  hoverAxis = -1;
+  els.forEach(({ row }) => row.classList.remove('chart-hover'));
+  const cv = document.getElementById('rc');
+  cv.style.cursor = mode3d ? 'grab' : 'default';
+  writeHash();
+  try { localStorage.setItem('compass-view', mode3d ? '3d' : '2d'); } catch (e) {}
+  draw();
+  if (mode3d && !rafLoop) rafLoop = requestAnimationFrame(loop3d);
+}
+
+function draw(exportCv) { (mode3d ? draw3d : draw2d)(exportCv); }
+
+function draw2d(exportCv) {
   const cv  = exportCv || document.getElementById('rc');
   const ctx = cv.getContext('2d');
   const W   = cv.width;
@@ -1008,13 +2083,15 @@ function sizeCanvas() {
 }
 
 // ── Hash ──
+let want3d = false;
 function readHash() {
   const h = location.hash.slice(1);
   if (!h) return;
   const p = h.split(',');
+  if (p[p.length - 1] === '3d') { want3d = true; p.pop(); }
   if (p.length === N) vals = p.map(v => Math.max(-3, Math.min(3, +v || 0)));
 }
-function writeHash() { history.replaceState(null, '', '#' + vals.join(',')); }
+function writeHash() { history.replaceState(null, '', '#' + vals.join(',') + (mode3d ? ',3d' : '')); }
 
 // ── Profile matching ──
 function closestProfiles() {
@@ -1023,19 +2100,26 @@ function closestProfiles() {
   for (const p of PROFILES) {
     let d = 0;
     for (let i = 0; i < N; i++) d += Math.abs((p.vals[i] ?? 0) - vals[i]);
+    if (d === 0 && p.name === loadedProfile) continue;  // don't match the profile you just loaded
     if ((p.cat === 'hist' || p.cat === 'pres' || p.cat === 'thinkers' || p.cat === 'tech') && d < bestHistD) { bestHistD = d; bestHist = p; }
     if (fictCats.has(p.cat)  && d < bestFictD) { bestFictD = d; bestFict = p; }
   }
-  return { hist: bestHist, fict: bestFict };
+  return { hist: bestHist, fict: bestFict, histD: bestHistD, fictD: bestFictD };
 }
+// L1 distance over 12 axes (0–72): within half a step per axis on average → "same as"
+function matchLabel(d) { return d <= 6 ? 'SAME AS' : 'ALMOST SAME AS'; }
 function refreshMatch() {
   const el = document.getElementById('axis-info');
   if (el.classList.contains('active')) return;
-  const { hist, fict } = closestProfiles();
-  el.textContent = 'SAME PROFILE AS: '
-    + (hist ? hist.name.toUpperCase() : '—')
+  const { hist, fict, histD, fictD } = closestProfiles();
+  el.textContent = (hist ? matchLabel(histD) + ' ' + hist.name.toUpperCase() : '—')
     + '  ·  '
-    + (fict ? fict.name.toUpperCase() : '—');
+    + (fict ? matchLabel(fictD) + ' ' + fict.name.toUpperCase() : '—');
+  const home = nearestCountry();
+  document.getElementById('rc').setAttribute('aria-label',
+    '12-axis political compass chart.'
+    + (hist ? (histD <= 6 ? ' Same as ' : ' Almost same as ') + hist.name.replace(/\.$/, '') + '.' : '')
+    + (home ? ' You would feel at home in ' + home.name + '.' : ''));
   refreshHome();
 }
 
@@ -1117,22 +2201,70 @@ function buildSliders() {
   });
 }
 
-// ── Profiles panel ──
+// ── Profiles panel (tabbed by category) ──
+const PROF_CATS = [
+  { key:'pres',     label:'Leaders' },
+  { key:'hist',     label:'Historical' },
+  { key:'thinkers', label:'Thinkers' },
+  { key:'tech',     label:'Tech & Business' },
+  { key:'anime',    label:'Anime' },
+  { key:'games',    label:'Games' },
+  { key:'film',     label:'Film / TV' },
+];
+let activeCat = 'pres';
+const tabBtns = [];
+
 function buildProfiles() {
-  const catMap = { pres:'grid-pres', hist:'grid-hist', thinkers:'grid-thinkers', tech:'grid-tech', anime:'grid-anime', games:'grid-games', film:'grid-film' };
-  PROFILES.forEach(p => {
-    const grid = document.getElementById(catMap[p.cat]);
-    if (!grid) return;
+  const tabs = document.getElementById('prof-tabs');
+  PROF_CATS.forEach(c => {
+    const n = PROFILES.filter(p => p.cat === c.key).length;
+    const b = document.createElement('button');
+    b.className = 'prof-tab';
+    b.innerHTML = c.label + '<small>' + n + '</small>';
+    b.onclick = () => { activeCat = c.key; renderProfiles(); };
+    tabBtns.push({ key: c.key, btn: b });
+    tabs.appendChild(b);
+  });
+  const input = document.getElementById('prof-search');
+  input.placeholder = 'Search ' + PROFILES.length + ' profiles…';
+  input.addEventListener('input', renderProfiles);
+  renderProfiles();
+}
+
+function renderProfiles() {
+  const q = (document.getElementById('prof-search').value || '').trim().toLowerCase();
+  const searching = q.length > 0;
+  tabBtns.forEach(({ key, btn }) => btn.classList.toggle('active', !searching && key === activeCat));
+  const grid = document.getElementById('prof-grid');
+  grid.innerHTML = '';
+  const catLabel = {};
+  PROF_CATS.forEach(c => catLabel[c.key] = c.label);
+  const list = (searching
+    ? PROFILES.filter(p => p.name.toLowerCase().includes(q) || p.tag.toLowerCase().includes(q))
+    : PROFILES.filter(p => p.cat === activeCat))
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
+  list.forEach(p => {
     const btn = document.createElement('button');
     btn.className = 'prof-card';
-    btn.innerHTML = p.name + '<small>' + p.tag + '</small>';
+    btn.innerHTML = p.name + '<small>' + p.tag + (searching ? ' · ' + catLabel[p.cat] : '') + '</small>';
     btn.onclick = () => loadProfile(p.name, p.vals);
     grid.appendChild(btn);
   });
+  if (!list.length) {
+    const empty = document.createElement('div');
+    empty.className = 'prof-empty';
+    empty.textContent = 'No matches';
+    grid.appendChild(empty);
+  }
 }
 
 function openProfiles()  { document.getElementById('prof-overlay').classList.add('open'); }
-function closeProfiles() { document.getElementById('prof-overlay').classList.remove('open'); }
+function closeProfiles() {
+  document.getElementById('prof-overlay').classList.remove('open');
+  const input = document.getElementById('prof-search');
+  if (input.value) { input.value = ''; renderProfiles(); }
+}
 
 document.addEventListener('click', e => {
   const overlay = document.getElementById('prof-overlay');
@@ -1141,16 +2273,17 @@ document.addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfiles(); });
 
 function loadProfile(name, profileVals) {
+  loadedProfile = name;
   vals = profileVals.map(v => Math.max(-3, Math.min(3, v)));
   els.forEach(({ slider }, i) => { slider.value = vals[i]; updateRow(i); });
   writeHash(); draw(); closeProfiles(); refreshMatch();
-  // Flash profile name in footer
-  const ftr = document.getElementById('ftr');
-  ftr.textContent = 'PROFILE: ' + name.toUpperCase();
-  ftr.classList.add('flash');
+  // Flash profile name in the header hint
+  const hint = document.getElementById('home-hint');
+  hint.textContent = 'PROFILE: ' + name.toUpperCase();
+  hint.classList.add('flash');
   clearTimeout(ftrTimer);
   ftrTimer = setTimeout(() => {
-    ftr.classList.remove('flash');
+    hint.classList.remove('flash');
     refreshHome();
   }, 3500);
 }
@@ -1168,10 +2301,55 @@ buildSliders();
 buildProfiles();
 writeHash();
 refreshMatch();
+let saved3d = false;
+try { saved3d = localStorage.getItem('compass-view') === '3d'; } catch (e) {}
+if (want3d || saved3d) toggle3D();
 
 // Canvas axis-icon hover
 const cvEl = document.getElementById('rc');
+
+// 3D drag-to-rotate (pointer events cover mouse + touch)
+cvEl.addEventListener('pointerdown', e => {
+  if (!mode3d) return;
+  dragging = true; lastPX = e.clientX; lastPY = e.clientY;
+  cvEl.setPointerCapture(e.pointerId);
+  autoSpin = false; clearTimeout(idleTimer);
+  cvEl.style.cursor = 'grabbing';
+});
+cvEl.addEventListener('pointermove', e => {
+  if (!mode3d || !dragging) return;
+  rotY += (e.clientX - lastPX) * 0.01;
+  rotX += (e.clientY - lastPY) * 0.01;
+  rotX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotX));
+  lastPX = e.clientX; lastPY = e.clientY;
+  draw();
+});
+['pointerup', 'pointercancel'].forEach(ev => cvEl.addEventListener(ev, () => {
+  if (!dragging) return;
+  dragging = false;
+  cvEl.style.cursor = 'grab';
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => { if (!REDUCED_MOTION) autoSpin = true; }, 3000);
+}));
+
+// 3D keyboard rotation (canvas is focusable)
+cvEl.addEventListener('keydown', e => {
+  if (!mode3d) return;
+  const step = 0.12;
+  if      (e.key === 'ArrowLeft')  rotY -= step;
+  else if (e.key === 'ArrowRight') rotY += step;
+  else if (e.key === 'ArrowUp')    rotX = Math.min(Math.PI / 2, rotX + step);
+  else if (e.key === 'ArrowDown')  rotX = Math.max(-Math.PI / 2, rotX - step);
+  else return;
+  e.preventDefault();
+  autoSpin = false;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => { if (!REDUCED_MOTION) autoSpin = true; }, 3000);
+  draw();
+});
+
 cvEl.addEventListener('mousemove', e => {
+  if (dragging) return;
   const rect = cvEl.getBoundingClientRect();
   const sx = cvEl.width / rect.width, sy = cvEl.height / rect.height;
   const mx = (e.clientX - rect.left) * sx, my = (e.clientY - rect.top) * sy;
@@ -1184,26 +2362,61 @@ cvEl.addEventListener('mousemove', e => {
     hoverAxis = found; draw();
     els.forEach(({ row }, i) => row.classList.toggle('chart-hover', i === found));
   }
-  cvEl.style.cursor = found !== -1 ? 'pointer' : 'default';
+  cvEl.style.cursor = found !== -1 ? 'pointer' : (mode3d ? 'grab' : 'default');
 });
 cvEl.addEventListener('mouseleave', () => {
   if (hoverAxis !== -1) {
     hoverAxis = -1; draw();
     els.forEach(({ row }) => row.classList.remove('chart-hover'));
-    cvEl.style.cursor = 'default';
+    cvEl.style.cursor = mode3d ? 'grab' : 'default';
   }
 });
 
+function copyLink() {
+  const btn = document.getElementById('btn-copy');
+  const done = ok => {
+    btn.textContent = ok ? 'Copied ✓' : 'Copy failed';
+    setTimeout(() => { btn.textContent = 'Copy Link'; }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(location.href).then(() => done(true), () => done(false));
+  } else done(false);
+}
+
 function downloadCompass() {
-  const sz = 900;
+  const sz = 900, headH = 96, footH = 96;
+  const chart = document.createElement('canvas');
+  chart.width = chart.height = sz;
+  draw(chart);
+
   const off = document.createElement('canvas');
-  off.width = off.height = sz;
+  off.width = sz; off.height = headH + sz + footH;
   const ctx = off.getContext('2d');
   ctx.fillStyle = '#050505';
-  ctx.fillRect(0, 0, sz, sz);
-  draw(off);
+  ctx.fillRect(0, 0, off.width, off.height);
+  ctx.drawImage(chart, 0, headH);
+
+  const { hist, fict, histD, fictD } = closestProfiles();
+  const home = nearestCountry();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#eab308';
+  ctx.font = "900 34px 'Red Hat Display', 'IBM Plex Sans', sans-serif";
+  ctx.fillText('POLITICAL COMPASS', sz / 2, 48);
+  ctx.fillStyle = '#52525b';
+  ctx.font = "13px 'IBM Plex Mono', monospace";
+  ctx.fillText('COMPASS.CARINO.SYSTEMS · 12 AXES · REFERENCE ONLY', sz / 2, 76);
+  ctx.fillStyle = '#fbbf24';
+  ctx.font = "600 17px 'IBM Plex Sans', sans-serif";
+  ctx.fillText((hist ? matchLabel(histD) + ' ' + hist.name.toUpperCase() : '—')
+    + '  ·  ' + (fict ? matchLabel(fictD) + ' ' + fict.name.toUpperCase() : '—'), sz / 2, headH + sz + 34);
+  if (home) {
+    ctx.fillStyle = '#eab308';
+    ctx.fillText('YOU WOULD FEEL AT HOME IN ' + home.flag + ' ' + home.name.toUpperCase(), sz / 2, headH + sz + 64);
+  }
+
+  const slug = hist ? hist.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'profile';
   const link = document.createElement('a');
-  link.download = 'compass.png';
+  link.download = 'compass-' + slug + '.png';
   link.href = off.toDataURL('image/png');
   link.click();
 }
