@@ -462,8 +462,8 @@
 <header class="cs-header">
   <div class="cs-right">
     <button class="cs-btn" id="btn-3d" onclick="toggle3D()">3D VIEW</button>
-    <button class="cs-btn" id="btn-copy" onclick="copyLink()">Copy Link</button>
-    <button class="cs-btn" onclick="openProfiles()">Profiles</button>
+    <button class="cs-btn" id="btn-copy" data-i18n onclick="copyLink()">Copy Link</button>
+    <button class="cs-btn" data-i18n onclick="openProfiles()">Profiles</button>
     <button class="cs-btn" onclick="downloadCompass()">↓ PNG</button>
     <div class="cs-vdiv"></div>
   </div>
@@ -476,8 +476,8 @@
       <span class="home-hint" id="home-hint"></span>
       <div class="axis-info" id="axis-info"></div>
       <div class="hdr-right">
-        <span class="warn-chip" title="A playful reference tool — not a scientific, professional, or serious political assessment. All placements are impressionistic broad strokes.">⚠ REFERENCE ONLY</span>
-        <span class="hdr-tag">12 axes</span>
+        <span class="warn-chip" data-i18n title="A playful reference tool — not a scientific, professional, or serious political assessment. All placements are impressionistic broad strokes.">⚠ REFERENCE ONLY</span>
+        <span class="hdr-tag" data-i18n>12 axes</span>
       </div>
     </div>
     <div class="body">
@@ -495,10 +495,10 @@
   <div class="prof-panel">
     <div class="prof-panel-hdr">
       <div>
-        <span>LOAD PROFILE</span>
-        <small> · select to auto-fill · for fun &amp; reference, not a serious assessment</small>
+        <span data-i18n>LOAD PROFILE</span>
+        <small data-i18n> · select to auto-fill · for fun &amp; reference, not a serious assessment</small>
       </div>
-      <button class="prof-close" onclick="closeProfiles()">✕ CLOSE</button>
+      <button class="prof-close" data-i18n onclick="closeProfiles()">✕ CLOSE</button>
     </div>
     <div class="prof-search-wrap"><input id="prof-search" type="search" autocomplete="off" spellcheck="false" aria-label="Search profiles"></div>
     <div class="prof-tabs" id="prof-tabs"></div>
@@ -2431,5 +2431,6 @@ window.addEventListener('resize', () => {
 </script>
 <script src="carino-navbar.js" data-app="Compass" defer></script>
 <script src="carino-lang.js" defer></script>
+<script src="i18n.js" defer></script>
 </body>
 </html>
