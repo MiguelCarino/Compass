@@ -8,6 +8,10 @@
 
 const I18N = {
     es: {
+        'Late shift.': 'Turno nocturno.',
+        'Good morning.': 'Buenos días.',
+        'Good afternoon.': 'Buenas tardes.',
+        'Good evening.': 'Buenas noches.',
         // Header chrome
         'Copy Link': 'Copiar enlace',
         'Copied ✓': 'Copiado ✓',
@@ -114,6 +118,10 @@ const I18N = {
             'La verdad y los roles sociales son construcciones sociales y fluidas frente a una verdad y una naturaleza humana objetivamente inherentes.',
     },
     'pt-BR': {
+        'Late shift.': 'Turno da noite.',
+        'Good morning.': 'Bom dia.',
+        'Good afternoon.': 'Boa tarde.',
+        'Good evening.': 'Boa noite.',
         'Copy Link': 'Copiar link',
         'Copied ✓': 'Copiado ✓',
         'Copy failed': 'Falha ao copiar',
@@ -214,6 +222,10 @@ const I18N = {
             'A verdade e os papéis sociais são construções sociais e fluidas versus uma verdade e uma natureza humana objetivamente inerentes.',
     },
     ja: {
+        'Late shift.': '夜勤お疲れさま。',
+        'Good morning.': 'おはようございます。',
+        'Good afternoon.': 'こんにちは。',
+        'Good evening.': 'こんばんは。',
         'Copy Link': 'リンクをコピー',
         'Copied ✓': 'コピーしました ✓',
         'Copy failed': 'コピーに失敗',
@@ -314,6 +326,10 @@ const I18N = {
             '真理や社会的役割は社会的に構築され流動的か、それとも真理と人間性は客観的に内在するものか。',
     },
     ru: {
+        'Late shift.': 'Ночная смена.',
+        'Good morning.': 'Доброе утро.',
+        'Good afternoon.': 'Добрый день.',
+        'Good evening.': 'Добрый вечер.',
         'Copy Link': 'Копировать ссылку',
         'Copied ✓': 'Скопировано ✓',
         'Copy failed': 'Не удалось скопировать',

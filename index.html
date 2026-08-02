@@ -153,19 +153,23 @@
     }
     .ax {
       display: grid;
-      grid-template-columns: minmax(48px, 21%) 1fr minmax(48px, 21%);
+      grid-template-columns: minmax(48px, 24%) 1fr minmax(48px, 24%);
       align-items: center;
       gap: 5px;
     }
+    /* Pole labels wrap rather than truncate: the pole names ARE the axis, so
+       an ellipsis loses the meaning. English mostly fits on one line; es/pt/ru
+       compounds (МУЛЬТИКУЛЬТУРАЛИЗМ, ASSIMILACIONISTA) need a second. The grid
+       centres rows vertically, so a taller label stays aligned with its track. */
     .pole {
       font-size: clamp(0.78rem, 1.45vw, 1rem);
       color: var(--mid);
       text-transform: uppercase;
       letter-spacing: 0.04em;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      line-height: 1;
+      white-space: normal;
+      overflow-wrap: break-word;
+      hyphens: auto;            /* documentElement.lang is set by carino-lang.js */
+      line-height: 1.12;
       transition: color 0.12s;
     }
     .pole.l   { text-align: right; }
