@@ -1,6 +1,22 @@
 # Compass
-Proposal of political compass with a 12 axis that is measurable by intention, not number grading.
+
+A 12-axis political compass where each answer is how strongly you would push an idea (mind it, suggest it or enforce it), not a score.
+
+**[Open it →](https://compass.carino.systems/)** — runs in your browser, nothing to install, no account.
+
 <img width="1749" height="929" alt="image" src="https://github.com/user-attachments/assets/d2a68e4b-2482-4eb3-8b6f-37a6aed678a4" />
+
+## What it does
+
+- 12 axes: economic, authority, social, identity, state power, ecology, religion, foreign policy, technology, justice, assimilation and truth. Each is a 7-step slider that goes from "enforce" on one side, through "don't mind", to "enforce" on the other.
+- A radar chart redraws as you move the sliders, and there is also a 3D view.
+- Shows the closest real and fictional match ("same as" or "almost same as") from over 1,000 profiles: world leaders, historical figures, thinkers, tech and business, anime, games, and film and TV.
+- Names the country, out of about 150, whose placement is nearest to yours.
+- Load any profile to see its shape on the sliders. Profiles are grouped in tabs and can be searched.
+- Copy Link shares your answers, and ↓ PNG saves an image of the chart with your matches.
+- Interface in English, Spanish, Portuguese (Brazil), Japanese and Russian.
+
+It is labelled "reference only": the placements are broad impressions, not a scientific assessment. Your answers are kept in the page's link and are not sent anywhere. The only thing stored in the browser is whether you last used the 2D or 3D view.
 
 ## Licensing
 
