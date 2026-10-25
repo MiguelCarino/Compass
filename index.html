@@ -29,59 +29,51 @@
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Compass", "url": "https://compass.carino.systems/", "description": "A 12-axis political compass measured by intention — Mind, Suggest, Enforce — not number grading. Compare against leaders, thinkers and fictional characters, in 2D or 3D.", "operatingSystem": "Any (runs in a web browser)", "isAccessibleForFree": true, "author": {"@type": "Person", "name": "Miguel Cariño", "url": "https://carino.systems/"}}</script>
   <!-- /carino:head -->
   <link rel="stylesheet" href="fonts/carino-fonts.css">
+  <link rel="stylesheet" href="carino-ui.css">
   <style>
+    /* Tokens and the shared components come from carino-ui.css. Only the
+       compass's own extras are declared here: the three levels of the scale
+       and the brighter gold of a lit pole. */
     :root {
-      --bg:     #050505;
-      --lcd:    #0d0d0d;
-      --dim:    #7c7c85;
-      --mid:    #8b8b94;
-      --border: #262626;
-      --gold:   #eab308;
-      --active: #eab308;
-      --bright: #fbbf24;
-      --mind:    #22c55e;
-      --suggest: #eab308;
-      --enforce: #ef4444;
+      --mind:    var(--ok);
+      --suggest: var(--warn);
+      --enforce: var(--err);
+      --accent-bright: #fbbf24;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { margin: 0; padding: 0; }
 
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-    }
+    /* ── Questionnaire: short hero, then the instrument, then the result ── */
+    .short-hero { padding: 32px 16px 20px; max-width: 760px; }
+    .how { list-style: none; text-align: left; display: flex; flex-direction: column; gap: 8px; color: var(--text-sec); font-size: var(--fs-sec); line-height: 1.55; }
+    .how li { padding-left: 1.2em; position: relative; }
+    .how li::before { content: "›"; color: var(--accent); position: absolute; left: 0; }
+    .how b { color: var(--text); }
+    .how .lv-mind { color: var(--mind); } .how .lv-suggest { color: var(--suggest); } .how .lv-enforce { color: var(--enforce); }
+    .sh-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── CS Header ── */
-    .cs-header {
-      height: 70px; flex-shrink: 0;
-      background: linear-gradient(180deg, #0f0f0f 0%, #050505 100%);
-      border-bottom: 1px solid #262626;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 24px; gap: 12px; z-index: 100;
-      font-family: 'IBM Plex Sans', sans-serif;
-    }
-    .cs-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .cs-vdiv { width: 1px; height: 22px; background: #262626; flex-shrink: 0; }
-    .cs-btn {
-      display: flex; align-items: center; gap: 5px;
-      background: transparent; border: 1px solid #262626; color: #a3a3a3;
-      font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em;
-      padding: 0 10px; height: 32px; border-radius: 4px; cursor: pointer; transition: 0.2s; white-space: nowrap;
-    }
-    .cs-btn:hover { border-color: #eab308; color: #eab308; background: rgba(234,179,8,0.05); }
+    .result-wrap { width: min(1100px, 100%); margin: 0 auto; padding: 8px 18px 0; }
+    .result { gap: 10px; }
+    .result:hover { transform: none; box-shadow: none; background: var(--bg-card); border-color: var(--border); }
+    .result .res-kicker { font-family: var(--mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); }
+    .result h2 { font-family: var(--sans); font-weight: 800; font-size: var(--fs-h2); line-height: 1.2; }
+    .res-lead { color: var(--text-sec); font-size: var(--fs-sec); }
+    .res-why { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: var(--fs-sec); color: var(--text-sec); }
+    .res-why li { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-elev); }
+    .res-why b { color: var(--text); }
+    .res-why .lv { font-family: var(--mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; }
+    .res-why .ctry { display: block; font-size: var(--fs-sm); color: var(--text-muted); margin-top: 2px; }
+    .res-chips { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .res-chips .ex-label { font-family: var(--mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+    .result .privacy-line { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+    .site-foot { width: min(1100px, 100%); margin: 32px auto 0; padding-left: 18px; padding-right: 18px; }
 
     /* ── Full-page layout ── */
     .watch {
       width: 100%;
-      height: calc(100vh - 70px);
-      height: calc(100dvh - 70px);
+      height: calc(100vh - var(--nav-h));
+      height: calc(100dvh - var(--nav-h));
+      min-height: 560px;
       padding: 10px 18px 14px;
       display: flex;
       flex-direction: column;
@@ -101,15 +93,15 @@
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
-      border-bottom: 1px solid var(--dim);
+      border-bottom: 1px solid var(--text-muted);
       padding-bottom: 4px;
       flex-shrink: 0;
       gap: 8px;
     }
     .home-hint {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: clamp(0.62rem, 1.1vw, 0.76rem);
-      color: var(--gold);
+      color: var(--accent);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -119,7 +111,7 @@
       flex-shrink: 0;
       transition: color 0.2s;
     }
-    .home-hint.flash { color: var(--bright); }
+    .home-hint.flash { color: var(--accent-bright); }
     .hdr-right {
       display: flex;
       align-items: center;
@@ -127,9 +119,9 @@
       flex-shrink: 0;
     }
     .hdr-tag {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
       font-size: clamp(0.6rem, 1.2vw, 0.72rem);
-      color: #8a8a8a;
+      color: var(--text-muted);
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -151,7 +143,7 @@
     }
 
     canvas { display: block; touch-action: none; }
-    canvas:focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
+    canvas:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 
     /* ── Sliders panel ── */
     .sliders {
@@ -169,7 +161,7 @@
     }
     .ax {
       display: grid;
-      grid-template-columns: minmax(48px, 24%) 1fr minmax(48px, 24%);
+      grid-template-columns: minmax(min-content, 24%) minmax(0, 1fr) minmax(min-content, 24%);
       align-items: center;
       gap: 5px;
     }
@@ -179,18 +171,18 @@
        centres rows vertically, so a taller label stays aligned with its track. */
     .pole {
       font-size: clamp(0.78rem, 1.45vw, 1rem);
-      color: var(--mid);
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
       white-space: normal;
-      overflow-wrap: break-word;
-      hyphens: auto;            /* documentElement.lang is set by carino-lang.js */
+      overflow-wrap: normal;
+      hyphens: manual;          /* whole words only: the column grows to fit the longest */
       line-height: 1.12;
       transition: color 0.12s;
     }
     .pole.l   { text-align: right; }
     .pole.r   { text-align: left;  }
-    .pole.lit { color: var(--bright); } /* overridden per-level by JS */
+    .pole.lit { color: var(--accent-bright); } /* overridden per-level by JS */
     .sc {
       display: flex;
       flex-direction: column;
@@ -206,17 +198,17 @@
       cursor: help;
       user-select: none;
     }
-    .an:hover .ax-name { color: var(--mid); }
+    .an:hover .ax-name { color: var(--text-muted); }
     .ax-name {
       font-size: clamp(0.58rem, 0.98vw, 0.7rem);
-      color: var(--dim);
+      color: var(--text-muted);
       letter-spacing: 0.14em;
       text-transform: uppercase;
       flex-shrink: 0;
     }
     .ax-pos {
       font-size: clamp(0.6rem, 1.02vw, 0.74rem);
-      color: var(--active);
+      color: var(--accent);
       letter-spacing: 0.06em;
       text-transform: uppercase;
       white-space: nowrap;
@@ -235,7 +227,7 @@
       pointer-events: none;
       z-index: 2;
     }
-    .ticks span { display: block; width: 1px; height: 7px; background: var(--mid); flex-shrink: 0; }
+    .ticks span { display: block; width: 1px; height: 7px; background: var(--text-muted); flex-shrink: 0; }
     .ticks span:nth-child(4) { height: 11px; background: #6a5a24; } /* center (Don't Mind) */
     .tw.enforce::after {
       content: '';
@@ -246,7 +238,7 @@
       pointer-events: none;
     }
     .ax.chart-hover { background: rgba(234, 179, 8, 0.07); border-radius: 6px; }
-    .ax.chart-hover .ax-name { color: var(--active); }
+    .ax.chart-hover .ax-name { color: var(--accent); }
 
     input[type="range"] {
       position: absolute;
@@ -256,7 +248,7 @@
       background: transparent;
       background-image: linear-gradient(
         transparent 0%, transparent calc(50% - 1px),
-        var(--mid) calc(50% - 1px), var(--mid) calc(50% + 1px),
+        var(--text-muted) calc(50% - 1px), var(--text-muted) calc(50% + 1px),
         transparent calc(50% + 1px), transparent 100%
       );
       cursor: pointer;
@@ -266,7 +258,7 @@
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 16px; height: 16px; border-radius: 50%;
-      background: var(--active);
+      background: var(--accent);
       border: 2px solid var(--bg);
       box-shadow: 0 0 0 1px rgba(234,179,8,.5), 0 2px 5px rgba(0,0,0,.55);
       cursor: pointer;
@@ -276,17 +268,17 @@
     input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px rgba(234,179,8,.35); }
     input[type="range"]::-moz-range-thumb {
       width: 16px; height: 16px; border-radius: 50%;
-      background: var(--active);
+      background: var(--accent);
       border: 2px solid var(--bg);
       box-shadow: 0 2px 5px rgba(0,0,0,.55);
       cursor: pointer;
     }
-    input[type="range"]::-moz-range-track { height: 2px; background: var(--mid); }
+    input[type="range"]::-moz-range-track { height: 2px; background: var(--text-muted); }
 
     /* ── Axis info bar (now lives in header center) ── */
     .axis-info {
       font-size: clamp(0.6rem, 0.9vw, 0.72rem);
-      color: #a3a3a3;
+      color: var(--text-sec);
       letter-spacing: 0.03em;
       text-transform: uppercase;
       text-align: center;
@@ -295,7 +287,7 @@
       text-overflow: ellipsis;
       transition: color 0.15s;
     }
-    .axis-info.active { color: var(--bright); }
+    .axis-info.active { color: var(--accent-bright); }
 
     /* ── "for reference only" warning chip ── */
     .warn-chip {
@@ -308,66 +300,15 @@
       white-space: nowrap;
       cursor: help;
       opacity: 0.85;
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--mono);
     }
     .warn-chip:hover { opacity: 1; }
 
-    /* ── Profiles overlay ── */
-    .prof-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 16px;
-    }
-    .prof-overlay.open { display: flex; }
-
-    .prof-panel {
-      background: var(--lcd);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-      width: min(94vw, 860px);
-      max-height: 82vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .prof-panel-hdr {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 7px 12px 6px;
-      border-bottom: 1px solid var(--dim);
-      flex-shrink: 0;
-    }
-    .prof-panel-hdr span {
-      font-size: clamp(0.9rem, 2vw, 1.1rem);
-      color: var(--active);
-      letter-spacing: 0.18em;
-    }
-    .prof-panel-hdr small {
-      font-size: clamp(0.55rem, 1vw, 0.65rem);
-      color: var(--dim);
-      letter-spacing: 0.08em;
-    }
-    .prof-close {
-      background: none;
-      border: 1px solid var(--border);
-      color: #a3a3a3;
-      font-family: inherit;
-      font-size: 0.8rem;
-      cursor: pointer;
-      padding: 4px 10px;
-      border-radius: 6px;
-      transition: all 0.12s;
-    }
-    .prof-close:hover { border-color: var(--enforce); color: var(--enforce); }
+    /* ── Profiles: a Branding modal, wider ── */
+    .prof-panel { max-width: 860px; max-height: 82vh; }
+    .prof-panel .modal-sub { text-transform: none; letter-spacing: 0.02em; }
+    .prof-panel .modal-head > div { flex: 1; min-width: 0; }
+    .prof-body { flex: 1; min-height: 0; }
 
     .prof-tabs {
       display: flex;
@@ -379,8 +320,8 @@
     .prof-tab {
       background: transparent;
       border: 1px solid var(--border);
-      color: #a3a3a3;
-      font-family: 'IBM Plex Mono', monospace;
+      color: var(--text-sec);
+      font-family: var(--mono);
       font-size: clamp(0.58rem, 1vw, 0.68rem);
       text-transform: uppercase;
       letter-spacing: 0.06em;
@@ -389,27 +330,27 @@
       cursor: pointer;
       transition: all 0.15s;
     }
-    .prof-tab small { color: var(--dim); margin-left: 5px; }
-    .prof-tab:hover { border-color: var(--gold); color: var(--gold); }
-    .prof-tab.active { border-color: var(--gold); color: var(--gold); background: rgba(234,179,8,0.08); }
+    .prof-tab small { color: var(--text-muted); margin-left: 5px; }
+    .prof-tab:hover { border-color: var(--accent); color: var(--accent); }
+    .prof-tab.active { border-color: var(--accent); color: var(--accent); background: rgba(234,179,8,0.08); }
     .prof-search-wrap { padding: 8px 12px 0; flex-shrink: 0; }
     .prof-search-wrap input {
       width: 100%;
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--border);
       border-radius: 6px;
-      color: #fff;
-      font-family: 'IBM Plex Mono', monospace;
+      color: var(--text);
+      font-family: var(--mono);
       font-size: 0.75rem;
       letter-spacing: 0.04em;
       padding: 7px 10px;
       outline: none;
       transition: border-color 0.15s;
     }
-    .prof-search-wrap input:focus { border-color: var(--gold); }
-    .prof-search-wrap input::placeholder { color: var(--dim); }
+    .prof-search-wrap input:focus { border-color: var(--accent); }
+    .prof-search-wrap input::placeholder { color: var(--text-muted); }
     .prof-empty {
-      color: var(--dim);
+      color: var(--text-muted);
       font-size: 0.78rem;
       padding: 8px 2px;
       letter-spacing: 0.1em;
@@ -428,7 +369,7 @@
     .prof-card {
       background: rgba(255,255,255,0.02);
       border: 1px solid var(--border);
-      color: #fff;
+      color: var(--text);
       font-family: inherit;
       font-size: clamp(0.74rem, 1.2vw, 0.84rem);
       letter-spacing: 0.005em;
@@ -441,34 +382,34 @@
     .prof-card small {
       display: block;
       font-size: 0.76em;
-      color: #8a8a8a;
+      color: var(--text-muted);
       letter-spacing: 0.01em;
       text-transform: none;
       margin-top: 1px;
     }
     .prof-card:hover {
-      border-color: var(--bright);
-      color: var(--bright);
+      border-color: var(--accent-bright);
+      color: var(--accent-bright);
       background: rgba(234, 179, 8, 0.08);
     }
-    .prof-card:hover small { color: var(--mid); }
+    .prof-card:hover small { color: var(--text-muted); }
 
     /* ── Portrait / Mobile ── */
     @media (orientation: portrait) {
-      .watch { height: calc(100dvh - 70px); height: calc(100vh - 70px); padding: 6px 8px; }
+      .watch { height: calc(100vh - var(--nav-h)); height: calc(100dvh - var(--nav-h)); padding: 6px 8px; }
       .body  { flex-direction: column; }
       .chart-panel { width: 100%; height: 38%; flex-shrink: 0; }
       .tw    { height: 20px; }
       .home-hint { max-width: 34vw; }
       .hdr-tag   { font-size: clamp(0.82rem, 3vw, 0.98rem); }
-      .pole      { font-size: clamp(0.72rem, 2.6vw, 0.9rem); }
+      .pole      { font-size: clamp(0.6rem, 2.5vw, 0.9rem); letter-spacing: 0; }
       .ax-name   { font-size: clamp(0.55rem, 1.8vw, 0.66rem); }
       .ax-pos    { font-size: clamp(0.57rem, 1.9vw, 0.7rem); }
-      .prof-panel { width: 100vw; max-height: 92vh; }
+      .prof-panel { max-height: 92vh; }
     }
 
     @media (orientation: landscape) and (max-height: 460px) {
-      .watch { height: calc(100vh - 70px); height: calc(100dvh - 70px); padding: 4px 6px; }
+      .watch { height: calc(100vh - var(--nav-h)); height: calc(100dvh - var(--nav-h)); padding: 4px 6px; }
       .tw    { height: 16px; }
       .ax-name { display: none; }
       .ax-pos  { font-size: clamp(0.6rem, 1.3vh, 0.74rem); }
@@ -479,24 +420,38 @@
 </head>
 <body>
 
-<header class="cs-header">
-  <div class="cs-right">
-    <button class="cs-btn" id="btn-3d" onclick="toggle3D()">3D VIEW</button>
-    <button class="cs-btn" id="btn-copy" data-i18n onclick="copyLink()">Copy Link</button>
-    <button class="cs-btn" data-i18n onclick="openProfiles()">Profiles</button>
-    <button class="cs-btn" onclick="downloadCompass()">↓ PNG</button>
-    <div class="cs-vdiv"></div>
+<!-- Navbar controls: carino-navbar.js moves this node into the bar. -->
+<div data-carino-actions>
+  <button type="button" class="cs-btn primary" id="btn-copy" data-priority="1" data-i18n>Copy Link</button>
+  <button type="button" class="cs-btn" id="btn-profiles" data-i18n>Profiles</button>
+  <button type="button" class="cs-btn" id="btn-3d">3D VIEW</button>
+  <button type="button" class="cs-btn" id="btn-png">↓ PNG</button>
+  <button type="button" class="cs-btn" id="btn-reset" data-i18n>Start over</button>
+</div>
+
+<main>
+<header class="short-hero">
+  <img class="mark" src="logo.svg" alt="" width="48" height="48">
+  <h1><span data-i18n>Where do you stand,</span><br><span class="gold" data-i18n>and how hard would you push?</span></h1>
+  <p class="sh-lede" data-i18n>Twelve questions about how a country should run. You answer with a slider, not a quiz.</p>
+  <ul class="how" aria-label="How it works">
+    <li data-i18n>Each slider is one question, with an opposite view at each end.</li>
+    <li><span data-i18n>It has 7 steps. The middle means you don't mind. Toward either end:</span> <b class="lv-mind" data-i18n>Mind</b> <span data-i18n>(you'd prefer it),</span> <b class="lv-suggest" data-i18n>Suggest</b> <span data-i18n>(you'd argue for it),</span> <b class="lv-enforce" data-i18n>Enforce</b> <span data-i18n>(you'd make it law).</span></li>
+    <li data-i18n>The chart and your result update as you move. Copy the link to keep or share your answers.</li>
+  </ul>
+  <div class="sh-actions">
+    <button type="button" class="btn btn-primary" id="btn-start" data-i18n>Start</button>
+    <span class="warn-chip" data-i18n title="A playful reference tool — not a scientific, professional, or serious political assessment. All placements are impressionistic broad strokes.">⚠ REFERENCE ONLY</span>
   </div>
 </header>
 
-<div role="main" style="flex:1; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-<div class="watch">
+<div style="display:flex; align-items:center; justify-content:center;">
+<div class="watch" id="instrument">
   <div class="screen">
     <div class="hdr">
       <span class="home-hint" id="home-hint"></span>
       <div class="axis-info" id="axis-info"></div>
       <div class="hdr-right">
-        <span class="warn-chip" data-i18n title="A playful reference tool — not a scientific, professional, or serious political assessment. All placements are impressionistic broad strokes.">⚠ REFERENCE ONLY</span>
         <span class="hdr-tag" data-i18n>12 axes</span>
       </div>
     </div>
@@ -510,15 +465,36 @@
 </div>
 </div>
 
-<!-- Profiles overlay -->
-<div id="prof-overlay" class="prof-overlay">
-  <div class="prof-panel">
-    <div class="prof-panel-hdr">
+<section class="result-wrap" aria-labelledby="res-home">
+  <div class="card result" id="result">
+    <div class="res-kicker" data-i18n>Your result</div>
+    <h2 id="res-home"></h2>
+    <p class="res-lead" id="res-lead"></p>
+    <ul class="res-why" id="res-why"></ul>
+    <div class="res-chips" id="res-chips"></div>
+    <p class="privacy-line" data-i18n>Your answers stay in this link and this browser. Nothing is sent anywhere.</p>
+  </div>
+</section>
+</main>
+
+<footer class="site-foot">
+  <div class="sf-links">
+    <a href="https://github.com/MiguelCarino/Compass" target="_blank" rel="noopener" data-i18n>Source</a>
+    <a href="https://carino.systems/legal.html" data-i18n>Legal &amp; privacy</a>
+    <a href="https://carino.systems/" data-i18n>All Carino sites</a>
+  </div>
+  <div class="sf-line" data-i18n>Compass · a playful reference, not an assessment · AGPL-3.0 · part of carino.systems</div>
+</footer>
+
+<!-- Profiles: a Branding modal, toggled with [hidden] -->
+<div id="prof-overlay" class="modal-scrim" hidden>
+  <div class="modal prof-panel" role="dialog" aria-modal="true" aria-labelledby="prof-title">
+    <div class="modal-head">
       <div>
-        <span data-i18n>LOAD PROFILE</span>
-        <small data-i18n> · select to auto-fill · for fun &amp; reference, not a serious assessment</small>
+        <div class="modal-title" id="prof-title" data-i18n>LOAD PROFILE</div>
+        <div class="modal-sub" data-i18n> · select to auto-fill · for fun &amp; reference, not a serious assessment</div>
       </div>
-      <button class="prof-close" data-i18n onclick="closeProfiles()">✕ CLOSE</button>
+      <button type="button" class="modal-x" id="prof-close" aria-label="Close">✕</button>
     </div>
     <div class="prof-search-wrap"><input id="prof-search" type="search" autocomplete="off" spellcheck="false" aria-label="Search profiles"></div>
     <div class="prof-tabs" id="prof-tabs"></div>
@@ -536,7 +512,7 @@ function posLabel(v) {
 }
 function levelColor(v) {
   const a = Math.abs(v);
-  if (a === 0) return 'var(--mid)';
+  if (a === 0) return 'var(--text-muted)';
   if (a === 1) return 'var(--mind)';
   if (a === 2) return 'var(--suggest)';
   return 'var(--enforce)';
@@ -2141,6 +2117,61 @@ function refreshMatch() {
     + (hist ? (histD <= 6 ? ' Same as ' : ' Almost same as ') + hist.name.replace(/\.$/, '') + '.' : '')
     + (home ? ' You would feel at home in ' + home.name + '.' : ''));
   refreshHome();
+  refreshResult();
+}
+
+// ── Result card: what you got, and why ──
+// i18n.js loads deferred; until it runs, English passes through.
+const tt = s => (typeof window.t === 'function' ? window.t(s) : s);
+const LEVEL_WORD = ["Don't mind", 'Mind', 'Suggest', 'Enforce'];
+function stance(i, v) {
+  if (v === 0) return tt("Don't mind");
+  return tt(v < 0 ? AXES[i].l : AXES[i].r) + ' · ' + tt(LEVEL_WORD[Math.abs(v)]);
+}
+function refreshResult() {
+  const home = nearestCountry();
+  const { hist, fict, histD, fictD } = closestProfiles();
+  const h = document.getElementById('res-home'), lead = document.getElementById('res-lead');
+  const why = document.getElementById('res-why'), chips = document.getElementById('res-chips');
+  if (!h) return;
+  // The axes that drive the result are your strongest positions: furthest
+  // from "don't mind", ties in axis order. The match is the nearest country
+  // by total distance over all twelve, so show where it stands on those too.
+  const top = vals.map((v, i) => ({ i, a: Math.abs(v) })).filter(x => x.a > 0)
+    .sort((x, y) => y.a - x.a || x.i - y.i).slice(0, 3);
+  h.textContent = home ? tt('You would feel at home in') + ' ' + home.flag + ' ' + home.name : '—';
+  why.textContent = '';
+  if (!top.length) {
+    lead.textContent = tt("Every slider is still in the middle, so this is just the country closest to not minding anything. Move a slider to get a real result.");
+  } else {
+    lead.textContent = tt('Why: these are your strongest answers, and how {country} answers them.').replace('{country}', home ? home.name : '—');
+    top.forEach(({ i }) => {
+      const li = document.createElement('li');
+      const b = document.createElement('b'); b.textContent = tt(AXES[i].name);
+      const lv = document.createElement('span'); lv.className = 'lv'; lv.style.color = levelColor(vals[i]);
+      lv.textContent = stance(i, vals[i]);
+      const c = document.createElement('span'); c.className = 'ctry';
+      if (home) c.textContent = home.name + ': ' + stance(i, home.vals[i] ?? 0);
+      li.append(b, document.createTextNode(' '), lv, c);
+      why.appendChild(li);
+    });
+  }
+  chips.textContent = '';
+  const lbl = document.createElement('span'); lbl.className = 'ex-label'; lbl.textContent = tt('Closest profiles');
+  chips.appendChild(lbl);
+  [[hist, histD], [fict, fictD]].forEach(([p, d]) => {
+    if (!p) return;
+    const c = document.createElement('span'); c.className = 'chip-tag';
+    c.textContent = matchLabel(d) + ' ' + p.name.replace(/\.$/, '');
+    chips.appendChild(c);
+  });
+}
+
+function resetAll() {
+  loadedProfile = null;
+  vals = Array(N).fill(0);
+  els.forEach(({ slider }, i) => { slider.value = 0; updateRow(i); });
+  writeHash(); draw(); refreshMatch();
 }
 
 // ── Axis info bar ──
@@ -2279,9 +2310,9 @@ function renderProfiles() {
   }
 }
 
-function openProfiles()  { document.getElementById('prof-overlay').classList.add('open'); }
+function openProfiles()  { document.getElementById('prof-overlay').hidden = false; document.getElementById('prof-search').focus(); }
 function closeProfiles() {
-  document.getElementById('prof-overlay').classList.remove('open');
+  document.getElementById('prof-overlay').hidden = true;
   const input = document.getElementById('prof-search');
   if (input.value) { input.value = ''; renderProfiles(); }
 }
@@ -2290,7 +2321,21 @@ document.addEventListener('click', e => {
   const overlay = document.getElementById('prof-overlay');
   if (e.target === overlay) closeProfiles();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfiles(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !document.getElementById('prof-overlay').hidden) closeProfiles(); });
+
+// Buttons. Each calls through window so the i18n.js wrappers (toggle3D,
+// copyLink, …) still apply.
+const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
+on('btn-copy',     () => window.copyLink());
+on('btn-profiles', () => window.openProfiles());
+on('btn-3d',       () => window.toggle3D());
+on('btn-png',      () => window.downloadCompass());
+on('btn-reset',    () => window.resetAll());
+on('prof-close',   () => window.closeProfiles());
+on('btn-start',    () => {
+  document.getElementById('instrument').scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
+  els[0].slider.focus({ preventScroll: true });
+});
 
 function loadProfile(name, profileVals) {
   loadedProfile = name;
@@ -2324,6 +2369,8 @@ refreshMatch();
 let saved3d = false;
 try { saved3d = localStorage.getItem('compass-view') === '3d'; } catch (e) {}
 if (want3d || saved3d) toggle3D();
+// A shared link with answers in it opens on the instrument, not the intro.
+if (vals.some(v => v !== 0)) requestAnimationFrame(() => document.getElementById('instrument').scrollIntoView({ block: 'start' }));
 
 // Canvas axis-icon hover
 const cvEl = document.getElementById('rc');
