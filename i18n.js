@@ -8,6 +8,14 @@
 
 const I18N = {
     es: {
+        // chart hover labels, PNG export, aria-labels, navbar More
+        'More': 'Más',
+        'Close': 'Cerrar',
+        'How it works': 'Cómo funciona',
+        'TRUTH': 'VERDAD',
+        'POLITICAL COMPASS': 'BRÚJULA POLÍTICA',
+        '12 AXES · REFERENCE ONLY': '12 EJES · SOLO REFERENCIA',
+        'YOU WOULD FEEL AT HOME IN': 'TE SENTIRÍAS COMO EN CASA EN',
         'Late shift.': 'Turno nocturno.',
         'Good morning.': 'Buenos días.',
         'Good afternoon.': 'Buenas tardes.',
@@ -143,6 +151,14 @@ const I18N = {
         'Closest profiles': 'Perfiles más cercanos',
     },
     'pt-BR': {
+        // chart hover labels, PNG export, aria-labels, navbar More
+        'More': 'Mais',
+        'Close': 'Fechar',
+        'How it works': 'Como funciona',
+        'TRUTH': 'VERDADE',
+        'POLITICAL COMPASS': 'BÚSSOLA POLÍTICA',
+        '12 AXES · REFERENCE ONLY': '12 EIXOS · SÓ REFERÊNCIA',
+        'YOU WOULD FEEL AT HOME IN': 'VOCÊ SE SENTIRIA EM CASA EM',
         'Late shift.': 'Turno da noite.',
         'Good morning.': 'Bom dia.',
         'Good afternoon.': 'Boa tarde.',
@@ -272,6 +288,14 @@ const I18N = {
         'Closest profiles': 'Perfis mais próximos',
     },
     ja: {
+        // chart hover labels, PNG export, aria-labels, navbar More
+        'More': 'その他',
+        'Close': '閉じる',
+        'How it works': '使い方',
+        'TRUTH': '真理',
+        'POLITICAL COMPASS': '政治コンパス',
+        '12 AXES · REFERENCE ONLY': '12軸 · 参考用',
+        'YOU WOULD FEEL AT HOME IN': 'あなたに合う国：',
         'Late shift.': '夜勤お疲れさま。',
         'Good morning.': 'おはようございます。',
         'Good afternoon.': 'こんにちは。',
@@ -401,6 +425,14 @@ const I18N = {
         'Closest profiles': '近いプロフィール',
     },
     ru: {
+        // chart hover labels, PNG export, aria-labels, navbar More
+        'More': 'Ещё',
+        'Close': 'Закрыть',
+        'How it works': 'Как это работает',
+        'TRUTH': 'ИСТИНА',
+        'POLITICAL COMPASS': 'ПОЛИТИЧЕСКИЙ КОМПАС',
+        '12 AXES · REFERENCE ONLY': '12 ОСЕЙ · ТОЛЬКО ДЛЯ СПРАВКИ',
+        'YOU WOULD FEEL AT HOME IN': 'ВЫ БЫ ЧУВСТВОВАЛИ СЕБЯ КАК ДОМА:',
         'Late shift.': 'Ночная смена.',
         'Good morning.': 'Доброе утро.',
         'Good afternoon.': 'Добрый день.',
@@ -651,6 +683,11 @@ function applyDynamicI18n() {
     // Profile search box aria-label (its placeholder is handled further down)
     const profSearch = document.getElementById('prof-search');
     if (profSearch) profSearch.setAttribute('aria-label', t('Search profiles'));
+    // Other fixed aria-labels in the markup, and one per slider (its axis name)
+    document.querySelectorAll('.how[aria-label], #prof-close, .slider-rows input[type=range][aria-label]').forEach((el) => {
+        if (!el.dataset.i18nAria) el.dataset.i18nAria = el.getAttribute('aria-label');
+        el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    });
     // Slider pole labels + axis names
     document.querySelectorAll('.pole, .ax-name').forEach((el) => {
         if (!el.dataset.i18nKey) el.dataset.i18nKey = el.textContent.trim();

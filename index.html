@@ -1966,7 +1966,7 @@ function draw3d(exportCv) {
     axLabelPos[i] = [L[0], L[1]];
     const hov = hoverAxis === i;
     ctx.fillStyle = hov ? C.bright : levelColorHex(vals[i]);
-    ctx.fillText(hov ? AXES[i].s : AXES[i].icon, L[0], L[1]);
+    ctx.fillText(hov ? (typeof window.t === 'function' ? window.t(AXES[i].s) : AXES[i].s) : AXES[i].icon, L[0], L[1]);
   }
   ctx.globalAlpha = 1;
 }
@@ -2061,7 +2061,7 @@ function draw2d(exportCv) {
     ctx.textBaseline = sa < -0.2 ? 'bottom' : sa >  0.2 ? 'top'    : 'middle';
     const hov = hoverAxis === i;
     ctx.fillStyle = hov ? C.bright : levelColorHex(vals[i]);
-    ctx.fillText(hov ? AXES[i].s : AXES[i].icon, x, y);
+    ctx.fillText(hov ? (typeof window.t === 'function' ? window.t(AXES[i].s) : AXES[i].s) : AXES[i].icon, x, y);
   }
 }
 
@@ -2468,17 +2468,17 @@ function downloadCompass() {
   ctx.textAlign = 'center';
   ctx.fillStyle = '#eab308';
   ctx.font = "900 34px 'Red Hat Display', 'IBM Plex Sans', sans-serif";
-  ctx.fillText('POLITICAL COMPASS', sz / 2, 48);
+  ctx.fillText(tt('POLITICAL COMPASS'), sz / 2, 48);
   ctx.fillStyle = '#52525b';
   ctx.font = "13px 'IBM Plex Mono', monospace";
-  ctx.fillText('COMPASS.CARINO.SYSTEMS · 12 AXES · REFERENCE ONLY', sz / 2, 76);
+  ctx.fillText('COMPASS.CARINO.SYSTEMS · ' + tt('12 AXES · REFERENCE ONLY'), sz / 2, 76);
   ctx.fillStyle = '#fbbf24';
   ctx.font = "600 17px 'IBM Plex Sans', sans-serif";
   ctx.fillText((hist ? matchLabel(histD) + ' ' + hist.name.toUpperCase() : '—')
     + '  ·  ' + (fict ? matchLabel(fictD) + ' ' + fict.name.toUpperCase() : '—'), sz / 2, headH + sz + 34);
   if (home) {
     ctx.fillStyle = '#eab308';
-    ctx.fillText('YOU WOULD FEEL AT HOME IN ' + home.flag + ' ' + home.name.toUpperCase(), sz / 2, headH + sz + 64);
+    ctx.fillText(tt('YOU WOULD FEEL AT HOME IN') + ' ' + home.flag + ' ' + home.name.toUpperCase(), sz / 2, headH + sz + 64);
   }
 
   const slug = hist ? hist.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') : 'profile';
