@@ -14,6 +14,7 @@ A 12-axis political compass where each answer is how strongly you would push an 
 - Names the country, out of about 150, whose placement is nearest to yours.
 - Load any profile to see its shape on the sliders. Profiles are grouped in tabs and can be searched.
 - Copy Link shares your answers, and ↓ PNG saves an image of the chart with your matches.
+- Compare puts a second set of answers (B, dashed) over yours (A): paste someone's Compass link, pick a profile or a country, or go half and half: two people on one screen, A's sliders on the left half, B's on the right, the chart in the middle. Both can be named. It shows how much you agree, where you differ most and where you answer the same, and the link carries both sets.
 - Interface in English, Spanish, Portuguese (Brazil), Japanese and Russian.
 
 It is labelled "reference only": the placements are broad impressions, not a scientific assessment. Your answers are kept in the page's link and are not sent anywhere. The only thing stored in the browser is whether you last used the 2D or 3D view.

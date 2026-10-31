@@ -125,6 +125,62 @@
       .cp-motif .cp-bar { transform: scaleX(.6667); stroke: var(--suggest); }
     }
 
+    /* ── Compare: a second answer set (B) over yours (A) ──
+       A keeps the accent and a solid line; B is a dashed line in --cmp
+       (light zinc on Gold, the quiet purple on Colourful: a chart series). */
+    :root { --cmp: #d4d4d8; }
+    :root[data-carino-theme="color"] { --cmp: var(--ct-purple); }
+    .sw { display: inline-block; width: 14px; height: 0; border-top: 2px solid var(--accent-bright); vertical-align: middle; margin-right: 6px; }
+    .sw.sw-b { border-top: 2px dashed var(--cmp); }
+    .cmp-switch { display: flex; gap: 4px; align-items: center; }
+    .cmp-switch[hidden] { display: none; }
+    .cmp-switch .toggle-btn { padding: 3px 9px; font-size: var(--fs-label); line-height: 1.4; }
+    .cmp-switch .cmp-x { padding: 3px 7px; }
+    body.comparing .hdr-tag { display: none; }
+    /* Half and half: each person gets half the screen. A's sliders on the
+       left, the chart between, B's on the right (portrait: chart on top, the
+       two halves side by side under it). Every compare uses it, so B can
+       always be moved. */
+    .col-head { display: none; align-items: center; gap: 8px; padding: 2px 4px 6px; border-bottom: 1px solid var(--border);
+      font-family: var(--mono); font-size: var(--fs-label); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); }
+    .col-head .sw { margin-right: 0; }
+    .col-head .who { font-weight: 700; color: var(--accent-bright); }
+    .sliders-b .col-head .who { color: var(--cmp); }
+    .col-head input { flex: 1; min-width: 0; background: transparent; border: 1px solid transparent; border-radius: 4px; padding: 2px 6px;
+      font: inherit; color: var(--text); text-transform: none; letter-spacing: 0.04em; }
+    .col-head input:hover { border-color: var(--border); }
+    .col-head input:focus { outline: none; border-color: var(--accent); }
+    /* body:not(.comparing) outranks the plain .sliders { display: flex } further down */
+    body:not(.comparing) .sliders-b { display: none; }
+    .sliders-b input[type="range"]::-webkit-slider-thumb { background: var(--cmp); }
+    .sliders-b input[type="range"]::-moz-range-thumb { background: var(--cmp); }
+    body.comparing .col-head { display: flex; }
+    body.comparing .sliders-b { display: flex; }
+    body.comparing .body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 30%) minmax(0, 1fr); grid-template-areas: "a chart b"; gap: 14px; }
+    body.comparing .chart-panel { grid-area: chart; width: auto; min-height: 0; }
+    body.comparing #sliders-a { grid-area: a; }
+    body.comparing .sliders-b { grid-area: b; }
+    body.comparing .sliders { min-height: 0; }
+    body.comparing .pole { font-size: clamp(0.66rem, 1vw, 0.86rem); }
+    .cmp-opt.lead { background: var(--accent-faint); border: 1px solid var(--accent-dim, var(--border)); border-radius: 10px; padding: 14px; }
+    .cmp-panel { width: min(620px, 100%); max-width: min(620px, 100%); }
+    .cmp-body { display: flex; flex-direction: column; gap: 14px; }
+    .cmp-opt { display: flex; flex-direction: column; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .cmp-opt:last-child { border-bottom: 0; padding-bottom: 0; }
+    .cmp-opt h3 { font-family: var(--mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text); }
+    .cmp-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .cmp-row .input { flex: 1 1 220px; min-width: 0; }
+    .cmp-row .select { flex: 1 1 180px; min-width: 0; }
+    .cmp-err { color: var(--err); font-size: var(--fs-sm); min-height: 1em; }
+    .cmp-now { color: var(--text); }
+    .cmp-now b { color: var(--accent-bright); }
+    .res-cmp { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--border); padding-top: 12px; }
+    .res-cmp[hidden] { display: none; }
+    .res-cmp h3 { font-family: var(--sans); font-weight: 800; font-size: var(--fs-h3, 1.1rem); }
+    .res-cmp .pct { color: var(--accent-bright); }
+    .res-cmp .b { color: var(--cmp); }
+    .res-cmp .sub { font-family: var(--mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+
     .res-panel { width: min(720px, 100%); }
     .result { display: flex; flex-direction: column; gap: 10px; }
     .result h2 { font-family: var(--sans); font-weight: 800; font-size: var(--fs-h2); line-height: 1.2; }
@@ -474,6 +530,16 @@
       .ax-name   { font-size: clamp(0.55rem, 1.8vw, 0.66rem); }
       .ax-pos    { font-size: clamp(0.57rem, 1.9vw, 0.7rem); }
       .prof-panel { max-height: 92vh; }
+      body.comparing .body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 28% minmax(0, 1fr);
+        grid-template-areas: "chart chart" "a b"; gap: 6px 10px; }
+      body.comparing .chart-panel { height: auto; }
+      /* half a phone is narrow: poles go under the track, one each side */
+      body.comparing .ax { grid-template-columns: 1fr 1fr; grid-template-areas: "sc sc" "l r"; gap: 0 4px; }
+      body.comparing .ax .sc { grid-area: sc; }
+      body.comparing .ax .pole.l { grid-area: l; text-align: left; }
+      body.comparing .ax .pole.r { grid-area: r; text-align: right; }
+      body.comparing .pole { font-size: clamp(0.5rem, 2vw, 0.7rem); }
+      body.comparing .ax-pos { display: none; }
     }
 
     @media (orientation: landscape) and (max-height: 460px) {
@@ -512,6 +578,7 @@
 <div data-carino-actions>
   <button type="button" class="cs-btn primary" id="btn-copy" data-priority="1" data-i18n>Copy Link</button>
   <button type="button" class="cs-btn" id="btn-profiles" data-i18n>Profiles</button>
+  <button type="button" class="cs-btn" id="btn-compare" aria-haspopup="dialog" data-i18n>Compare</button>
   <button type="button" class="cs-btn" id="btn-3d">3D VIEW</button>
   <button type="button" class="cs-btn" id="btn-png">↓ PNG</button>
   <button type="button" class="cs-btn" id="btn-reset" data-i18n>Start over</button>
@@ -548,6 +615,7 @@
     </ul>
     <div class="lh-actions" style="--i:4">
       <button type="button" class="btn btn-primary" id="btn-start" data-i18n>Start</button>
+      <button type="button" class="btn" id="btn-pair" data-i18n>Compare two people</button>
       <span class="warn-chip" data-i18n title="A playful reference tool — not a scientific, professional, or serious political assessment. All placements are impressionistic broad strokes.">⚠ REFERENCE ONLY</span>
     </div>
   </div>
@@ -560,14 +628,23 @@
       <span class="home-hint" id="home-hint"></span>
       <div class="axis-info" id="axis-info"></div>
       <div class="hdr-right">
+        <div class="cmp-switch" id="cmp-switch" hidden>
+          <button type="button" class="toggle-btn" id="cmp-swap" title="Swap A and B" aria-label="Swap A and B">⇄</button>
+          <button type="button" class="toggle-btn cmp-x" id="cmp-stop" title="Stop comparing" aria-label="Stop comparing">✕</button>
+        </div>
         <button type="button" class="cs-btn primary" id="btn-result" aria-haspopup="dialog" data-i18n>Your result</button>
         <span class="hdr-tag" data-i18n>12 axes</span>
       </div>
     </div>
     <div class="body">
       <div class="chart-panel"><canvas id="rc" role="img" tabindex="0" aria-label="12-axis political compass chart"></canvas></div>
-      <div class="sliders">
+      <div class="sliders" id="sliders-a" role="group" aria-labelledby="who-a">
+        <div class="col-head"><i class="sw"></i><span class="who" id="who-a">A</span><input id="a-name" type="text" maxlength="40" autocomplete="off" spellcheck="false" aria-label="Name for A"></div>
         <div class="slider-rows" id="slider-rows"></div>
+      </div>
+      <div class="sliders sliders-b" id="sliders-b" role="group" aria-labelledby="who-b">
+        <div class="col-head"><i class="sw sw-b"></i><span class="who" id="who-b">B</span><input id="b-name" type="text" maxlength="40" autocomplete="off" spellcheck="false" aria-label="Name for B"></div>
+        <div class="slider-rows" id="slider-rows-b"></div>
       </div>
     </div>
   </div>
@@ -588,7 +665,45 @@
       <p class="res-lead" id="res-lead"></p>
       <ul class="res-why" id="res-why"></ul>
       <div class="res-chips" id="res-chips"></div>
+      <section class="res-cmp" id="res-cmp" hidden></section>
       <p class="privacy-line" data-i18n>Your answers stay in this link and this browser. Nothing is sent anywhere.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Compare: put a second answer set (B) over yours (A) -->
+<div id="cmp-overlay" class="modal-scrim" hidden>
+  <div class="modal cmp-panel" role="dialog" aria-modal="true" aria-labelledby="cmp-title">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="cmp-title" data-i18n>Compare</div>
+        <div class="modal-sub" data-i18n>Put a second set of answers over yours</div>
+      </div>
+      <button type="button" class="modal-x" id="cmp-close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body cmp-body">
+      <p class="cmp-now" id="cmp-now" hidden></p>
+      <section class="cmp-opt lead">
+        <h3 data-i18n>Half and half</h3>
+        <p data-i18n>Two people, one screen: A answers on the left half, B on the right, and the chart in the middle shows both.</p>
+        <div class="cmp-row"><button type="button" class="cs-btn primary" id="cmp-pair" data-i18n>Start half and half</button></div>
+      </section>
+      <section class="cmp-opt">
+        <h3 data-i18n>Their link</h3>
+        <p data-i18n>Paste a link someone copied from Compass.</p>
+        <form class="cmp-row" id="cmp-form">
+          <input class="input" id="cmp-url" type="text" autocomplete="off" spellcheck="false" aria-label="Their Compass link">
+          <button type="submit" class="cs-btn primary" data-i18n>Compare</button>
+        </form>
+        <p class="cmp-err" id="cmp-err" role="status"></p>
+      </section>
+      <section class="cmp-opt">
+        <h3 data-i18n>A profile or a country</h3>
+        <div class="cmp-row">
+          <button type="button" class="cs-btn" id="cmp-prof" data-i18n>Pick a profile</button>
+          <select class="select" id="cmp-country" aria-label="Pick a country"></select>
+        </div>
+      </section>
     </div>
   </div>
 </div>
@@ -1936,11 +2051,11 @@ const COUNTRIES = [
   { flag:'🇵🇬', name:'Papua N.G.',   vals:[ 0, 0,+2,+1,-1, 0,+2,-1,-1,+1,+1,+1] },
   { flag:'🇫🇯', name:'Fiji',         vals:[ 0,+1,+2,+1,+1, 0,+2,-1, 0,+1,+1,+1] },
 ];
-function nearestCountry() {
+function nearestCountry(v = vals) {
   let best = null, bestD = Infinity;
   for (const c of COUNTRIES) {
     let d = 0;
-    for (let i = 0; i < N; i++) d += Math.abs((c.vals[i] ?? 0) - vals[i]);
+    for (let i = 0; i < N; i++) d += Math.abs((c.vals[i] ?? 0) - v[i]);
     if (d < bestD) { bestD = d; best = c; }
   }
   return best;
@@ -1958,11 +2073,21 @@ let vals = Array(N).fill(0);
 const els = [];   // { slider, lp, rp }
 let ftrTimer = null;
 let loadedProfile = null;   // name of the profile last loaded from the overlay
+// Compare: B is a second answer set drawn over yours (A), with its own half
+// of the sliders. els holds A's rows (0…N-1) then B's (N…2N-1). Matches,
+// home and the PNG title stay about A.
+let cmp = null, cmpName = '', aName = '';
+const setOf = k => k < N ? vals : (cmp || ZERO);
+const ZERO = Array(N).fill(0);
+const clamp3 = v => Math.max(-3, Math.min(3, Math.round(+v) || 0));
+const l1 = (a, b) => a.reduce((d, v, i) => d + Math.abs(v - (b[i] ?? 0)), 0);
+// 0 … 72 → 100 … 0 %: every axis at opposite ends is 0 %
+const agreePct = (a, b) => Math.round(100 * (1 - l1(a, b) / (6 * N)));
 
 // ── Canvas palette ──
 // Gold & Black keeps these hand-picked inks; Colourful reads the theme's tokens
 // (themeCanvas), and a theme switch or an OS light/dark flip redraws the chart.
-const GOLD_C = { dim:'#262626', mid:'#3f3f46', active:'#eab308', bright:'#fbbf24', mind:'#22c55e', suggest:'#eab308', enforce:'#ef4444' };
+const GOLD_C = { dim:'#262626', mid:'#3f3f46', active:'#eab308', bright:'#fbbf24', mind:'#22c55e', suggest:'#eab308', enforce:'#ef4444', cmp:'#d4d4d8' };
 const C = {};
 function rgbOf(hex) {
   const h = hex.replace('#', ''), f = h.length === 3 ? h.replace(/./g, '$&$&') : h;
@@ -1974,13 +2099,19 @@ function themeCanvas(forceGold) {
   else {
     const cs = getComputedStyle(document.documentElement), tok = n => cs.getPropertyValue(n).trim();
     Object.assign(C, { dim: tok('--border'), mid: tok('--text-muted'), active: tok('--accent'), bright: tok('--accent'),
-      mind: tok('--ok'), suggest: tok('--warn'), enforce: tok('--err') });
+      mind: tok('--ok'), suggest: tok('--warn'), enforce: tok('--err'), cmp: tok('--ct-purple') || GOLD_C.cmp });
   }
-  C.fillRGB = rgbOf(C.active); C.strokeRGB = rgbOf(C.bright);
+  C.fillRGB = rgbOf(C.active); C.strokeRGB = rgbOf(C.bright); C.cmpRGB = rgbOf(C.cmp);
 }
 themeCanvas();
 function retheme() { themeCanvas(); draw(); }
 window.addEventListener('carino:themechange', retheme);
+// i18n.js swaps the locale in its own langchange listener, so read t() after it
+const relabelCompare = () => setTimeout(() => {
+  if (typeof fillCountrySelect === 'function') { fillCountrySelect(); refreshCompareUI(); }
+});
+window.addEventListener('carino:langchange', relabelCompare);
+document.addEventListener('DOMContentLoaded', relabelCompare);
 if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener('change', retheme);
 
 function pt(i, v, cx, cy, r0, r1) {
@@ -2082,6 +2213,19 @@ function draw3d(exportCv) {
     ctx.stroke();
   }
 
+  // B: a dashed wireframe of its own deformed icosahedron
+  if (cmp) {
+    const Q = AXES.map((_, i) => proj(ICO.v[i], r0 + (cmp[i] + 3) / 6 * (r1 - r0)));
+    ctx.setLineDash([W * 0.008, W * 0.008]);
+    ctx.lineWidth = 1.2;
+    for (const [i, j] of ICO.edges) {
+      const z = (Q[i][2] + Q[j][2]) / 2, t = Math.max(0, Math.min(1, (z / r1 + 1) / 2));
+      ctx.strokeStyle = `rgba(${C.cmpRGB},${(0.3 + 0.6 * t).toFixed(3)})`;
+      ctx.beginPath(); ctx.moveTo(Q[i][0], Q[i][1]); ctx.lineTo(Q[j][0], Q[j][1]); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+  }
+
   // vertex dots + axis labels, back-to-front
   axLabelPos.length = 0;
   const fs = Math.max(12, Math.round(W * 0.048));
@@ -2161,6 +2305,22 @@ function draw2d(exportCv) {
   ctx.moveTo(cx, cy-ch); ctx.lineTo(cx, cy+ch);
   ctx.stroke();
 
+  // B (compare): a faint fill and a dashed line, under A
+  if (cmp) {
+    ctx.beginPath();
+    for (let i = 0; i < N; i++) { const [x,y] = pt(i,cmp[i],cx,cy,r0,r1); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
+    ctx.closePath();
+    ctx.fillStyle = `rgba(${C.cmpRGB},0.08)`; ctx.fill();
+    ctx.setLineDash([W * 0.012, W * 0.009]);
+    ctx.strokeStyle = C.cmp; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = C.cmp;
+    for (let i = 0; i < N; i++) {
+      const [x,y] = pt(i,cmp[i],cx,cy,r0,r1);
+      ctx.beginPath(); ctx.arc(x, y, 2, 0, 2*Math.PI); ctx.fill();
+    }
+  }
+
   // Profile fill
   ctx.beginPath();
   for (let i = 0; i < N; i++) { const [x,y] = pt(i,vals[i],cx,cy,r0,r1); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
@@ -2213,16 +2373,31 @@ function sizeCanvas() {
 // ── Hash ──
 let want3d = false;
 // true when the hash held a full set of coordinates
+// A compare link adds B (and its name) after a ~: #A~B~Name[,3d]
+function parseSet(s) {
+  const p = String(s || '').split(',');
+  if (p.length !== N || p.some(x => !/^\s*[+-]?\d\s*$/.test(x))) return null;
+  return p.map(clamp3);
+}
+const encName = n => encodeURIComponent(n).replace(/~/g, '%7E');
+function decodeName(n) { try { return decodeURIComponent(n || '').slice(0, 80); } catch (e) { return ''; } }
 function readHash() {
-  const h = location.hash.slice(1);
+  let h = location.hash.slice(1);
   if (!h) return false;
-  const p = h.split(',');
-  if (p[p.length - 1] === '3d') { want3d = true; p.pop(); }
-  if (p.length !== N) return false;
-  vals = p.map(v => Math.max(-3, Math.min(3, +v || 0)));
+  if (h.endsWith(',3d')) { want3d = true; h = h.slice(0, -3); }
+  const [a, b, n, an] = h.split('~');
+  const pa = parseSet(a);
+  if (!pa) return false;
+  vals = pa;
+  cmp = parseSet(b);
+  cmpName = cmp ? decodeName(n) : '';
+  aName = cmp ? decodeName(an) : '';
   return true;
 }
-const hashNow = () => '#' + vals.join(',') + (mode3d ? ',3d' : '');
+const hashNow = () => '#' + vals.join(',')
+  + (cmp ? '~' + cmp.join(',') + ((cmpName || aName) ? '~' + encName(cmpName) : '')
+      + (aName ? '~' + encName(aName) : '') : '')
+  + (mode3d ? ',3d' : '');
 // The intro carries no hash; only the axes write their coordinates.
 function writeHash() { if (onAxes()) history.replaceState(null, '', hashNow()); }
 
@@ -2237,8 +2412,14 @@ function showAxes(push) {
 }
 // The navbar refits (its actions differ per view) and the chart takes its size.
 function relayout() { requestAnimationFrame(() => window.dispatchEvent(new Event('resize'))); }
+// The intro ends any comparison, so Start is always a single test
+// (Compare two people starts half and half again).
 function showIntro() {
   closeResult();
+  if (cmp) {
+    cmp = null; cmpName = ''; aName = '';
+    refreshCompareUI(); syncSliders(); draw(); refreshMatch();
+  }
   document.body.classList.replace('at-axes', 'at-intro');
   history.replaceState(null, '', location.pathname + location.search);
   relayout();
@@ -2247,13 +2428,13 @@ function openResult()  { document.getElementById('res-overlay').hidden = false; 
 function closeResult() { document.getElementById('res-overlay').hidden = true; }
 
 // ── Profile matching ──
-function closestProfiles() {
+function closestProfiles(v = vals, skip = loadedProfile) {
   const fictCats = new Set(['anime', 'games', 'film']);
   let bestHist = null, bestFict = null, bestHistD = Infinity, bestFictD = Infinity;
   for (const p of PROFILES) {
     let d = 0;
-    for (let i = 0; i < N; i++) d += Math.abs((p.vals[i] ?? 0) - vals[i]);
-    if (d === 0 && p.name === loadedProfile) continue;  // don't match the profile you just loaded
+    for (let i = 0; i < N; i++) d += Math.abs((p.vals[i] ?? 0) - v[i]);
+    if (d === 0 && p.name === skip) continue;  // don't match the profile you just loaded
     if ((p.cat === 'hist' || p.cat === 'pres' || p.cat === 'thinkers' || p.cat === 'tech') && d < bestHistD) { bestHistD = d; bestHist = p; }
     if (fictCats.has(p.cat)  && d < bestFictD) { bestFictD = d; bestFict = p; }
   }
@@ -2265,7 +2446,7 @@ function refreshMatch() {
   const el = document.getElementById('axis-info');
   if (el.classList.contains('active')) return;
   const { hist, fict, histD, fictD } = closestProfiles();
-  el.textContent = (hist ? matchLabel(histD) + ' ' + hist.name.toUpperCase() : '—')
+  el.textContent = cmp ? compareLine() : (hist ? matchLabel(histD) + ' ' + hist.name.toUpperCase() : '—')
     + '  ·  '
     + (fict ? matchLabel(fictD) + ' ' + fict.name.toUpperCase() : '—');
   const home = nearestCountry();
@@ -2313,6 +2494,7 @@ function refreshResult() {
       why.appendChild(li);
     });
   }
+  refreshCompareResult();
   chips.textContent = '';
   const lbl = document.createElement('span'); lbl.className = 'ex-label'; lbl.textContent = tt('Closest profiles');
   chips.appendChild(lbl);
@@ -2324,8 +2506,131 @@ function refreshResult() {
   });
 }
 
+// ── Compare ──
+const bLabel = () => cmpName || 'B';
+const aLabel = () => aName || 'A';
+// Axes ordered by how far apart A and B are, widest first
+function gaps() {
+  return vals.map((v, i) => ({ i, g: Math.abs(v - cmp[i]) })).sort((x, y) => y.g - x.g || x.i - y.i);
+}
+function compareLine() {
+  const top = gaps()[0];
+  return (aName ? aName.toUpperCase() + ' ' : '') + tt('VS') + ' ' + bLabel().toUpperCase() + '  ·  ' + agreePct(vals, cmp) + '% ' + tt('AGREE')
+    + (top && top.g > 0 ? '  ·  ' + tt('WIDEST GAP') + ': ' + tt(AXES[top.i].name) : '');
+}
+function refreshCompareResult() {
+  const box = document.getElementById('res-cmp');
+  if (!box) return;
+  box.hidden = !cmp;
+  box.textContent = '';
+  if (!cmp) return;
+  const mk = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const h = mk('h3');
+  h.append(tt('Compared with') + ' ', mk('span', 'b', bLabel()), ': ', mk('span', 'pct', agreePct(vals, cmp) + '% ' + tt('agree')));
+  box.appendChild(h);
+  const g = gaps();
+  const far = g.filter(x => x.g >= 2).slice(0, 3);
+  if (far.length) {
+    box.appendChild(mk('div', 'sub', tt('Where you differ most')));
+    const ul = mk('ul', 'res-why');
+    far.forEach(({ i }) => {
+      const li = mk('li');
+      const a = mk('span', 'lv', aLabel() + ': ' + stance(i, vals[i])); a.style.color = levelColor(vals[i]);
+      li.append(mk('b', null, tt(AXES[i].name)), ' ', a, mk('span', 'ctry', bLabel() + ': ' + stance(i, cmp[i])));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  }
+  const same = g.filter(x => x.g === 0).map(x => x.i).sort((a, b) => a - b);
+  const chips = mk('div', 'res-chips');
+  chips.appendChild(mk('span', 'ex-label', same.length ? tt('Same answer on') : tt('No axis with the same answer')));
+  same.forEach(i => chips.appendChild(mk('span', 'chip-tag', tt(AXES[i].name))));
+  box.appendChild(chips);
+  // B's own result, so a pair each get one
+  const home = nearestCountry(cmp), m = closestProfiles(cmp, cmpName);
+  const p = mk('p', 'res-lead');
+  p.textContent = bLabel() + ': ' + (home ? tt('would feel at home in') + ' ' + home.flag + ' ' + home.name : '—')
+    + (m.hist ? '  ·  ' + matchLabel(m.histD) + ' ' + m.hist.name.replace(/\.$/, '') : '')
+    + (m.fict ? '  ·  ' + matchLabel(m.fictD) + ' ' + m.fict.name.replace(/\.$/, '') : '');
+  box.appendChild(p);
+}
+function syncSliders() { els.forEach(({ slider }, k) => { slider.value = setOf(k)[k % N]; updateRow(k); }); }
+// Header switch, body classes and the Compare dialog's status line
+function refreshCompareUI() {
+  const on = !!cmp;
+  const lab = (id, attr, en) => document.getElementById(id).setAttribute(attr, tt(en));
+  lab('a-name', 'placeholder', 'Name (optional)'); lab('a-name', 'aria-label', 'Name for A');
+  lab('b-name', 'placeholder', 'Name (optional)'); lab('b-name', 'aria-label', 'Name for B');
+  lab('cmp-swap', 'title', 'Swap A and B'); lab('cmp-swap', 'aria-label', 'Swap A and B');
+  lab('cmp-stop', 'title', 'Stop comparing'); lab('cmp-stop', 'aria-label', 'Stop comparing');
+  lab('cmp-url', 'aria-label', 'Their Compass link');
+  lab('cmp-url', 'placeholder', 'Paste their link here');
+  lab('cmp-country', 'aria-label', 'Pick a country');
+  lab('cmp-close', 'aria-label', 'Close');
+  document.body.classList.toggle('comparing', on);
+  document.getElementById('cmp-switch').hidden = !on;
+  const an = document.getElementById('a-name'), bn = document.getElementById('b-name');
+  if (document.activeElement !== an) an.value = aName;
+  if (document.activeElement !== bn) bn.value = cmpName;
+  const now = document.getElementById('cmp-now');
+  now.hidden = !on;
+  if (on) {
+    now.textContent = '';
+    const b = document.createElement('b'); b.textContent = agreePct(vals, cmp) + '%';
+    now.append(tt('Comparing with') + ' ' + bLabel() + ': ', b, ' ' + tt('agree') + '. ' + tt('Anything below replaces B.'));
+  }
+}
+// v: B's answers; name: shown as B's label (empty for a person on this screen)
+function setCompare(v, name) {
+  cmp = v.map(clamp3);
+  cmpName = name || '';
+  showAxes(true);
+  syncSliders(); refreshCompareUI(); writeHash(); draw(); refreshMatch(); relayout();
+}
+function stopCompare() {
+  cmp = null; cmpName = ''; aName = '';
+  syncSliders(); refreshCompareUI(); writeHash(); draw(); refreshMatch(); relayout();
+}
+function swapCompare() {
+  if (!cmp) return;
+  [vals, cmp] = [cmp, vals];
+  [aName, cmpName] = [cmpName, aName];
+  loadedProfile = null;
+  syncSliders(); refreshCompareUI(); writeHash(); draw(); refreshMatch();
+}
+// Accepts a full Compass link, just its #fragment, or the bare 12 numbers.
+// A compare link gives its A (the person who sent it).
+function parseCompassLink(text) {
+  let t = String(text || '').trim();
+  const hash = t.indexOf('#');
+  if (hash >= 0) t = t.slice(hash + 1);
+  t = t.replace(/\s+/g, '');
+  if (t.endsWith(',3d')) t = t.slice(0, -3);
+  return parseSet(t.split('~')[0]);
+}
+let pickFor = 'a';   // which side a profile card fills
+function openCompare() {
+  document.getElementById('cmp-err').textContent = '';
+  refreshCompareUI();
+  document.getElementById('cmp-overlay').hidden = false;
+  document.getElementById('cmp-url').focus();
+}
+function closeCompare() { document.getElementById('cmp-overlay').hidden = true; }
+function fillCountrySelect() {
+  const sel = document.getElementById('cmp-country');
+  sel.textContent = '';
+  const first = document.createElement('option'); first.value = ''; first.textContent = tt('Pick a country…');
+  sel.appendChild(first);
+  COUNTRIES.map((c, i) => ({ c, i })).sort((x, y) => x.c.name.localeCompare(y.c.name)).forEach(({ c, i }) => {
+    const o = document.createElement('option'); o.value = i; o.textContent = c.flag + ' ' + c.name;
+    sel.appendChild(o);
+  });
+}
+
 function resetAll() {
   loadedProfile = null;
+  cmp = null; cmpName = ''; aName = '';
+  refreshCompareUI(); relayout();
   vals = Array(N).fill(0);
   els.forEach(({ slider }, i) => { slider.value = 0; updateRow(i); });
   draw(); refreshMatch();
@@ -2345,22 +2650,28 @@ function setInfo(idx) {
 }
 
 // ── Slider highlight + position label ──
-function updateRow(i) {
-  const v = vals[i];
+// k: a row of els (A's 0…N-1, B's N…2N-1)
+function updateRow(k) {
+  const e = els[k];
+  if (!e) return;
+  const v = setOf(k)[k % N];
   const col = levelColor(v);
-  els[i].lp.classList.toggle('lit', v < 0);
-  els[i].rp.classList.toggle('lit', v > 0);
-  els[i].lp.style.color = v < 0 ? col : '';
-  els[i].rp.style.color = v > 0 ? col : '';
-  els[i].posEl.textContent = posLabel(v);
-  els[i].posEl.style.color = col;
-  els[i].tw.classList.toggle('enforce', Math.abs(v) === 3);
+  e.lp.classList.toggle('lit', v < 0);
+  e.rp.classList.toggle('lit', v > 0);
+  e.lp.style.color = v < 0 ? col : '';
+  e.rp.style.color = v > 0 ? col : '';
+  e.posEl.textContent = posLabel(v);
+  e.posEl.style.color = col;
+  e.tw.classList.toggle('enforce', Math.abs(v) === 3);
 }
 
 // ── Build sliders ──
-function buildSliders() {
-  const cont = document.getElementById('slider-rows');
+function buildSliders() { buildRows('slider-rows', 0); buildRows('slider-rows-b', N); }
+function buildRows(contId, base) {
+  const cont = document.getElementById(contId);
+  const set = () => setOf(base);
   AXES.forEach((ax, i) => {
+    const k = base + i;
     const row = document.createElement('div');
     row.className = 'ax';
 
@@ -2386,15 +2697,18 @@ function buildSliders() {
     for (let t = 0; t < 7; t++) ticks.appendChild(document.createElement('span'));
 
     const sl = document.createElement('input');
-    sl.type = 'range'; sl.min = -3; sl.max = 3; sl.step = 1; sl.value = vals[i];
+    sl.type = 'range'; sl.min = -3; sl.max = 3; sl.step = 1; sl.value = set()[i];
     sl.setAttribute('aria-label', ax.name);
     sl.addEventListener('input', () => {
-      vals[i] = +sl.value; updateRow(i); writeHash(); draw(); refreshMatch();
+      if (base && !cmp) return;
+      set()[i] = +sl.value; updateRow(k); writeHash(); draw(); refreshMatch(); refreshCompareUI();
     });
     sl.addEventListener('wheel', e => {
       e.preventDefault();
-      vals[i] = Math.max(-3, Math.min(3, vals[i] + (e.deltaY < 0 ? 1 : -1)));
-      sl.value = vals[i]; updateRow(i); writeHash(); draw(); refreshMatch();
+      if (base && !cmp) return;
+      const v = set();
+      v[i] = Math.max(-3, Math.min(3, v[i] + (e.deltaY < 0 ? 1 : -1)));
+      sl.value = v[i]; updateRow(k); writeHash(); draw(); refreshMatch(); refreshCompareUI();
     }, { passive: false });
 
     tw.appendChild(ticks); tw.appendChild(sl);
@@ -2406,7 +2720,7 @@ function buildSliders() {
     els.push({ slider: sl, lp, rp, posEl: axPos, tw, row });
     row.appendChild(lp); row.appendChild(sc); row.appendChild(rp);
     cont.appendChild(row);
-    updateRow(i);
+    updateRow(k);
   });
 }
 
@@ -2457,7 +2771,10 @@ function renderProfiles() {
     const btn = document.createElement('button');
     btn.className = 'prof-card';
     btn.innerHTML = p.name + '<small>' + p.tag + (searching ? ' · ' + catLabel[p.cat] : '') + '</small>';
-    btn.onclick = () => loadProfile(p.name, p.vals);
+    btn.onclick = () => {
+      if (pickFor === 'b') { closeProfiles(); setCompare(p.vals, p.name); }
+      else loadProfile(p.name, p.vals);
+    };
     grid.appendChild(btn);
   });
   if (!list.length) {
@@ -2478,10 +2795,12 @@ function closeProfiles() {
 document.addEventListener('click', e => {
   if (e.target === document.getElementById('prof-overlay')) closeProfiles();
   if (e.target === document.getElementById('res-overlay')) closeResult();
+  if (e.target === document.getElementById('cmp-overlay')) closeCompare();
 });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   if (!document.getElementById('prof-overlay').hidden) closeProfiles();
+  else if (!document.getElementById('cmp-overlay').hidden) { closeCompare(); document.getElementById('btn-compare').focus(); }
   else if (!document.getElementById('res-overlay').hidden) { closeResult(); document.getElementById('btn-result').focus(); }
 });
 
@@ -2489,7 +2808,35 @@ document.addEventListener('keydown', e => {
 // copyLink, …) still apply.
 const on = (id, fn) => document.getElementById(id).addEventListener('click', fn);
 on('btn-copy',     () => window.copyLink());
-on('btn-profiles', () => window.openProfiles());
+on('btn-profiles', () => { pickFor = 'a'; window.openProfiles(); });
+on('btn-compare',  () => openCompare());
+on('cmp-close',    () => { closeCompare(); document.getElementById('btn-compare').focus(); });
+// Names: B's is also its label everywhere; both ride in the link
+document.getElementById('a-name').addEventListener('input', e => { aName = e.target.value.trim().slice(0, 40); writeHash(); });
+document.getElementById('b-name').addEventListener('input', e => {
+  cmpName = e.target.value.trim().slice(0, 40); writeHash(); refreshMatch(); refreshCompareUI();
+});
+on('cmp-swap',     () => swapCompare());
+on('cmp-stop',     () => stopCompare());
+// Half and half: B starts in the middle, A answers first
+const startPair = () => { closeCompare(); setCompare(Array(N).fill(0), ''); els[0].slider.focus({ preventScroll: true }); };
+on('cmp-pair',     startPair);
+on('btn-pair',     startPair);
+on('cmp-prof',     () => { closeCompare(); pickFor = 'b'; window.openProfiles(); });
+document.getElementById('cmp-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = document.getElementById('cmp-url');
+  const v = parseCompassLink(input.value);
+  if (!v) { document.getElementById('cmp-err').textContent = tt('That is not a Compass link. Copy it with Copy Link and paste it here.'); return; }
+  input.value = '';
+  closeCompare(); setCompare(v, '');
+});
+document.getElementById('cmp-country').addEventListener('change', e => {
+  const c = COUNTRIES[+e.target.value];
+  e.target.value = '';
+  if (!c) return;
+  closeCompare(); setCompare(c.vals, c.flag + ' ' + c.name);
+});
 on('btn-3d',       () => window.toggle3D());
 on('btn-png',      () => window.downloadCompass());
 on('btn-reset',    () => window.resetAll());
@@ -2504,7 +2851,7 @@ on('btn-start',    () => {
 function loadProfile(name, profileVals) {
   loadedProfile = name;
   vals = profileVals.map(v => Math.max(-3, Math.min(3, v)));
-  els.forEach(({ slider }, i) => { slider.value = vals[i]; updateRow(i); });
+  refreshCompareUI(); syncSliders();
   showAxes(true);
   writeHash(); draw(); closeProfiles(); refreshMatch();
   // Flash profile name in the header hint
@@ -2522,7 +2869,7 @@ function loadProfile(name, profileVals) {
 window.addEventListener('hashchange', () => {
   // Back to the intro clears the hash; a link with coordinates opens the axes.
   if (!readHash()) { if (onAxes()) showIntro(); return; }
-  els.forEach(({ slider }, i) => { slider.value = vals[i]; updateRow(i); });
+  refreshCompareUI(); syncSliders();
   showAxes(false);
   draw(); refreshMatch();
 });
@@ -2531,6 +2878,8 @@ window.addEventListener('hashchange', () => {
 const fromLink = readHash();
 buildSliders();
 buildProfiles();
+fillCountrySelect();
+refreshCompareUI(); syncSliders();
 writeHash();
 refreshMatch();
 let saved3d = false;
@@ -2594,7 +2943,7 @@ cvEl.addEventListener('mousemove', e => {
   }
   if (found !== hoverAxis) {
     hoverAxis = found; draw();
-    els.forEach(({ row }, i) => row.classList.toggle('chart-hover', i === found));
+    els.forEach(({ row }, k) => row.classList.toggle('chart-hover', k % N === found));
   }
   cvEl.style.cursor = found !== -1 ? 'pointer' : (mode3d ? 'grab' : 'default');
 });
@@ -2643,7 +2992,10 @@ function downloadCompass() {
   ctx.font = "600 17px 'IBM Plex Sans', sans-serif";
   ctx.fillText((hist ? matchLabel(histD) + ' ' + hist.name.toUpperCase() : '—')
     + '  ·  ' + (fict ? matchLabel(fictD) + ' ' + fict.name.toUpperCase() : '—'), sz / 2, headH + sz + 34);
-  if (home) {
+  if (cmp) {
+    ctx.fillStyle = GOLD_C.cmp;
+    ctx.fillText(aLabel().toUpperCase() + ' ━  ' + tt('VS') + '  ┅ ' + bLabel().toUpperCase() + '  ·  ' + agreePct(vals, cmp) + '% ' + tt('AGREE'), sz / 2, headH + sz + 64);
+  } else if (home) {
     ctx.fillStyle = '#eab308';
     ctx.fillText(tt('YOU WOULD FEEL AT HOME IN') + ' ' + home.flag + ' ' + home.name.toUpperCase(), sz / 2, headH + sz + 64);
   }
